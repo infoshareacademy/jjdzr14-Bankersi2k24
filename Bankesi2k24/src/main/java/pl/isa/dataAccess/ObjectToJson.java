@@ -3,10 +3,10 @@ package pl.isa.dataAccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import pl.isa.model.PlainOldJavaObject;
+import com.fasterxml.jackson.databind.type.CollectionType;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 /**
  * Convert the object into JSON using ObjectMapper class of Jackson API.
@@ -15,9 +15,7 @@ public class  ObjectToJson <T>{
     private final ObjectMapper objectMapper;
 
     public ObjectToJson() {
-        //TODO: make class static!
         this.objectMapper = new ObjectMapper();
-
     }
 
     public String convertObjectToJson(T pojo){
@@ -55,13 +53,11 @@ public class  ObjectToJson <T>{
         }
     }
 
-    public List<T> convertJsonToObjectList(String jsonArray){
-        List<T> pojoList = null;
+    public <T> List<T> convertJsonToObjectList(String jsonArray, Class<T> tClass){
+        List<T> pojoList;
         try {
-            pojoList = this.objectMapper.readValue(
-                    jsonArray,
-                    new TypeReference<List<T>>(){}
-            );
+            CollectionType objectType = this.objectMapper.getTypeFactory().constructCollectionType(List.class, tClass);
+            pojoList = this.objectMapper.readValue(jsonArray, objectType);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

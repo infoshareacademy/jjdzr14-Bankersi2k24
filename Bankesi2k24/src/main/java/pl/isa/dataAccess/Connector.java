@@ -67,11 +67,6 @@ public class Connector {
         }
     }
 
-//    public List<Object> read(){
-//        //tmp
-//        return this.readJsonFile();
-//    }
-
     public String read()  {
         StringBuilder builder = new StringBuilder();
 

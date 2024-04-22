@@ -6,7 +6,6 @@ import pl.isa.model.PlainOldJavaObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -48,7 +47,7 @@ public class App
         System.out.println("tetsing reading from JSON");
 
         String jsonList = con.read();
-        List<PlainOldJavaObject> pojoList = objectToJson.convertJsonToObjectList(jsonList);
+        List<PlainOldJavaObject> pojoList = objectToJson.convertJsonToObjectList(jsonList, PlainOldJavaObject.class);
         for(PlainOldJavaObject obj : pojoList){
             System.out.printf("%s%n", obj);
         }
