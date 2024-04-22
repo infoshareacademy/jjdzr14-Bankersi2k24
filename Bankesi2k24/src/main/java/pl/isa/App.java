@@ -33,7 +33,7 @@ public class App
 
 
         Connector con = new Connector();
-        ObjectToJson<PlainOldJavaObject> objectToJson = new ObjectToJson<PlainOldJavaObject> ();
+        ObjectToJson<PlainOldJavaObject> objectToJson = new ObjectToJson<> ();
 
         //this works
         //String json = objectToJson.convertObjectToJson(pojo1);

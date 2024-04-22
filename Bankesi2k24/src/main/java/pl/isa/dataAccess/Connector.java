@@ -1,16 +1,13 @@
 package pl.isa.dataAccess;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import pl.isa.model.PlainOldJavaObject;
-
-import java.awt.*;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
 
 public class Connector {
     /**
@@ -19,19 +16,18 @@ public class Connector {
      */
 
     private static final String fileName = "users.txt";
-    private Path pathToFile;
-    private File database;
+    private final Path pathToFile;
 
     public Connector() {
         // TODO: check first if file exists, if not create it
         // this should point to <root>/resources/users.txt
         this.pathToFile = Paths.get(System.getProperty("user.dir"), fileName );
         System.out.println(this.pathToFile);
-        this.database = new File(this.pathToFile.toString());
-        if (!this.database.exists()){
+        File database = new File(this.pathToFile.toString());
+        if (!database.exists()){
             // file does not exist, create an empty one
             try{
-                this.database.createNewFile();
+                database.createNewFile();
 
             } catch (IOException e) {
                 // TODO: add some sprt opf logging
