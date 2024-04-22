@@ -1,7 +1,6 @@
 package pl.isa.dataAccess;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 
@@ -18,7 +17,7 @@ public class  ObjectToJson <T>{
         this.objectMapper = new ObjectMapper();
     }
 
-    public String convertObjectToJson(T pojo){
+    public String serialize(T pojo){
         /**
          * method that converts an object to JSON entity
          * @param object to be converted to JSON
@@ -35,7 +34,7 @@ public class  ObjectToJson <T>{
         }
     }
 
-    public String convertObjectToJson(List<T> pojos){
+    public String serialize(List<T> pojos){
         //TODO: method overloading, this is for sake of time
         /**
          * method that converts an object list to JSON entity
@@ -53,7 +52,7 @@ public class  ObjectToJson <T>{
         }
     }
 
-    public <T> List<T> convertJsonToObjectList(String jsonArray, Class<T> tClass){
+    public <T> List<T> deserialize(String jsonArray, Class<T> tClass){
         List<T> pojoList;
         try {
             CollectionType objectType = this.objectMapper.getTypeFactory().constructCollectionType(List.class, tClass);

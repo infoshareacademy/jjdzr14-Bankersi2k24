@@ -38,7 +38,7 @@ public class App
         //this works
         //String json = objectToJson.convertObjectToJson(pojo1);
 
-        String json = objectToJson.convertObjectToJson(pojos);
+        String json = objectToJson.serialize(pojos);
         Boolean ret = con.save(json);
 
         //System.out.printf("%s\n%s%n", ret, json);
@@ -47,7 +47,7 @@ public class App
         System.out.println("tetsing reading from JSON");
 
         String jsonList = con.read();
-        List<PlainOldJavaObject> pojoList = objectToJson.convertJsonToObjectList(jsonList, PlainOldJavaObject.class);
+        List<PlainOldJavaObject> pojoList = objectToJson.deserialize(jsonList, PlainOldJavaObject.class);
         for(PlainOldJavaObject obj : pojoList){
             System.out.printf("%s%n", obj);
         }
