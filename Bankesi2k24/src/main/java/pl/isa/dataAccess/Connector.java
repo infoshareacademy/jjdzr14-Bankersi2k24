@@ -15,23 +15,16 @@ public class Connector {
      * at this phase, we're writing objects in JSON format to a .txt file
      */
 
-    private static final String fileName = "users.txt";
-    private final Path pathToFile;
+    private static final String USERS_FILE = "users.txt";
+    private static final Path PATH_TO_USER_FILE = Paths.get(System.getProperty("user.dir"), USERS_FILE);
 
     public Connector() {
-        // TODO: check first if file exists, if not create it
-        // this should point to <root>/resources/users.txt
-        this.pathToFile = Paths.get(System.getProperty("user.dir"), fileName );
-        System.out.println(this.pathToFile);
-        File database = new File(this.pathToFile.toString());
+        File database = new File(PATH_TO_USER_FILE.toString());
         if (!database.exists()){
-            // file does not exist, create an empty one
             try{
                 database.createNewFile();
-
             } catch (IOException e) {
-                // TODO: add some sprt opf logging
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
 
@@ -55,24 +48,18 @@ public class Connector {
          *
          */
         try {
-            return (this.pathToFile == Files.writeString(this.pathToFile, json, StandardOpenOption.APPEND));
+            return (PATH_TO_USER_FILE == Files.writeString(PATH_TO_USER_FILE, json, StandardOpenOption.APPEND));
         } catch (IOException e) {
-            //TODO: handle all the exceptions for files.writestring ...
             e.printStackTrace();
-            throw new RuntimeException(e);
         }
+        return false;
     }
 
     public String read()  {
         StringBuilder builder = new StringBuilder();
-
-        // try block to check for exceptions where
-        // object of BufferedReader class us created
-        // to read filepath
         try (BufferedReader buffer = new BufferedReader(
-                new FileReader(this.pathToFile.toString()))) {
+                new FileReader(PATH_TO_USER_FILE.toString()))) {
             String str;
-
             while ((str = buffer.readLine()) != null) {
                 builder.append(str).append("\n");
             }
@@ -80,9 +67,6 @@ public class Connector {
         catch (IOException e) {
             e.printStackTrace();
         }
-
         return builder.toString();
     }
-
-
 }

@@ -28,14 +28,12 @@ public class  ObjectToJson <T>{
             return this.objectMapper.writeValueAsString(pojo);
 
         } catch (JsonProcessingException e) {
-            // TODO: do more logging in the nearest future, perhaps a separate dabug_log file
             e.printStackTrace();
             return null;
         }
     }
 
     public String serialize(List<T> pojos){
-        //TODO: method overloading, this is for sake of time
         /**
          * method that converts an object list to JSON entity
          * @param object to be converted to JSON
@@ -46,7 +44,6 @@ public class  ObjectToJson <T>{
             return this.objectMapper.writeValueAsString(pojos);
 
         } catch (JsonProcessingException e) {
-            // TODO: do more logging in the nearest future, perhaps a separate dabug_log file
             e.printStackTrace();
             return null;
         }
