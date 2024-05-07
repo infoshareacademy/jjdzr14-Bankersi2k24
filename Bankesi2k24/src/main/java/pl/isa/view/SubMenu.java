@@ -7,7 +7,8 @@ import java.util.Scanner;
 public class SubMenu {
     public static void subMenu() {
         String newLine = System.lineSeparator();
-        System.out.println("select options:"+newLine+"1.Account balance"+newLine+"2.Add a new account"+newLine+"3.User date"+newLine+"4.Account list");
+        System.out.println("select options: "+"1.Account balance "+"2.Add a new account "+"3.User date "+"4.Account list ");
+//        System.out.println("select options:"+newLine+"1.Account balance"+newLine+"2.Add a new account"+newLine+"3.User date"+newLine+"4.Account list");
         Scanner sc = new Scanner(System.in);
         int opcje = sc.nextInt();
         if (opcje == 1) {
