@@ -11,7 +11,5 @@ public class App {
 
         welcomeScreen.registrationScreen();
         welcomeScreen.loginScreen();
-
-
     }
 }
