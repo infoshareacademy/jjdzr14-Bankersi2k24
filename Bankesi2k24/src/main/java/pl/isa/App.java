@@ -1,6 +1,8 @@
 package pl.isa;
 
+import pl.isa.view.SubMenu;
 import pl.isa.view.WelcomeScreen;
+
 
 /**
  * Hello world!
@@ -11,5 +13,7 @@ public class App {
 
         welcomeScreen.registrationScreen();
         welcomeScreen.loginScreen();
+        SubMenu.subMenu();
+
     }
 }
