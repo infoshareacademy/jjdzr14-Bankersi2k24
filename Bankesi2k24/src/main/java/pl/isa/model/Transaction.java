@@ -25,8 +25,8 @@ public class Transaction {
     }
 
     public boolean triggerTransaction(){
-        BankAccount sender = new BankAccount(senderAccountNumber);
-        BankAccount recepient = new BankAccount(destinationAccountNumber);
+        BankAccount sender = new BankAccount(this.senderAccountNumber);
+        BankAccount recepient = new BankAccount(this.destinationAccountNumber);
         if(this.verifyTransaction(sender)){
             sender.setAvailableQuota(sender.getAvailableQuota()-quota);
             this.transactionDate = new Date();

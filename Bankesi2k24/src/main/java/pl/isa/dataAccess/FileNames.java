@@ -6,9 +6,13 @@ public enum FileNames {
 
 
     FileNames(String fileName) {
-        this.fileName = fileName;
+        this.name = fileName;
     };
 
-    private String fileName;
+    private String name;
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }
