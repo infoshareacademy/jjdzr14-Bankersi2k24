@@ -1,100 +1,67 @@
 package pl.isa.view;
 
+import pl.isa.model.User;
+
 import java.util.Scanner;
 
 //jira task: https://jira.is-academy.pl/browse/JJDZR14BA-3
 public class WelcomeScreen {
-    private String login;
-    private String password;
-    private String name;
-    private String lastName;
-    private String regLogin;
-    private String regPassword;
 
-    public String getRegLogin() {
-        return regLogin;
-    }
-
-    public void setRegLogin(String regLogin) {
-        this.regLogin = regLogin;
-    }
-
-    public String getRegPassword() {
-        return regPassword;
-    }
-
-    public void setRegPassword(String regPassword) {
-        this.regPassword = regPassword;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public void loginScreen() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter your login..");
-        setLogin(scanner.next());
-        System.out.println("Enter your password..");
-        setPassword(scanner.next());
-        if (checkloginScreen(getRegLogin(), getRegPassword())) {
+        System.out.println("Enter your login..");                               //Ryszard
+        String login = scanner.next();
+        System.out.println("Enter your password..");                             //Ryszard
+        String password = scanner.next();
+
+        if (checkloginScreen(login, password)) {
             System.out.println("Login success");
         } else {
             System.out.println("Invalid login or password");
             return;
         }
-        System.out.println("Welcome!!!  " + getLogin());
+        System.out.println("Welcome!!!  " + login);
     } // Zaloguj -> podaj login, haslo z zawartą metodą checkloginScreen
 
     public void registrationScreen() {
         Scanner scanner = new Scanner(System.in);
+        User user = new User();
 
         System.out.println("Enter your name...");
-        setName(scanner.next());
+        String name = scanner.next();
+        user.setName(name);
+
         System.out.println("Enter your last name...");
-        setLastName(scanner.next());
+//        setLastName(scanner.next());
+        String lastName = scanner.next();
+        user.setLastName(lastName);
+
 //        if (getName().length() == 0 || getLastName().length() == 0) {
 //            System.out.println("Why empty phrases? Please, try again");
 //        } NIE WIEM DLACZEGO ALE TO NIE DZIAŁA;/
-        if (specialCharacters(getName()) || badNumbers(getName()) || specialCharacters(getLastName()) || badNumbers(getLastName())) {
+
+        if (specialCharacters(name) || badNumbers(name) || specialCharacters(lastName) || badNumbers(lastName)) {
             System.out.println("Invalid input. Please enter only letters.");
-            return;
+            return;                                                                        //Ryszard po zmianach
+
+//        if (specialCharacters(getName()) || badNumbers(getName()) || specialCharacters(getLastName()) || badNumbers(getLastName())) {
+//            System.out.println("Invalid input. Please enter only letters.");
+//            return; //Ryszard
         }
         System.out.println("Enter your new login...");
-        setRegLogin(scanner.next());
+        String login = scanner.next();
+        user.setLogin(login);
+//        setRegLogin(scanner.next());                                       // to bylo Jacka
+        String regLogin = scanner.next();                                    //Ryszard
         System.out.println("Enter your new password...");
-        setRegPassword(scanner.next());
-        System.out.println("New user:" + getName().toUpperCase() + " " + getLastName().toUpperCase());
+        String password = scanner.next();
+        user.setPassword(password);
+
+//        setRegPassword(scanner.next());                                 // to bylo Jacka
+//        System.out.println("New user:" + getName().toUpperCase() + " " + getLastName().toUpperCase());  to bylo Jacka
+        System.out.println("New user:" + name.toUpperCase() + " " + lastName.toUpperCase()); // Rysard
     } // Zarejestuj -> Imie, nazwisko, login, hasło. Tutaj mam problem z IF.
 
     public boolean specialCharacters(String special) {
@@ -114,14 +81,16 @@ public class WelcomeScreen {
             }
         }
         return false;
-    } // Walidacja danych logowania -> Unikanie cyfr dla imienia i nazwisko, imię i nazwisko nie może być puste
+    }
 
-    public boolean checkloginScreen(String regLogin, String regPassword) {
-        if (regLogin.equals(getLogin()) && regPassword.equals(getPassword())) {
+    public boolean checkloginScreen(String login, String password) {       //Ryszard
+
+        if (login.equals(regLogin()) && password.equals(getPassword())) {
             return true;
         } else {
             return false;
         }
-    } // metoda porównuje gety loginu i hasła przy rejestracji z logowaniem
-
+    }
 }
+
+
