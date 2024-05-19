@@ -15,11 +15,12 @@ public class Connector {
      * at this phase, we're writing objects in JSON format to a .txt file
      */
 
-    private static final String USERS_FILE = "users.txt";
-    private static final Path PATH_TO_USER_FILE = Paths.get(System.getProperty("user.dir"), USERS_FILE);
+    private static Path PATH_TO_FILE =null;
 
-    public Connector() {
-        File database = new File(PATH_TO_USER_FILE.toString());
+    public Connector(String fileName) {
+        PATH_TO_FILE = Paths.get(System.getProperty("user.dir"), fileName);
+
+        File database = new File(PATH_TO_FILE.toString());
         if (!database.exists()){
             try{
                 database.createNewFile();
@@ -27,7 +28,6 @@ public class Connector {
                 e.printStackTrace();
             }
         }
-
     }
 
     public boolean save(Object o){
@@ -48,7 +48,7 @@ public class Connector {
          *
          */
         try {
-            return (PATH_TO_USER_FILE == Files.writeString(PATH_TO_USER_FILE, json, StandardOpenOption.APPEND));
+            return (PATH_TO_FILE == Files.writeString(PATH_TO_FILE, json, StandardOpenOption.APPEND));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class Connector {
     public String read()  {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader buffer = new BufferedReader(
-                new FileReader(PATH_TO_USER_FILE.toString()))) {
+                new FileReader(PATH_TO_FILE.toString()))) {
             String str;
             while ((str = buffer.readLine()) != null) {
                 builder.append(str).append("\n");
