@@ -1,15 +1,13 @@
 package pl.isa.view;
 
+import pl.isa.dataAccess.Connector;
 import pl.isa.model.User;
 
 import java.util.Scanner;
 
 //jira task: https://jira.is-academy.pl/browse/JJDZR14BA-3
 public class WelcomeScreen {
-    public static void main(String[] args) {
-        WelcomeScreen welcomeScreen = new WelcomeScreen();
-        User user = welcomeScreen.registrationScreen();
-    }
+
 
 
     public void loginScreen() {
@@ -30,7 +28,7 @@ public class WelcomeScreen {
     } // Zaloguj -> podaj login, haslo z zawartą metodą checkloginScreen
 
 
-    public User registrationScreen() {
+    public void registrationScreen() {
         Scanner scanner = new Scanner(System.in);
         User user = new User();
         String name = "";
@@ -52,7 +50,8 @@ public class WelcomeScreen {
         System.out.println("Enter password..");
         String password = scanner.next();
         user.setPassword(password);
-        return user;
+        Connector connector = new Connector();
+        connector.save(user);
 
     } // Zarejestuj -> Imie, nazwisko, login, hasło. Tutaj mam problem z IF.
 
