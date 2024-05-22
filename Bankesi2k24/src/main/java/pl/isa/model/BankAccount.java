@@ -1,6 +1,7 @@
 package pl.isa.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +15,8 @@ public class BankAccount {
         /**
          * @method used to create a new (non existing) bank account, thus no params needed
          */
-
+        generateAccountNumber();
+        this.transactionList = new ArrayList<>();
     }
 
     public BankAccount(Integer accountNumber) {
@@ -25,16 +27,18 @@ public class BankAccount {
 
     }
 
-    public BankAccount createFakeBankAccount(Integer accountNumber, Integer availableQuota, Currencies currency) {
-        this.accountNumber = accountNumber;
-        this.availableQuota = availableQuota;
-        this.currency = currency;
-        return this;
+    public static BankAccount createFakeBankAccount(Integer availableQuota, Currencies currency) {
+        BankAccount ba = new BankAccount();
+        ba.generateAccountNumber();
+        ba.currency = currency;
+        ba.availableQuota = availableQuota;
+        return ba;
     }
 
     private boolean generateAccountNumber(){
         Random rnd = new Random();
         this.accountNumber = rnd.nextInt();
+        if(this.accountNumber < 0) this.accountNumber *= -1;
         return true;
     }
 
