@@ -8,7 +8,24 @@ import java.util.Scanner;
 
 //jira task: https://jira.is-academy.pl/browse/JJDZR14BA-3
 public class WelcomeScreen {
-
+    public int showWelcomeScreen(){
+        Scanner s = new Scanner(System.in);
+        String input = "";
+        while(true){
+            System.out.println("Hello, welcome in Bankersi2k24, what would you like to do?\n" +
+                    "1: login to your account\n"+
+                    "2: register as a new user\n"
+            );
+            input = s.nextLine();
+            try{
+                Integer i = Integer.parseInt(input);
+                if(i == 1) return 1;
+                if(i == 2) return 2;
+            } catch (NumberFormatException e) {
+                System.out.println("please provide a valid choice!");
+            }
+        }
+    }
 
 
     public void loginScreen() {
