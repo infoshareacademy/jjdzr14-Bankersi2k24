@@ -1,5 +1,6 @@
 package pl.isa;
 
+import pl.isa.model.User;
 import pl.isa.view.SubMenu;
 import pl.isa.view.WelcomeScreen;
 
@@ -23,7 +24,7 @@ public class App {
 
 
 
-        SubMenu.subMenu();
+//        SubMenu.subMenu();
 
     }
 }

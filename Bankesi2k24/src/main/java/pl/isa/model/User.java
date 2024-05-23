@@ -1,14 +1,33 @@
 package pl.isa.model;
 
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class User {
     private BankAccount bankAccount;
     private String name ;
     private String login;
     private String password;
     private String lastName;
+    private String email;
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    private Date creationDate;
+
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     public User() {
         this.bankAccount = new BankAccount();
+        this.creationDate = new Date();
     }
 
     public void createFakeBankAccount(int quota, Currencies curr){
@@ -49,5 +68,26 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
 
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean setEmail(String email) {
+        if(this.verifyEmail(email)) {
+            this.email = email;
+            return true;
+        }
+        else {
+            System.out.println("Not a valid email address");
+            this.email = "";
+            return false;
+        }
+    }
+
+    public static boolean verifyEmail(String email){
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        return matcher.matches();
     }
 }

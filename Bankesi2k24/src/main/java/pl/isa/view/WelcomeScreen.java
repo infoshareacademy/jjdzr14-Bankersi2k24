@@ -2,9 +2,12 @@ package pl.isa.view;
 
 import pl.isa.dataAccess.Connector;
 import pl.isa.dataAccess.FileNames;
+import pl.isa.dataAccess.ObjectToJson;
 import pl.isa.model.User;
 
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 //jira task: https://jira.is-academy.pl/browse/JJDZR14BA-3
 public class WelcomeScreen {
@@ -45,35 +48,63 @@ public class WelcomeScreen {
         System.out.println("Welcome!!!  " + login);
     } // Zaloguj -> podaj login, haslo z zawartą metodą checkloginScreen
 
+    private String askForInput(String prompt, Predicate<String> predicate){
+        Scanner scanner = new Scanner(System.in);
+        String input = "";
+        do{
+            System.out.println(prompt + "\n");
+            input = scanner.next();
+        }while(predicate.test(input));
+        return input;
+    }
 
     public void registrationScreen() {
         Scanner scanner = new Scanner(System.in);
         User user = new User();
-        String name = "";
-        String lastName = "";
-        do {
-            System.out.println("Enter your name...");
-            name = scanner.next();
-            user.setName(name);
-        } while (specialCharacters(name) || badNumbers(name));
-        do {
-            System.out.println("Enter your last name...");
-            lastName = scanner.next();
-            user.setLastName(lastName);
-        } while (specialCharacters(lastName) || badNumbers(lastName));
-        System.out.println("Enter login..");
-        String login = scanner.next();
-        user.setLogin(login);
+        String name = "", lastName = "", login = "", password="", email ="";
+        Predicate<String> isAllowedName = s -> {
+            return (specialCharacters(s) || badNumbers(s));
+        };
 
-        System.out.println("Enter password..");
-        String password = scanner.next();
+        name = this.askForInput("Enter your name ...", isAllowedName);
+        lastName = this.askForInput("Enter your last name ... ", isAllowedName);
+        email = this.askForInput("Enter email address: ", s->!User.verifyEmail(s));
+        login = this.askForInput("Provide your login: ", this::specialCharacters);
+        password = this.askForInput("Provide password: ", s->false);
+        String finalPassword = password;
+        password = this.askForInput("repeat password: ", s-> !Objects.equals(s, finalPassword));
+
+//        do {
+//            System.out.println("Enter your name...");
+//            name = scanner.next();
+//            user.setName(name);
+//        } while (specialCharacters(name) || badNumbers(name));
+//        do {
+//            System.out.println("Enter your last name...");
+//            lastName = scanner.next();
+//            user.setLastName(lastName);
+//        } while (specialCharacters(lastName) || badNumbers(lastName));
+//        System.out.println("Enter login..");
+//        String login = scanner.next();
+//        user.setLogin(login);
+//
+//        System.out.println("Enter password..");
+//        String password = scanner.next();
+//        user.setPassword(password);
+        user.setName(name);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setLogin(login);
         user.setPassword(password);
-        Connector connector = new Connector(FileNames.USER.name());
-        connector.save(user);
+
+        Connector connector = new Connector(FileNames.USER.toString());
+        ObjectToJson objectToJson = new ObjectToJson<User>();
+        connector.save(objectToJson.serialize(user));
 
     } // Zarejestuj -> Imie, nazwisko, login, hasło. Tutaj mam problem z IF.
 
-    public boolean specialCharacters(String special) {
+
+    private boolean specialCharacters(String special) {
         String specialCharacters = "!@#$%^&*()_+-=[]{}|;':,.<>?";
         for (char s : special.toCharArray()) {
             if (specialCharacters.contains(String.valueOf(s))) {
@@ -84,7 +115,7 @@ public class WelcomeScreen {
         return false;
     } // Walidacja danych logowania -> Unikanie znaków specjalnych dla imienia i nazwisko,
 
-    public boolean badNumbers(String numbers) {
+    private boolean badNumbers(String numbers) {
         for (char n : numbers.toCharArray()) {
             if (Character.isDigit(n)) {
                 System.out.println("No digits.");
