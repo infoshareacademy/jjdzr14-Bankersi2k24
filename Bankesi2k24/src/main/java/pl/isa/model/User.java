@@ -1,14 +1,23 @@
 package pl.isa.model;
 
 public class User {
+    private BankAccount bankAccount;
     private String name ;
     private String login;
     private String password;
     private String lastName;
+  
+   public User() {}
 
     public User() {
-
+        this.bankAccount = new BankAccount();
     }
+
+    public void createFakeBankAccount(int quota, Currencies curr){
+        this.bankAccount = BankAccount.createFakeBankAccount(quota, curr);
+    }
+    public BankAccount getBankAccount() {
+        return bankAccount;
 
     public String getName() {
         return name;
@@ -40,5 +49,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+
     }
 }
