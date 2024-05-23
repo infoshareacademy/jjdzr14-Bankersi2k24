@@ -11,19 +11,24 @@ import java.util.function.Predicate;
 
 //jira task: https://jira.is-academy.pl/browse/JJDZR14BA-3
 public class WelcomeScreen {
-    public int showWelcomeScreen(){
+    public int action = 0;
+
+    public void showWelcomeScreen(){
         Scanner s = new Scanner(System.in);
         String input = "";
         while(true){
             System.out.println("Hello, welcome in Bankersi2k24, what would you like to do?\n" +
                     "1: login to your account\n"+
-                    "2: register as a new user\n"
+                    "2: register as a new user\n"+
+                    "-1: to exit"
             );
             input = s.nextLine();
             try{
                 Integer i = Integer.parseInt(input);
-                if(i == 1) return 1;
-                if(i == 2) return 2;
+                if(i == 1) this.action = 1;
+                if(i == 2) this.action = 2;
+                if(i == -1) this.action = -1;
+                break;
             } catch (NumberFormatException e) {
                 System.out.println("please provide a valid choice!");
             }
@@ -41,6 +46,7 @@ public class WelcomeScreen {
 
         if (checkloginScreen(login, password)) {
             System.out.println("Login success");
+            return 11;
         } else {
             System.out.println("Invalid login or password");
             return;
@@ -81,7 +87,7 @@ public class WelcomeScreen {
         user.setPassword(password);
 
         Connector connector = new Connector(FileNames.USER.toString());
-        ObjectToJson objectToJson = new ObjectToJson<User>();
+        ObjectToJson<User> objectToJson = new ObjectToJson<User>();
         connector.save(objectToJson.serialize(user));
 
     } // Zarejestuj -> Imie, nazwisko, login, hasło. Tutaj mam problem z IF.

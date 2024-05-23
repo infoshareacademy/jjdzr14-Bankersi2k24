@@ -11,16 +11,20 @@ import pl.isa.view.WelcomeScreen;
 public class App {
     public static void main(String[] args) {
         WelcomeScreen welcomeScreen = new WelcomeScreen();
-
-        switch (welcomeScreen.showWelcomeScreen()){
-            case 1:
-                welcomeScreen.loginScreen();
-                break;
-            case 2:
-                welcomeScreen.registrationScreen();
-                break;
-            default:
-        }
+        do {
+            switch (welcomeScreen.action) {
+                case 0:
+                    welcomeScreen.showWelcomeScreen();
+                case 1:
+                    welcomeScreen.loginScreen();
+                    break;
+                case 2:
+                    welcomeScreen.registrationScreen();
+                    break;
+                default:
+                    break;
+            }
+        }while(welcomeScreen.action == -1);
 
 
 
