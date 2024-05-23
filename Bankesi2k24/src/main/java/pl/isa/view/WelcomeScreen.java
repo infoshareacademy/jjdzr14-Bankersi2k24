@@ -1,6 +1,7 @@
 package pl.isa.view;
 
 import pl.isa.dataAccess.Connector;
+import pl.isa.dataAccess.FileNames;
 import pl.isa.model.User;
 
 import java.util.Scanner;
@@ -50,7 +51,7 @@ public class WelcomeScreen {
         System.out.println("Enter password..");
         String password = scanner.next();
         user.setPassword(password);
-        Connector connector = new Connector();
+        Connector connector = new Connector(FileNames.USER.name());
         connector.save(user);
 
     } // Zarejestuj -> Imie, nazwisko, login, hasło. Tutaj mam problem z IF.
