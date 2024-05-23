@@ -6,8 +6,6 @@ public class User {
     private String login;
     private String password;
     private String lastName;
-  
-   public User() {}
 
     public User() {
         this.bankAccount = new BankAccount();
@@ -18,6 +16,7 @@ public class User {
     }
     public BankAccount getBankAccount() {
         return bankAccount;
+    }
 
     public String getName() {
         return name;
