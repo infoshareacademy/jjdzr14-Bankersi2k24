@@ -74,23 +74,6 @@ public class WelcomeScreen {
         String finalPassword = password;
         password = this.askForInput("repeat password: ", s-> !Objects.equals(s, finalPassword));
 
-//        do {
-//            System.out.println("Enter your name...");
-//            name = scanner.next();
-//            user.setName(name);
-//        } while (specialCharacters(name) || badNumbers(name));
-//        do {
-//            System.out.println("Enter your last name...");
-//            lastName = scanner.next();
-//            user.setLastName(lastName);
-//        } while (specialCharacters(lastName) || badNumbers(lastName));
-//        System.out.println("Enter login..");
-//        String login = scanner.next();
-//        user.setLogin(login);
-//
-//        System.out.println("Enter password..");
-//        String password = scanner.next();
-//        user.setPassword(password);
         user.setName(name);
         user.setLastName(lastName);
         user.setEmail(email);
