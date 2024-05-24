@@ -25,7 +25,9 @@ public class  ObjectToJson <T>{
          *
          */
         try{
-            return this.objectMapper.writeValueAsString(pojo);
+            List<T> pojos = new ArrayList<>();
+            pojos.add(pojo);
+            return this.objectMapper.writeValueAsString(pojos);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -50,6 +52,8 @@ public class  ObjectToJson <T>{
     }
 
     public <T> List<T> deserialize(String jsonArray, Class<T> tClass){
+        if(jsonArray.isEmpty()) return new ArrayList<T>();
+
         List<T> pojoList;
         try {
             CollectionType objectType = this.objectMapper.getTypeFactory().constructCollectionType(List.class, tClass);

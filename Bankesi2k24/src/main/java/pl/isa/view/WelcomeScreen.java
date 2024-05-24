@@ -5,6 +5,8 @@ import pl.isa.dataAccess.FileNames;
 import pl.isa.dataAccess.ObjectToJson;
 import pl.isa.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Predicate;
@@ -36,22 +38,15 @@ public class WelcomeScreen {
     }
 
 
-    public void loginScreen() {
+    public String[] loginScreen() {
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Enter your login..");
         String login = scanner.next();
         System.out.println("Enter your password..");
         String password = scanner.next();
 
-        if (checkloginScreen(login, password)) {
-            System.out.println("Login success");
-            return 11;
-        } else {
-            System.out.println("Invalid login or password");
-            return;
-        }
-        System.out.println("Welcome!!!  " + login);
+        return new String[] {login, password};
+
     } // Zaloguj -> podaj login, haslo z zawartą metodą checkloginScreen
 
     private String askForInput(String prompt, Predicate<String> predicate){
@@ -76,6 +71,9 @@ public class WelcomeScreen {
         lastName = this.askForInput("Enter your last name ... ", isAllowedName);
         email = this.askForInput("Enter email address: ", s->!User.verifyEmail(s));
         login = this.askForInput("Provide your login: ", this::specialCharacters);
+        while(User.findUser(login) != null){
+            login = this.askForInput("Such login already exists, provide a different login: ", this::specialCharacters);
+        }
         password = this.askForInput("Provide password: ", s->false);
         String finalPassword = password;
         password = this.askForInput("repeat password: ", s-> !Objects.equals(s, finalPassword));
