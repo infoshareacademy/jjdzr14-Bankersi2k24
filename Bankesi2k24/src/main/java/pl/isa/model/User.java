@@ -36,7 +36,7 @@ public class User {
 
     public static User findUser(String login){
         Connector connector = new Connector(FileNames.USER.toString());
-        ObjectToJson objectToJson = new ObjectToJson<User>();
+        ObjectToJson objectToJson = new ObjectToJson<User>(FileNames.USER, User.class);
         List<User> users;
 
         users = objectToJson.deserialize(connector.read(), User.class);

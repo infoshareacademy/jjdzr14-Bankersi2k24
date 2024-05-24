@@ -12,9 +12,19 @@ import java.util.*;
  */
 public class  ObjectToJson <T>{
     private final ObjectMapper objectMapper;
+    private Connector connector;
+    private final Class<T> objectType;
 
-    public ObjectToJson() {
+    public ObjectToJson(FileNames fileName, Class<T> objectType) {
+        this.objectType = objectType;
         this.objectMapper = new ObjectMapper();
+        this.connector = new Connector(fileName.toString());
+    }
+
+    public void save(T pojo, Class<T> tClass){
+        List<T> pojos = this.deserialize(this.connector.read(), objectType);
+        pojos.add(pojo);
+        this.connector.saveJson(this.serialize(pojos));
     }
 
     public String serialize(T pojo){

@@ -10,8 +10,6 @@ import pl.isa.view.WelcomeScreen;
  */
 public class App {
     public static void main(String[] args) {
-        //User.findUser("aaa");
-
         WelcomeScreen welcomeScreen = new WelcomeScreen();
         User user = new User();
         do {

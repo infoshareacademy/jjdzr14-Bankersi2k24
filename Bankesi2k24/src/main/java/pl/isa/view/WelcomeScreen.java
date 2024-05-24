@@ -84,9 +84,9 @@ public class WelcomeScreen {
         user.setLogin(login);
         user.setPassword(password);
 
-        Connector connector = new Connector(FileNames.USER.toString());
-        ObjectToJson<User> objectToJson = new ObjectToJson<User>();
-        connector.save(objectToJson.serialize(user));
+        ObjectToJson<User> objectToJson = new ObjectToJson<User>(FileNames.USER, User.class);
+        objectToJson.save(user, User.class);
+
 
     } // Zarejestuj -> Imie, nazwisko, login, hasło. Tutaj mam problem z IF.
 
