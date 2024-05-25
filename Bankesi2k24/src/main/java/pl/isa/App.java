@@ -3,7 +3,7 @@ package pl.isa;
 import pl.isa.model.User;
 import pl.isa.services.UserService;
 import pl.isa.view.SubMenu;
-import pl.isa.view.WelcomeScreen;
+import pl.isa.services.FormService;
 
 
 /**
@@ -11,44 +11,44 @@ import pl.isa.view.WelcomeScreen;
  */
 public class App {
     public static void main(String[] args) {
-        WelcomeScreen welcomeScreen = new WelcomeScreen();
+        FormService formService = new FormService();
         User user;
         UserService userService = new UserService();
 
         do {
-            switch (welcomeScreen.action) {
+            switch (formService.action) {
                 case 0:
-                    welcomeScreen.showWelcomeScreen();
+                    formService.mainForm();
                     break;
                 case 1:
-                    String[] credentials = welcomeScreen.loginScreen();
+                    String[] credentials = formService.loginForm();
 
                     user = UserService.findUser(credentials[0]);
                     if(user != null){
                         if(userService.verifyCredentials(user, credentials[0], credentials[1])){
                             System.out.println("Welcome!!!  " + credentials[0]);
-                            welcomeScreen.action = 11;
+                            formService.action = 11;
                         }
                         else{
                             System.out.println("Invalid login or password");
-                            welcomeScreen.action = 1;
+                            formService.action = 1;
                         }
                     }else{
                         System.out.println("Invalid login or password");
-                        welcomeScreen.action = 0;
+                        formService.action = 0;
                     }
                     break;
                 case 11:
                     SubMenu.subMenu();
-                    welcomeScreen.action = 0;
+                    formService.action = 0;
                     break;
                 case 2:
-                    welcomeScreen.registrationScreen();
-                    welcomeScreen.action = 0;
+                    formService.registrationScreen();
+                    formService.action = 0;
                     break;
                 default:
                     break;
             }
-        }while(welcomeScreen.action != -1);
+        }while(formService.action != -1);
     }
 }

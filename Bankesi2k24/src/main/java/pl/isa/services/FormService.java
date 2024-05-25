@@ -1,18 +1,17 @@
-package pl.isa.view;
+package pl.isa.services;
 
 import pl.isa.dataAccess.FileNames;
 import pl.isa.dataAccess.ObjectToJson;
 import pl.isa.model.User;
-import pl.isa.services.UserService;
 
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
-public class WelcomeScreen {
+public class FormService {
     public int action = 0;
 
-    public void showWelcomeScreen(){
+    public void mainForm(){
         Scanner s = new Scanner(System.in);
         String input;
         while(true){
@@ -36,7 +35,7 @@ public class WelcomeScreen {
     }
 
 
-    public String[] loginScreen() {
+    public String[] loginForm() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your login..");
         String login = scanner.next();
@@ -45,7 +44,7 @@ public class WelcomeScreen {
 
         return new String[] {login, password};
 
-    } // Zaloguj -> podaj login, haslo z zawartą metodą checkloginScreen
+    }
 
     private String askForInput(String prompt, Predicate<String> predicate){
         Scanner scanner = new Scanner(System.in);
