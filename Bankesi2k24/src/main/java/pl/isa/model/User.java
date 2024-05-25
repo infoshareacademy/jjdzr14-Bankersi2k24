@@ -5,9 +5,19 @@ public class User {
     private String login;
     private String password;
     private String lastName;
+    private String pesel;
+
 
     public User() {
 
+    }
+
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
     }
 
     public String getName() {

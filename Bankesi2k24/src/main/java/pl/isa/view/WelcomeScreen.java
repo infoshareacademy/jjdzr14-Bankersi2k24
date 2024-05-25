@@ -33,6 +33,7 @@ public class WelcomeScreen {
         User user = new User();
         String name = "";
         String lastName = "";
+        String pesel = "";
         do {
             System.out.println("Enter your name...");
             name = scanner.next();
@@ -43,6 +44,12 @@ public class WelcomeScreen {
             lastName = scanner.next();
             user.setLastName(lastName);
         } while (specialCharacters(lastName) || badNumbers(lastName));
+        do {
+            System.out.println("Enter your pesel...");
+            pesel = scanner.next();
+            user.setPesel(pesel);
+        } while (specialCharacters(pesel)|| !checkPeselLenght(pesel)|| badLetters(pesel));
+
         System.out.println("Enter login..");
         String login = scanner.next();
         user.setLogin(login);
@@ -54,6 +61,14 @@ public class WelcomeScreen {
         connector.save(user);
 
     } // Zarejestuj -> Imie, nazwisko, login, hasło. Tutaj mam problem z IF.
+    private boolean checkPeselLenght(String pesel) {
+        if (pesel.length() != 11) {
+            System.out.println("Invalid pesel, pesel must have 11 digits");
+            return false;
+        }
+        else return true;
+
+    }
 
     public boolean specialCharacters(String special) {
         String specialCharacters = "!@#$%^&*()_+-=[]{}|;':,.<>?";
@@ -70,6 +85,15 @@ public class WelcomeScreen {
         for (char n : numbers.toCharArray()) {
             if (Character.isDigit(n)) {
                 System.out.println("No digits.");
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean badLetters(String letters) {
+        for (char n : letters.toCharArray()) {
+            if (!Character.isDigit(n)) {
+                System.out.println("No letters.");
                 return true;
             }
         }
