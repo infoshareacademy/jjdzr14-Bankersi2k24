@@ -67,10 +67,10 @@ public class WelcomeScreen {
             return (specialCharacters(s) || badNumbers(s));
         };
 
-        name = this.askForInput("Enter your name ...", isAllowedName);
-        lastName = this.askForInput("Enter your last name ... ", isAllowedName);
-        email = this.askForInput("Enter email address: ", s->!User.verifyEmail(s));
-        login = this.askForInput("Provide your login: ", this::specialCharacters);
+        name = this.askForInput("Enter your name ... (only letters)", isAllowedName);
+        lastName = this.askForInput("Enter your last name ... (only letters)", isAllowedName);
+        email = this.askForInput("Enter email address: (must use proper email format)", s->!User.verifyEmail(s));
+        login = this.askForInput("Provide your login: (no special characters allowed)", this::specialCharacters);
         while(User.findUser(login) != null){
             login = this.askForInput("Such login already exists, provide a different login: ", this::specialCharacters);
         }
@@ -95,7 +95,7 @@ public class WelcomeScreen {
         String specialCharacters = "!@#$%^&*()_+-=[]{}|;':,.<>?";
         for (char s : special.toCharArray()) {
             if (specialCharacters.contains(String.valueOf(s))) {
-                System.out.println("No special characters.");
+                System.out.println("special characters like: "+specialCharacters+" are not allowed");
                 return true;
             }
         }
@@ -110,12 +110,6 @@ public class WelcomeScreen {
             }
         }
         return false;
-    }
-
-    public boolean checkloginScreen(String login, String password) {
-        return false;
-
-
     }
 }
 
