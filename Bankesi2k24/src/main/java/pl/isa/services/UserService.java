@@ -52,4 +52,10 @@ public class UserService {
 
     }
 
+    public static void saveToDb(User user){
+        ObjectToJson<User> objectToJson = new ObjectToJson<User>(FileNames.USER, User.class);
+        objectToJson.save(user, User.class);
+
+    }
+
 }

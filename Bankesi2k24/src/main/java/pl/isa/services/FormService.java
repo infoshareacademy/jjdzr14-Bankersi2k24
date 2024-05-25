@@ -78,11 +78,9 @@ public class FormService {
         user.setLogin(login);
         user.setPassword(password);
 
-        ObjectToJson<User> objectToJson = new ObjectToJson<User>(FileNames.USER, User.class);
-        objectToJson.save(user, User.class);
+        UserService.saveToDb(user);
 
-
-    } // Zarejestuj -> Imie, nazwisko, login, hasło. Tutaj mam problem z IF.
+    }
 
 
     private boolean specialCharacters(String special) {
