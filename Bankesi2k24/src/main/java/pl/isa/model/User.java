@@ -1,13 +1,7 @@
 package pl.isa.model;
 
-import pl.isa.dataAccess.Connector;
-import pl.isa.dataAccess.FileNames;
-import pl.isa.dataAccess.ObjectToJson;
 import pl.isa.services.UserService;
-
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class User {
     public void setBankAccount(BankAccount bankAccount) {

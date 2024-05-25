@@ -12,7 +12,7 @@ import pl.isa.view.WelcomeScreen;
 public class App {
     public static void main(String[] args) {
         WelcomeScreen welcomeScreen = new WelcomeScreen();
-        User user = new User();
+        User user;
         UserService userService = new UserService();
 
         do {

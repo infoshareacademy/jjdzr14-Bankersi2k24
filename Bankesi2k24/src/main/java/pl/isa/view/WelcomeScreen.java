@@ -1,33 +1,30 @@
 package pl.isa.view;
 
-import pl.isa.dataAccess.Connector;
 import pl.isa.dataAccess.FileNames;
 import pl.isa.dataAccess.ObjectToJson;
 import pl.isa.model.User;
 import pl.isa.services.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
-//jira task: https://jira.is-academy.pl/browse/JJDZR14BA-3
 public class WelcomeScreen {
     public int action = 0;
 
     public void showWelcomeScreen(){
         Scanner s = new Scanner(System.in);
-        String input = "";
+        String input;
         while(true){
-            System.out.println("Hello, welcome in Bankersi2k24, what would you like to do?\n" +
-                    "1: login to your account\n"+
-                    "2: register as a new user\n"+
-                    "-1: to exit"
+            System.out.println("""
+                    Hello, welcome in Bankersi2k24, what would you like to do?
+                    1: login to your account
+                    2: register as a new user
+                    -1: to exit"""
             );
             input = s.nextLine();
             try{
-                Integer i = Integer.parseInt(input);
+                int i = Integer.parseInt(input);
                 if(i == 1) this.action = 1;
                 if(i == 2) this.action = 2;
                 if(i == -1) this.action = -1;
@@ -52,7 +49,7 @@ public class WelcomeScreen {
 
     private String askForInput(String prompt, Predicate<String> predicate){
         Scanner scanner = new Scanner(System.in);
-        String input = "";
+        String input;
         do{
             System.out.println(prompt + "\n");
             input = scanner.next();
@@ -61,12 +58,9 @@ public class WelcomeScreen {
     }
 
     public void registrationScreen() {
-        Scanner scanner = new Scanner(System.in);
         User user = new User();
-        String name = "", lastName = "", login = "", password="", email ="";
-        Predicate<String> isAllowedName = s -> {
-            return (specialCharacters(s) || badNumbers(s));
-        };
+        String name, lastName, login, password, email;
+        Predicate<String> isAllowedName = s -> (specialCharacters(s) || badNumbers(s));
 
         name = this.askForInput("Enter your name ... (only letters)", isAllowedName);
         lastName = this.askForInput("Enter your last name ... (only letters)", isAllowedName);

@@ -18,10 +18,9 @@ public class UserService {
 
     public static User findUser(String login){
         Connector connector = new Connector(FileNames.USER.toString());
-        ObjectToJson objectToJson = new ObjectToJson<User>(FileNames.USER, User.class);
-        List<User> users;
+        ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
 
-        users = objectToJson.deserialize(connector.read(), User.class);
+        List<User> users = objectToJson.deserialize(connector.read(), User.class);
 
         for(User u : users){
             if(login.equals(u.getLogin())){
