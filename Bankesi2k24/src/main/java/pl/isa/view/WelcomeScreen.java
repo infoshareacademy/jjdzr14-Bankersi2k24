@@ -4,6 +4,7 @@ import pl.isa.dataAccess.Connector;
 import pl.isa.dataAccess.FileNames;
 import pl.isa.dataAccess.ObjectToJson;
 import pl.isa.model.User;
+import pl.isa.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +70,9 @@ public class WelcomeScreen {
 
         name = this.askForInput("Enter your name ... (only letters)", isAllowedName);
         lastName = this.askForInput("Enter your last name ... (only letters)", isAllowedName);
-        email = this.askForInput("Enter email address: (must use proper email format)", s->!User.verifyEmail(s));
+        email = this.askForInput("Enter email address: (must use proper email format)", s->!UserService.verifyEmail(s));
         login = this.askForInput("Provide your login: (no special characters allowed)", this::specialCharacters);
-        while(User.findUser(login) != null){
+        while(UserService.findUser(login) != null){
             login = this.askForInput("Such login already exists, provide a different login: ", this::specialCharacters);
         }
         password = this.askForInput("Provide password: ", s->false);

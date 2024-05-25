@@ -1,6 +1,7 @@
 package pl.isa;
 
 import pl.isa.model.User;
+import pl.isa.services.UserService;
 import pl.isa.view.SubMenu;
 import pl.isa.view.WelcomeScreen;
 
@@ -12,6 +13,8 @@ public class App {
     public static void main(String[] args) {
         WelcomeScreen welcomeScreen = new WelcomeScreen();
         User user = new User();
+        UserService userService = new UserService();
+
         do {
             switch (welcomeScreen.action) {
                 case 0:
@@ -20,9 +23,9 @@ public class App {
                 case 1:
                     String[] credentials = welcomeScreen.loginScreen();
 
-                    user = User.findUser(credentials[0]);
+                    user = UserService.findUser(credentials[0]);
                     if(user != null){
-                        if(user.verifyCredentials(credentials[0], credentials[1])){
+                        if(userService.verifyCredentials(user, credentials[0], credentials[1])){
                             System.out.println("Welcome!!!  " + credentials[0]);
                             welcomeScreen.action = 11;
                         }

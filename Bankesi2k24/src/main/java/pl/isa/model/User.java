@@ -3,12 +3,17 @@ package pl.isa.model;
 import pl.isa.dataAccess.Connector;
 import pl.isa.dataAccess.FileNames;
 import pl.isa.dataAccess.ObjectToJson;
+import pl.isa.services.UserService;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class User {
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
     private BankAccount bankAccount;
     private String name ;
     private String login;
@@ -26,32 +31,11 @@ public class User {
 
     private Date creationDate;
 
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
     public User() {
         this.bankAccount = new BankAccount();
         this.creationDate = new Date();
     }
 
-    public static User findUser(String login){
-        Connector connector = new Connector(FileNames.USER.toString());
-        ObjectToJson objectToJson = new ObjectToJson<User>(FileNames.USER, User.class);
-        List<User> users;
-
-        users = objectToJson.deserialize(connector.read(), User.class);
-
-        for(User u : users){
-            if(login.equals(u.getLogin())){
-                return u;
-            }
-        }
-        return null;
-    }
-
-    public void createFakeBankAccount(int quota, Currencies curr){
-        this.bankAccount = BankAccount.createFakeBankAccount(quota, curr);
-    }
     public BankAccount getBankAccount() {
         return bankAccount;
     }
@@ -94,7 +78,7 @@ public class User {
     }
 
     public boolean setEmail(String email) {
-        if(this.verifyEmail(email)) {
+        if(UserService.verifyEmail(email)) {
             this.email = email;
             return true;
         }
@@ -105,22 +89,5 @@ public class User {
         }
     }
 
-    public static boolean verifyEmail(String email){
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        return matcher.matches();
-    }
 
-    private boolean verifyLogin(String login){
-        return Objects.equals(this.login, login);
-    }
-
-    private boolean verifyPassword(String password){
-        return Objects.equals(this.password, password);
-    }
-
-    public boolean verifyCredentials(String login, String password){
-        if(this.verifyLogin(login)) return this.verifyPassword(password);
-        else return false;
-
-    }
 }
