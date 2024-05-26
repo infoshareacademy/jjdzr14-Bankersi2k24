@@ -2,7 +2,7 @@ package pl.isa.dataAccess;
 
 public enum FileNames {
     USER("users.txt"),
-    BANKACCOUNT("bank_accounts.txt");
+    BANKACCOUNT("bank_accounts.json");
 
 
     FileNames(String fileName) {

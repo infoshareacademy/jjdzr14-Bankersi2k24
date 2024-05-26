@@ -1,23 +1,38 @@
 package pl.isa.model;
 
+import pl.isa.services.UserService;
+import java.util.*;
+
 public class User {
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
     private BankAccount bankAccount;
     private String name ;
     private String login;
     private String password;
     private String lastName;
-  
-   public User() {}
+    private String email;
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    private Date creationDate;
 
     public User() {
         this.bankAccount = new BankAccount();
+        this.creationDate = new Date();
     }
 
-    public void createFakeBankAccount(int quota, Currencies curr){
-        this.bankAccount = BankAccount.createFakeBankAccount(quota, curr);
-    }
     public BankAccount getBankAccount() {
         return bankAccount;
+    }
 
     public String getName() {
         return name;
@@ -51,4 +66,22 @@ public class User {
         this.lastName = lastName;
 
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean setEmail(String email) {
+        if(UserService.verifyEmail(email)) {
+            this.email = email;
+            return true;
+        }
+        else {
+            System.out.println("Not a valid email address");
+            this.email = "";
+            return false;
+        }
+    }
+
+
 }

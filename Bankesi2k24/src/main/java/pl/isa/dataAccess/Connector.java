@@ -48,7 +48,7 @@ public class Connector {
          *
          */
         try {
-            return (PATH_TO_FILE == Files.writeString(PATH_TO_FILE, json, StandardOpenOption.APPEND));
+            return (PATH_TO_FILE == Files.writeString(PATH_TO_FILE, json, StandardOpenOption.WRITE));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -12,9 +12,19 @@ import java.util.*;
  */
 public class  ObjectToJson <T>{
     private final ObjectMapper objectMapper;
+    private Connector connector;
+    private final Class<T> objectType;
 
-    public ObjectToJson() {
+    public ObjectToJson(FileNames fileName, Class<T> objectType) {
+        this.objectType = objectType;
         this.objectMapper = new ObjectMapper();
+        this.connector = new Connector(fileName.toString());
+    }
+
+    public void save(T pojo, Class<T> tClass){
+        List<T> pojos = this.deserialize(this.connector.read(), objectType);
+        pojos.add(pojo);
+        this.connector.saveJson(this.serialize(pojos));
     }
 
     public String serialize(T pojo){
@@ -25,7 +35,9 @@ public class  ObjectToJson <T>{
          *
          */
         try{
-            return this.objectMapper.writeValueAsString(pojo);
+            List<T> pojos = new ArrayList<>();
+            pojos.add(pojo);
+            return this.objectMapper.writeValueAsString(pojos);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -50,6 +62,8 @@ public class  ObjectToJson <T>{
     }
 
     public <T> List<T> deserialize(String jsonArray, Class<T> tClass){
+        if(jsonArray.isEmpty()) return new ArrayList<T>();
+
         List<T> pojoList;
         try {
             CollectionType objectType = this.objectMapper.getTypeFactory().constructCollectionType(List.class, tClass);

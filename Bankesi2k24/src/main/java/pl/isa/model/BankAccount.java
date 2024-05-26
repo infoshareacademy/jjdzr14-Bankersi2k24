@@ -17,6 +17,7 @@ public class BankAccount {
          */
         generateAccountNumber();
         this.transactionList = new ArrayList<>();
+        this.setAvailableQuota(0);
     }
 
     public BankAccount(Integer accountNumber) {
