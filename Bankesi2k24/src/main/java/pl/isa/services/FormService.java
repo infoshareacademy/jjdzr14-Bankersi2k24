@@ -58,7 +58,7 @@ public class FormService {
 
     public void registrationScreen() {
         User user = new User();
-        String name, lastName, login, password, email;
+        String name, lastName, login, password, email, pesel;
         Predicate<String> isAllowedName = s -> (specialCharacters(s) || badNumbers(s));
 
         name = this.askForInput("Enter your name ... (only letters)", isAllowedName);
@@ -68,6 +68,7 @@ public class FormService {
         while(UserService.findUser(login) != null){
             login = this.askForInput("Such login already exists, provide a different login: ", this::specialCharacters);
         }
+        pesel = this.askForInput("Enter pesel (11 Digits:", s->!UserService.verifyPesel(s));
         password = this.askForInput("Provide password: ", s->false);
         String finalPassword = password;
         password = this.askForInput("repeat password: ", s-> !Objects.equals(s, finalPassword));
@@ -77,6 +78,7 @@ public class FormService {
         user.setEmail(email);
         user.setLogin(login);
         user.setPassword(password);
+        user.setPesel(pesel);
 
         UserService.saveToDb(user);
 
