@@ -19,7 +19,7 @@ public class UserService {
             Pattern.compile("\\d{11}", Pattern.CASE_INSENSITIVE);
 
 
-    public static User findUser(String login){
+    public static User findUserByLogin(String login){
         Connector connector = new Connector(FileNames.USER.toString());
         ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
 
@@ -32,15 +32,15 @@ public class UserService {
         }
         return null;
     }
-    public static User findPesel(String pesel){
+    public static User findUserByPesel(String pesel){
         Connector connector = new Connector(FileNames.USER.toString());
         ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
 
         List<User> users = objectToJson.deserialize(connector.read(), User.class);
 
-        for(User u : users){
-            if(pesel.equals(u.getPesel())){
-                return u;
+        for(User user : users){
+            if(pesel.equals(user.getPesel())){
+                return user;
             }
         }
         return null;
