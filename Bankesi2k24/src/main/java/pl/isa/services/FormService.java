@@ -67,9 +67,7 @@ public class FormService {
         login = this.askForInput("Provide your login: (no special characters allowed)", this::specialCharacters);
         pesel = this.askForInput("Enter pesel", s->!UserService.verifyPesel(s));
 
-//        while(UserService.findUser(login) != null){
-//            login = this.askForInput("Such login already exists, provide a different login: ", this::specialCharacters);
-//        }
+
             User checkLogin = UserService.findUserByLogin(login);
             while (checkLogin != null){
                 login = this.askForInput("Such login already exists, provide a different login: ", this::specialCharacters);
@@ -80,7 +78,7 @@ public class FormService {
 
             }
 
-//        pesel = this.askForInput("Enter pesel", s->!UserService.verifyPesel(s));
+
         password = this.askForInput("Provide password: ", s->false);
         String finalPassword = password;
         password = this.askForInput("repeat password: ", s-> !Objects.equals(s, finalPassword));
@@ -106,7 +104,7 @@ public class FormService {
             }
         }
         return false;
-    } // Walidacja danych logowania -> Unikanie znaków specjalnych dla imienia i nazwisko,
+    }
 
     private boolean badNumbers(String numbers) {
         for (char n : numbers.toCharArray()) {
