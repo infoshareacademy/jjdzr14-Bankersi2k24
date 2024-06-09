@@ -70,4 +70,19 @@ public class UserService {
         return (users.isEmpty()) ? 0 : Collections.max(users, comparator).getId()+1;
     }
 
+    public static User createNewUser(String name, String lastName, String email, String login,String password){
+        User newUser = new User();
+
+        newUser.setName(name);
+        newUser.setLastName(lastName);
+        newUser.setEmail(email);
+        newUser.setLogin(login);
+        newUser.setPassword(password);
+        newUser.setId(UserService.generateNewId());
+
+        UserService.saveToDb(newUser);
+
+        return newUser;
+    }
+
 }

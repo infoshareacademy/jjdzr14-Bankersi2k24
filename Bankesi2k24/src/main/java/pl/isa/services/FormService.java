@@ -57,7 +57,7 @@ public class FormService {
     }
 
     public void registrationScreen() {
-        User user = new User();
+        //User user = new User();
         String name, lastName, login, password, email;
         Predicate<String> isAllowedName = s -> (specialCharacters(s) || badNumbers(s));
 
@@ -72,14 +72,7 @@ public class FormService {
         String finalPassword = password;
         password = this.askForInput("repeat password: ", s-> !Objects.equals(s, finalPassword));
 
-        user.setName(name);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setId(UserService.generateNewId());
-
-        UserService.saveToDb(user);
+        UserService.createNewUser(name, lastName, email, login,password);
 
     }
 
