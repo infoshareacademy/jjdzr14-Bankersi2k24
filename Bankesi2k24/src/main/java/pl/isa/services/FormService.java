@@ -77,6 +77,7 @@ public class FormService {
         user.setEmail(email);
         user.setLogin(login);
         user.setPassword(password);
+        user.setId(UserService.generateNewId());
 
         UserService.saveToDb(user);
 
