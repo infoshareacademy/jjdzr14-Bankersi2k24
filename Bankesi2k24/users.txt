@@ -1,1 +1,0 @@
-pl.isa.model.User@13221655
