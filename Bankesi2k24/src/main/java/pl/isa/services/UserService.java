@@ -15,8 +15,11 @@ import java.util.regex.Pattern;
 public class UserService {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern VALID_PESEL_REGEX =
+            Pattern.compile("\\d{11}", Pattern.CASE_INSENSITIVE);
 
-    public static User findUser(String login){
+
+    public static User findUserByLogin(String login){
         Connector connector = new Connector(FileNames.USER.toString());
         ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
 
@@ -29,12 +32,29 @@ public class UserService {
         }
         return null;
     }
+    public static User findUserByPesel(String pesel){
+        Connector connector = new Connector(FileNames.USER.toString());
+        ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
+
+        List<User> users = objectToJson.deserialize(connector.read(), User.class);
+
+        for(User user : users){
+            if(pesel.equals(user.getPesel())){
+                return user;
+            }
+        }
+        return null;
+    }
     public void createFakeBankAccount(User user, int quota, Currencies curr){
         user.setBankAccount(BankAccount.createFakeBankAccount(quota, curr));
     }
 
     public static boolean verifyEmail(String email){
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        return matcher.matches();
+    }
+    public static boolean verifyPesel(String pesel){
+        Matcher matcher = VALID_PESEL_REGEX.matcher(pesel);
         return matcher.matches();
     }
 
