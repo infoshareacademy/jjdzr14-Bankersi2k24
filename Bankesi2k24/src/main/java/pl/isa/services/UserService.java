@@ -7,6 +7,8 @@ import pl.isa.model.BankAccount;
 import pl.isa.model.Currencies;
 import pl.isa.model.User;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -18,12 +20,8 @@ public class UserService {
     public static final Pattern VALID_PESEL_REGEX =
             Pattern.compile("\\d{11}", Pattern.CASE_INSENSITIVE);
 
-
     public static User findUserByLogin(String login){
-        Connector connector = new Connector(FileNames.USER.toString());
-        ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
-
-        List<User> users = objectToJson.deserialize(connector.read(), User.class);
+        List<User> users = fetchAllUsers();
 
         for(User u : users){
             if(login.equals(u.getLogin())){
@@ -76,6 +74,34 @@ public class UserService {
         ObjectToJson<User> objectToJson = new ObjectToJson<User>(FileNames.USER, User.class);
         objectToJson.save(user, User.class);
 
+    }
+
+    private static List<User> fetchAllUsers(){
+        Connector connector = new Connector(FileNames.USER.toString());
+        ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
+
+        return objectToJson.deserialize(connector.read(), User.class);
+    }
+
+    public static Integer generateNewId(){
+        List<User> users = fetchAllUsers();
+        Comparator<User> comparator = Comparator.comparing(User::getId);
+        return (users.isEmpty()) ? 0 : Collections.max(users, comparator).getId()+1;
+    }
+
+    public static User createNewUser(String name, String lastName, String email, String login,String password){
+        User newUser = new User();
+
+        newUser.setName(name);
+        newUser.setLastName(lastName);
+        newUser.setEmail(email);
+        newUser.setLogin(login);
+        newUser.setPassword(password);
+        newUser.setId(UserService.generateNewId());
+
+        UserService.saveToDb(newUser);
+
+        return newUser;
     }
 
 }
