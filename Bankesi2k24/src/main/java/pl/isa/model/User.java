@@ -23,6 +23,7 @@ public class User {
     private String password;
     private String lastName;
     private String email;
+    private String pesel;
 
     public Date getCreationDate() {
         return creationDate;
@@ -37,6 +38,14 @@ public class User {
     public User() {
         this.bankAccount = new BankAccount();
         this.creationDate = new Date();
+    }
+
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
     }
 
     public BankAccount getBankAccount() {

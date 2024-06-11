@@ -22,8 +22,8 @@ public class App {
                     break;
                 case 1:
                     String[] credentials = formService.loginForm();
+                    user = UserService.findUserByLogin(credentials[0]);
 
-                    user = UserService.findUser(credentials[0]);
                     if(user != null){
                         if(userService.verifyCredentials(user, credentials[0], credentials[1])){
                             System.out.println("Welcome!!!  " + credentials[0]);

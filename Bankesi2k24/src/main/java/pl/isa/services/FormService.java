@@ -57,23 +57,40 @@ public class FormService {
     }
 
     public void registrationScreen() {
-        //User user = new User();
-        String name, lastName, login, password, email;
+        User user = new User();
+        String name, lastName, login, password, email, pesel;
         Predicate<String> isAllowedName = s -> (specialCharacters(s) || badNumbers(s));
 
         name = this.askForInput("Enter your name ... (only letters)", isAllowedName);
         lastName = this.askForInput("Enter your last name ... (only letters)", isAllowedName);
-        email = this.askForInput("Enter email address: (must use proper email format)", s->!UserService.verifyEmail(s));
+        email = this.askForInput("Enter email address: (must use proper email format)", s -> !UserService.verifyEmail(s));
         login = this.askForInput("Provide your login: (no special characters allowed)", this::specialCharacters);
-        while(UserService.findUser(login) != null){
-            login = this.askForInput("Such login already exists, provide a different login: ", this::specialCharacters);
-        }
+        pesel = this.askForInput("Enter pesel", s->!UserService.verifyPesel(s));
+
+
+            User checkLogin = UserService.findUserByLogin(login);
+            while (checkLogin != null){
+                login = this.askForInput("Such login already exists, provide a different login: ", this::specialCharacters);
+            }
+            User checkPesel = UserService.findUserByPesel(pesel);
+            while (checkPesel != null){
+                pesel = this.askForInput("Such pesel already exist.", s->!UserService.verifyPesel(s));
+
+            }
+
+
         password = this.askForInput("Provide password: ", s->false);
         String finalPassword = password;
         password = this.askForInput("repeat password: ", s-> !Objects.equals(s, finalPassword));
 
-        UserService.createNewUser(name, lastName, email, login,password);
+        user.setName(name);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setPesel(pesel);
 
+        UserService.saveToDb(user);
     }
 
 
@@ -86,7 +103,7 @@ public class FormService {
             }
         }
         return false;
-    } // Walidacja danych logowania -> Unikanie znaków specjalnych dla imienia i nazwisko,
+    }
 
     private boolean badNumbers(String numbers) {
         for (char n : numbers.toCharArray()) {
