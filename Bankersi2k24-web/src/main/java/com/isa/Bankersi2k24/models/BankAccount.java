@@ -1,10 +1,14 @@
 package com.isa.Bankersi2k24.models;
 
+import com.isa.Bankersi2k24.dataAccess.FileNames;
+import com.isa.Bankersi2k24.dataAccess.Serializable;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BankAccount {
+public class BankAccount extends Serializable<BankAccount> {
     private Integer id;
     private Integer accountNumber;
     private Integer availableQuota;
@@ -12,6 +16,7 @@ public class BankAccount {
     private List<Transaction> transactionList;
 
     public BankAccount() {
+        super(FileNames.BANKACCOUNT, BankAccount.class);
         /**
          * @method used to create a new (non existing) bank account, thus no params needed
          */
@@ -25,15 +30,7 @@ public class BankAccount {
          * finds a bank account in DB bu it's number
          * @param the bank accounts number
          */
-
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        super(FileNames.BANKACCOUNT, BankAccount.class);
     }
 
     public static BankAccount createFakeBankAccount(Integer availableQuota, Currencies currency) {

@@ -1,24 +1,18 @@
 package com.isa.Bankersi2k24.models;
 
+import com.isa.Bankersi2k24.dataAccess.FileNames;
+import com.isa.Bankersi2k24.dataAccess.Serializable;
 import com.isa.Bankersi2k24.services.UserService;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class User {
+public class User extends Serializable<User> {
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    private Integer id;
     private BankAccount bankAccount;
     private String name ;
     private String login;
@@ -38,6 +32,7 @@ public class User {
     private Date creationDate;
 
     public User() {
+        super(FileNames.USER, User.class);
         this.bankAccount = new BankAccount();
         this.creationDate = new Date();
     }

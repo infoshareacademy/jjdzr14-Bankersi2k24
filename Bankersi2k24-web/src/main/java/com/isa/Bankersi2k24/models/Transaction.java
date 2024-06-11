@@ -1,9 +1,11 @@
 package com.isa.Bankersi2k24.models;
 
+import com.isa.Bankersi2k24.dataAccess.FileNames;
+import com.isa.Bankersi2k24.dataAccess.Serializable;
+
 import java.util.Date;
 
-public class Transaction {
-    private Integer id;
+public class Transaction extends Serializable<Transaction> {
     private String tranasactionTitle;
     private int quota;
     private int senderAccountNumber;
@@ -11,22 +13,12 @@ public class Transaction {
     private Date transactionDate;
 
     public Transaction(String tranasactionTitle, int quota, int senderAccountNumber, int destinationAccountNumber) {
+        super(FileNames.TRANSACITON, Transaction.class);
         this.tranasactionTitle = tranasactionTitle;
         this.quota = quota;
         this.senderAccountNumber = senderAccountNumber;
         this.destinationAccountNumber = destinationAccountNumber;
-
-
     }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     private boolean verifyTransaction(BankAccount sender) throws RuntimeException{
         if(sender.getAvailableQuota() < this.quota){
             throw new RuntimeException("Not enough quota on sender account");

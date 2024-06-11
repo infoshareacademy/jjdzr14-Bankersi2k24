@@ -2,7 +2,7 @@ package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.dataAccess.Connector;
 import com.isa.Bankersi2k24.dataAccess.FileNames;
-import com.isa.Bankersi2k24.dataAccess.ObjectToJson;
+import com.isa.Bankersi2k24.dataAccess.Serializable;
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.Currencies;
 import com.isa.Bankersi2k24.models.User;
@@ -32,7 +32,7 @@ public class UserService {
     }
     public static User findUserByPesel(String pesel){
         Connector connector = new Connector(FileNames.USER.toString());
-        ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
+        Serializable<User> objectToJson = new Serializable<>(FileNames.USER, User.class);
 
         List<User> users = objectToJson.deserialize(connector.read(), User.class);
 
@@ -71,14 +71,14 @@ public class UserService {
     }
 
     public static void saveToDb(User user){
-        ObjectToJson<User> objectToJson = new ObjectToJson<User>(FileNames.USER, User.class);
+        Serializable<User> objectToJson = new Serializable<User>(FileNames.USER, User.class);
         objectToJson.save(user, User.class);
 
     }
 
     private static List<User> fetchAllUsers(){
         Connector connector = new Connector(FileNames.USER.toString());
-        ObjectToJson<User> objectToJson = new ObjectToJson<>(FileNames.USER, User.class);
+        Serializable<User> objectToJson = new Serializable<>(FileNames.USER, User.class);
 
         return objectToJson.deserialize(connector.read(), User.class);
     }
