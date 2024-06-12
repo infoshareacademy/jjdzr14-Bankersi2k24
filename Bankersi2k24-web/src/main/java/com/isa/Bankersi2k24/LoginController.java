@@ -11,7 +11,6 @@ public class LoginController {
     public String viewHomePage() {
         return "index";
     }
-
     public static void main(String[] args) {
 
     }
