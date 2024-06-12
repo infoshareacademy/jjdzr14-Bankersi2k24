@@ -12,32 +12,6 @@ public class Bankersi2k24Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Bankersi2k24Application.class, args);
-		User u = new User();
-		List<User> users = u.fetchAllObjects();
-//
-//		UserService.createNewUser(
-//				"ccc",
-//				"ccc",
-//				"ccc@lvb.pl",
-//				"ccc",
-//				"ccc"
-//		);
-//		UserService.createNewUser(
-//				"aaa",
-//				"aaa",
-//				"aaa@lvb.pl",
-//				"aaa",
-//				"aaa"
-//		);
-//		UserService.createNewUser(
-//				"bbb",
-//				"bbb",
-//				"bbb@lvb.pl",
-//				"bbb",
-//				"bbb"
-//		);
-
-
 	}
 
 }

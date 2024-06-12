@@ -3,12 +3,7 @@ package com.isa.Bankersi2k24.services;
 import com.isa.Bankersi2k24.dataAccess.Connector;
 import com.isa.Bankersi2k24.dataAccess.FileNames;
 import com.isa.Bankersi2k24.dataAccess.Serializable;
-import com.isa.Bankersi2k24.models.BankAccount;
-import com.isa.Bankersi2k24.models.Currencies;
 import com.isa.Bankersi2k24.models.User;
-
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -66,22 +61,12 @@ public class UserService {
         else return false;
     }
 
-//    public static void saveToDb(User user){
-//        user.save(user, User.class);
-//    }
-
     private static List<User> fetchAllUsers(){
         Connector connector = new Connector(FileNames.USER.toString());
         Serializable<User> objectToJson = new Serializable<>(FileNames.USER, User.class);
 
         return objectToJson.deserialize(connector.read(), User.class);
     }
-
-//    public static Integer generateNewId(){
-//        List<User> users = fetchAllUsers();
-//        Comparator<User> comparator = Comparator.comparing(User::getId);
-//        return (users.isEmpty()) ? 0 : Collections.max(users, comparator).getId()+1;
-//    }
 
     public static User createNewUser(String name, String lastName, String email, String login,String password){
         User newUser = new User();
@@ -93,7 +78,6 @@ public class UserService {
         newUser.setPassword(password);
         newUser.setId(User.generateNewId(User.class));
         newUser.save();
-        //UserService.saveToDb(newUser);
 
         return newUser;
     }
