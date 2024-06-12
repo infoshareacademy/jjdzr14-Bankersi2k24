@@ -3,9 +3,15 @@ package com.isa.Bankersi2k24.dataAccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.isa.Bankersi2k24.models.BankAccount;
+import com.isa.Bankersi2k24.models.Transaction;
+import com.isa.Bankersi2k24.models.User;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -30,29 +36,11 @@ public class Serializable<T>{
         this.connector = new Connector(fileName.toString());
     }
 
-    public void save(T pojo, Class<T> tClass){
+    public void save(){
         List<T> pojos = this.deserialize(this.connector.read(), objectType);
-        pojos.add(pojo);
+        pojos.add((T) this);
         this.connector.saveJson(this.serialize(pojos));
     }
-
-//    public String serialize(T pojo){
-//        /**
-//         * method that converts an object to JSON entity
-//         * @param object to be converted to JSON
-//         * @return String containing JSON entity, if exception, return null, otherwise an empty string
-//         *
-//         */
-//        try{
-//            List<T> pojos = new ArrayList<>();
-//            pojos.add(pojo);
-//            return this.objectMapper.writeValueAsString(pojos);
-//
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 
     public String serialize(List<T> pojos){
         /**
@@ -62,8 +50,8 @@ public class Serializable<T>{
          *
          */
         try{
-            return this.objectMapper.writeValueAsString(pojos);
-
+            return this.objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(pojos);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -84,7 +72,23 @@ public class Serializable<T>{
         return pojoList;
     }
 
-    public static List<T> fetchAllObjects(){
+    public List<T> fetchAllObjects(){
         return this.deserialize(this.connector.read(), this.objectType);
+    }
+    public static  <T extends Serializable<T>> Integer generateNewId(Class<T> tClass){
+        Comparator<T> comparator = (Comparator<T>) Comparator.comparing(T::getId);
+        try {
+            T object = tClass.getDeclaredConstructor().newInstance();
+            List<T> objects = (List<T>) object.fetchAllObjects();
+            return (objects.isEmpty()) ? 0 : Collections.max(objects, comparator).getId()+1;
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

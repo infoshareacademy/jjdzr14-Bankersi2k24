@@ -1,9 +1,6 @@
 package com.isa.Bankersi2k24.dataAccess;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,13 +27,6 @@ public class Connector {
         }
     }
 
-    public boolean save(Object o){
-        /**
-         * method stub for saving to database
-         */
-        return saveJson(o.toString());
-    }
-
     public boolean saveJson(String json) {
         /**
          * method to store json in a text file
@@ -48,25 +38,29 @@ public class Connector {
          *
          */
         try {
-            return (PATH_TO_FILE == Files.writeString(PATH_TO_FILE, json, StandardOpenOption.WRITE));
+            FileWriter fw = new FileWriter(PATH_TO_FILE.toFile());
+            fw.write(json);
+            fw.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
-    public String read()  {
+    public String read(){
         StringBuilder builder = new StringBuilder();
-        try (BufferedReader buffer = new BufferedReader(
-                new FileReader(PATH_TO_FILE.toString()))) {
+        try {
+            FileReader fr = new FileReader(PATH_TO_FILE.toString());
+            BufferedReader buffer = new BufferedReader(fr);
             String str;
             while ((str = buffer.readLine()) != null) {
-                builder.append(str).append("\n");
+                builder.append(str);
             }
+            fr.close();
+            return builder.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return builder.toString();
     }
 }

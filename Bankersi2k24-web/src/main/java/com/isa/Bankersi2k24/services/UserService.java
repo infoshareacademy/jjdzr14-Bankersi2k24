@@ -43,9 +43,6 @@ public class UserService {
         }
         return null;
     }
-    public void createFakeBankAccount(User user, int quota, Currencies curr){
-        user.setBankAccount(BankAccount.createFakeBankAccount(quota, curr));
-    }
 
     public static boolean verifyEmail(String email){
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
@@ -56,25 +53,22 @@ public class UserService {
         return matcher.matches();
     }
 
-    private boolean verifyLogin(User user, String login){
+    private static boolean verifyLogin(User user, String login){
         return Objects.equals(user.getLogin(), login);
     }
 
-    private boolean verifyPassword(User user, String password){
+    private static boolean verifyPassword(User user, String password){
         return Objects.equals(user.getPassword(), password);
     }
 
-    public boolean verifyCredentials(User user, String login, String password){
-        if(this.verifyLogin(user, login)) return this.verifyPassword(user, password);
+    public static boolean verifyCredentials(User user, String login, String password){
+        if(verifyLogin(user, login)) return verifyPassword(user, password);
         else return false;
-
     }
 
-    public static void saveToDb(User user){
-        Serializable<User> objectToJson = new Serializable<User>(FileNames.USER, User.class);
-        objectToJson.save(user, User.class);
-
-    }
+//    public static void saveToDb(User user){
+//        user.save(user, User.class);
+//    }
 
     private static List<User> fetchAllUsers(){
         Connector connector = new Connector(FileNames.USER.toString());
@@ -83,11 +77,11 @@ public class UserService {
         return objectToJson.deserialize(connector.read(), User.class);
     }
 
-    public static Integer generateNewId(){
-        List<User> users = fetchAllUsers();
-        Comparator<User> comparator = Comparator.comparing(User::getId);
-        return (users.isEmpty()) ? 0 : Collections.max(users, comparator).getId()+1;
-    }
+//    public static Integer generateNewId(){
+//        List<User> users = fetchAllUsers();
+//        Comparator<User> comparator = Comparator.comparing(User::getId);
+//        return (users.isEmpty()) ? 0 : Collections.max(users, comparator).getId()+1;
+//    }
 
     public static User createNewUser(String name, String lastName, String email, String login,String password){
         User newUser = new User();
@@ -97,9 +91,9 @@ public class UserService {
         newUser.setEmail(email);
         newUser.setLogin(login);
         newUser.setPassword(password);
-        newUser.setId(UserService.generateNewId());
-
-        UserService.saveToDb(newUser);
+        newUser.setId(User.generateNewId(User.class));
+        newUser.save();
+        //UserService.saveToDb(newUser);
 
         return newUser;
     }
