@@ -1,7 +1,7 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.dataAccess.FileName;
-import com.isa.Bankersi2k24.dataAccess.Serializable;
+import com.isa.Bankersi2k24.DAO.FileName;
+import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.services.UserService;
 
 import java.util.Date;

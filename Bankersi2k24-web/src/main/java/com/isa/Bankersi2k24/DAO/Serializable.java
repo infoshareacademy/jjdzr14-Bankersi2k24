@@ -1,4 +1,4 @@
-package com.isa.Bankersi2k24.dataAccess;
+package com.isa.Bankersi2k24.DAO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
