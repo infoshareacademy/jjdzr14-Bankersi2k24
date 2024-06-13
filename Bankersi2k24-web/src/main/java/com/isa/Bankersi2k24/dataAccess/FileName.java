@@ -1,19 +1,13 @@
 package com.isa.Bankersi2k24.dataAccess;
 
-public enum FileNames {
+public enum FileName {
     USER("users.json"),
     TRANSACITON("transactions.json"),
     BANKACCOUNT("bank_accounts.json");
 
+    private final String name;
 
-    FileNames(String fileName) {
+    FileName(String fileName) {
         this.name = fileName;
-    };
-
-    private String name;
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

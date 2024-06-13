@@ -1,41 +1,65 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.dataAccess.FileNames;
+import com.isa.Bankersi2k24.dataAccess.FileName;
 import com.isa.Bankersi2k24.dataAccess.Serializable;
 
 import java.util.Date;
 
 public class Transaction extends Serializable<Transaction> {
-    private String tranasactionTitle;
+    private String transactionTitle;
     private int quota;
     private int senderAccountNumber;
     private int destinationAccountNumber;
     private Date transactionDate;
 
     public Transaction(String tranasactionTitle, int quota, int senderAccountNumber, int destinationAccountNumber) {
-        super(FileNames.TRANSACITON, Transaction.class);
-        this.tranasactionTitle = tranasactionTitle;
+        super(FileName.TRANSACITON, Transaction.class);
+        this.transactionTitle = tranasactionTitle;
         this.quota = quota;
         this.senderAccountNumber = senderAccountNumber;
         this.destinationAccountNumber = destinationAccountNumber;
     }
-    private boolean verifyTransaction(BankAccount sender) throws RuntimeException{
-        if(sender.getAvailableQuota() < this.quota){
-            throw new RuntimeException("Not enough quota on sender account");
-        }
-        return true;
+
+    public String getTranasactionTitle() {
+        return transactionTitle;
     }
 
-    public boolean triggerTransaction(){
-        BankAccount sender = new BankAccount(this.senderAccountNumber);
-        BankAccount recepient = new BankAccount(this.destinationAccountNumber);
-        if(this.verifyTransaction(sender)){
-            sender.setAvailableQuota(sender.getAvailableQuota()-quota);
-            this.transactionDate = new Date();
-            sender.addToTransactionList(this);
-            recepient.addToTransactionList(this);
-            return true;
-        }
-        return false;
+    public void setTranasactionTitle(String tranasactionTitle) {
+        this.transactionTitle = tranasactionTitle;
     }
+
+    public int getQuota() {
+        return quota;
+    }
+
+    public void setQuota(int quota) {
+        this.quota = quota;
+    }
+
+    public int getSenderAccountNumber() {
+        return senderAccountNumber;
+    }
+
+    public void setSenderAccountNumber(int senderAccountNumber) {
+        this.senderAccountNumber = senderAccountNumber;
+    }
+
+    public int getDestinationAccountNumber() {
+        return destinationAccountNumber;
+    }
+
+    public void setDestinationAccountNumber(int destinationAccountNumber) {
+        this.destinationAccountNumber = destinationAccountNumber;
+    }
+
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+
+
 }

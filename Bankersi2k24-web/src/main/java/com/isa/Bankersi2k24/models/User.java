@@ -1,6 +1,6 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.dataAccess.FileNames;
+import com.isa.Bankersi2k24.dataAccess.FileName;
 import com.isa.Bankersi2k24.dataAccess.Serializable;
 import com.isa.Bankersi2k24.services.UserService;
 
@@ -8,11 +8,6 @@ import java.util.Date;
 import java.util.Objects;
 
 public class User extends Serializable<User> {
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
-    }
-
-
     private BankAccount bankAccount;
     private String name ;
     private String login;
@@ -20,6 +15,13 @@ public class User extends Serializable<User> {
     private String lastName;
     private String email;
     private String pesel;
+    private Date creationDate;
+
+    public User() {
+        super(FileName.USER, User.class);
+        this.bankAccount = new BankAccount();
+        this.creationDate = new Date();
+    }
 
     public Date getCreationDate() {
         return creationDate;
@@ -29,24 +31,12 @@ public class User extends Serializable<User> {
         this.creationDate = creationDate;
     }
 
-    private Date creationDate;
-
-    public User() {
-        super(FileNames.USER, User.class);
-        this.bankAccount = new BankAccount();
-        this.creationDate = new Date();
-    }
-
     public String getPesel() {
         return pesel;
     }
 
     public void setPesel(String pesel) {
         this.pesel = pesel;
-    }
-
-    public BankAccount getBankAccount() {
-        return bankAccount;
     }
 
     public String getName() {
@@ -82,6 +72,11 @@ public class User extends Serializable<User> {
 
     }
 
+    public BankAccount getBankAccount(){ return this.bankAccount;}
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -92,7 +87,6 @@ public class User extends Serializable<User> {
             return true;
         }
         else {
-            System.out.println("Not a valid email address");
             this.email = "";
             return false;
         }

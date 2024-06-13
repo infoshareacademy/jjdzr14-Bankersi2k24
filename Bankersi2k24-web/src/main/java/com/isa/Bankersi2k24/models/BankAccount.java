@@ -1,22 +1,20 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.dataAccess.FileNames;
+import com.isa.Bankersi2k24.dataAccess.FileName;
 import com.isa.Bankersi2k24.dataAccess.Serializable;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class BankAccount extends Serializable<BankAccount> {
-    private Integer id;
     private Integer accountNumber;
     private Integer availableQuota;
     private Currencies currency;
     private List<Transaction> transactionList;
 
     public BankAccount() {
-        super(FileNames.BANKACCOUNT, BankAccount.class);
+        super(FileName.BANKACCOUNT, BankAccount.class);
         /**
          * @method used to create a new (non existing) bank account, thus no params needed
          */
@@ -27,27 +25,11 @@ public class BankAccount extends Serializable<BankAccount> {
 
     public BankAccount(Integer accountNumber) {
         /**
-         * finds a bank account in DB bu it's number
+         * finds a bank account in DB by it's number
          * @param the bank accounts number
          */
-        super(FileNames.BANKACCOUNT, BankAccount.class);
+        super(FileName.BANKACCOUNT, BankAccount.class);
     }
-
-    public static BankAccount createFakeBankAccount(Integer availableQuota, Currencies currency) {
-        BankAccount ba = new BankAccount();
-        ba.generateAccountNumber();
-        ba.currency = currency;
-        ba.availableQuota = availableQuota;
-        return ba;
-    }
-
-    private boolean generateAccountNumber(){
-        Random rnd = new Random();
-        this.accountNumber = rnd.nextInt();
-        if(this.accountNumber < 0) this.accountNumber *= -1;
-        return true;
-    }
-
     public Currencies getCurrency() {
         return currency;
     }
@@ -75,6 +57,21 @@ public class BankAccount extends Serializable<BankAccount> {
             //try reading from DB again? and then  save
             return false;
         }
+    }
+
+    public static BankAccount createFakeBankAccount(Integer availableQuota, Currencies currency) {
+        BankAccount ba = new BankAccount();
+        ba.generateAccountNumber();
+        ba.currency = currency;
+        ba.availableQuota = availableQuota;
+        return ba;
+    }
+
+    private boolean generateAccountNumber(){
+        Random rnd = new Random();
+        this.accountNumber = rnd.nextInt();
+        if(this.accountNumber < 0) this.accountNumber *= -1;
+        return true;
     }
 
 

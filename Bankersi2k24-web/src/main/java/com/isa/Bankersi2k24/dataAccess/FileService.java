@@ -1,12 +1,10 @@
 package com.isa.Bankersi2k24.dataAccess;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
-public class Connector {
+public class FileService {
     /**
      * class to provide access to data
      * at this phase, we're writing objects in JSON format to a .txt file
@@ -14,7 +12,7 @@ public class Connector {
 
     private static Path PATH_TO_FILE =null;
 
-    public Connector(String fileName) {
+    public FileService(String fileName) {
         PATH_TO_FILE = Paths.get(System.getProperty("user.dir"), fileName);
 
         File database = new File(PATH_TO_FILE.toString());

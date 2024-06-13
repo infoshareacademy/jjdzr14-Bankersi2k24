@@ -3,9 +3,6 @@ package com.isa.Bankersi2k24.dataAccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import com.isa.Bankersi2k24.models.BankAccount;
-import com.isa.Bankersi2k24.models.Transaction;
-import com.isa.Bankersi2k24.models.User;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +16,7 @@ import java.util.List;
  */
 public class Serializable<T>{
     private final ObjectMapper objectMapper;
-    private Connector connector;
+    private FileService fileService;
     private final Class<T> objectType;
     private Integer id;
     public Integer getId() {
@@ -30,16 +27,16 @@ public class Serializable<T>{
         this.id = id;
     }
 
-    public Serializable(FileNames fileName, Class<T> objectType) {
+    public Serializable(FileName fileName, Class<T> objectType) {
         this.objectType = objectType;
         this.objectMapper = new ObjectMapper();
-        this.connector = new Connector(fileName.toString());
+        this.fileService = new FileService(fileName.toString());
     }
 
     public void save(){
-        List<T> pojos = this.deserialize(this.connector.read(), objectType);
+        List<T> pojos = this.deserialize(this.fileService.read(), objectType);
         pojos.add((T) this);
-        this.connector.saveJson(this.serialize(pojos));
+        this.fileService.saveJson(this.serialize(pojos));
     }
 
     public String serialize(List<T> pojos){
@@ -58,7 +55,7 @@ public class Serializable<T>{
         }
     }
 
-    public <T> List<T> deserialize(String jsonArray, Class<T> tClass){
+    public List<T> deserialize(String jsonArray, Class<T> tClass){
         if(jsonArray.isEmpty()) return new ArrayList<T>();
 
         List<T> pojoList;
@@ -73,7 +70,7 @@ public class Serializable<T>{
     }
 
     public List<T> fetchAllObjects(){
-        return this.deserialize(this.connector.read(), this.objectType);
+        return this.deserialize(this.fileService.read(), this.objectType);
     }
     public static  <T extends Serializable<T>> Integer generateNewId(Class<T> tClass){
         Comparator<T> comparator = (Comparator<T>) Comparator.comparing(T::getId);

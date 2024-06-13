@@ -6,13 +6,9 @@ public enum Currencies {
     AUD("Australian Dolar"),
     EUR("Euro");
 
-    private String name;
+    private final String name;
     Currencies(String c) {
         this.name = c;
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
 }

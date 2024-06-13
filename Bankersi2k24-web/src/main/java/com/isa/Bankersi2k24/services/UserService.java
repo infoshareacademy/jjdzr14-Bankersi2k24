@@ -1,7 +1,7 @@
 package com.isa.Bankersi2k24.services;
 
-import com.isa.Bankersi2k24.dataAccess.Connector;
-import com.isa.Bankersi2k24.dataAccess.FileNames;
+import com.isa.Bankersi2k24.dataAccess.FileService;
+import com.isa.Bankersi2k24.dataAccess.FileName;
 import com.isa.Bankersi2k24.dataAccess.Serializable;
 import com.isa.Bankersi2k24.models.User;
 import java.util.List;
@@ -26,10 +26,10 @@ public class UserService {
         return null;
     }
     public static User findUserByPesel(String pesel){
-        Connector connector = new Connector(FileNames.USER.toString());
-        Serializable<User> objectToJson = new Serializable<>(FileNames.USER, User.class);
+        FileService fileService = new FileService(FileName.USER.toString());
+        Serializable<User> objectToJson = new Serializable<>(FileName.USER, User.class);
 
-        List<User> users = objectToJson.deserialize(connector.read(), User.class);
+        List<User> users = objectToJson.deserialize(fileService.read(), User.class);
 
         for(User user : users){
             if(pesel.equals(user.getPesel())){
@@ -62,24 +62,17 @@ public class UserService {
     }
 
     private static List<User> fetchAllUsers(){
-        Connector connector = new Connector(FileNames.USER.toString());
-        Serializable<User> objectToJson = new Serializable<>(FileNames.USER, User.class);
+        FileService fileService = new FileService(FileName.USER.toString());
+        Serializable<User> objectToJson = new Serializable<>(FileName.USER, User.class);
 
-        return objectToJson.deserialize(connector.read(), User.class);
+        return objectToJson.deserialize(fileService.read(), User.class);
     }
 
-    public static User createNewUser(String name, String lastName, String email, String login,String password){
-        User newUser = new User();
+    public static User saveNewUser(User user){
+        user.setId(User.generateNewId(User.class));
+        user.save();
 
-        newUser.setName(name);
-        newUser.setLastName(lastName);
-        newUser.setEmail(email);
-        newUser.setLogin(login);
-        newUser.setPassword(password);
-        newUser.setId(User.generateNewId(User.class));
-        newUser.save();
-
-        return newUser;
+        return user;
     }
 
 }
