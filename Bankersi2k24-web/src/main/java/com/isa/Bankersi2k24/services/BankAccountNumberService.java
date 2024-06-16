@@ -2,6 +2,7 @@ package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
+import com.isa.Bankersi2k24.repository.BankAccountRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,8 @@ public class BankAccountNumberService {
     }
 
     public static boolean checkIfBANexists(BankAccountNumber bankAccountNumber){
-
-        return true;
+        BankAccountRepository bankAccountRepository = new BankAccountRepository();
+        return bankAccountRepository.queryBankAccounts(b -> b.getBankAccountNumber() == bankAccountNumber);
     }
 
     public static BankAccountNumber accountNumberStringToBan(String bankAccountNumber){

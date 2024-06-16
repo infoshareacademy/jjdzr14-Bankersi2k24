@@ -9,6 +9,7 @@ import com.isa.Bankersi2k24.services.BankAccountService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BankAccountRepository extends Serializable {
     private List<BankAccount> bankAccounts;
@@ -37,5 +38,9 @@ public class BankAccountRepository extends Serializable {
         BankAccount tmpBankAccount = getBankAccount(ban.getBankAccountNumber());
         tmpBankAccount = ban;
         this.save();
+    }
+
+    public boolean queryBankAccounts(Predicate<BankAccount> predicate){
+        return !this.bankAccounts.stream().noneMatch(predicate);
     }
 }
