@@ -13,6 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Bankersi2k24</name>
 	<description>Web app for Bankersi</description>
+
 	<properties>
 		<java.version>21</java.version>
 	</properties>
