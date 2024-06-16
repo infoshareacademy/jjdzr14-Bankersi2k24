@@ -70,7 +70,7 @@ public class UserService {
 
     public static User saveNewUser(User user){
         user.setId(User.generateNewId(User.class));
-        user.save();
+        user.save(user);
 
         return user;
     }

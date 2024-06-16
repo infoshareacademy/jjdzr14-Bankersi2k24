@@ -33,9 +33,9 @@ public class Serializable<T>{
         this.fileService = new FileService(fileName.toString());
     }
 
-    public void save(){
+    public void save(T obj){
         List<T> pojos = this.deserialize(this.fileService.read(), objectType);
-        pojos.add((T) this);
+        pojos.add((T) obj);
         this.fileService.saveJson(this.serialize(pojos));
     }
 

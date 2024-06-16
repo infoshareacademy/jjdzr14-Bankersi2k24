@@ -7,29 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BankAccount extends Serializable<BankAccount> {
+public class BankAccount {
     private Integer accountNumber;
     private Integer availableQuota;
     private Currencies currency;
     private List<Transaction> transactionList;
+    private BankAccountNumber bankAccountNumber;
 
-    public BankAccount() {
-        super(FileName.BANKACCOUNT, BankAccount.class);
-        /**
-         * @method used to create a new (non existing) bank account, thus no params needed
-         */
-        generateAccountNumber();
-        this.transactionList = new ArrayList<>();
-        this.setAvailableQuota(0);
+    public Integer getUserId() {
+        return userId;
     }
 
-    public BankAccount(Integer accountNumber) {
-        /**
-         * finds a bank account in DB by it's number
-         * @param the bank accounts number
-         */
-        super(FileName.BANKACCOUNT, BankAccount.class);
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
+
+    private Integer userId;
+
+    public BankAccount() {}
+
     public Currencies getCurrency() {
         return currency;
     }
@@ -49,30 +45,11 @@ public class BankAccount extends Serializable<BankAccount> {
         return transactionList;
     }
 
-    public boolean addToTransactionList(Transaction transaction) {
-        if(this.transactionList != null){
-            this.transactionList.add(transaction);
-            return true;
-        }else{
-            //try reading from DB again? and then  save
-            return false;
-        }
+    public BankAccountNumber getBankAccountNumber() {
+        return bankAccountNumber;
     }
 
-    public static BankAccount createFakeBankAccount(Integer availableQuota, Currencies currency) {
-        BankAccount ba = new BankAccount();
-        ba.generateAccountNumber();
-        ba.currency = currency;
-        ba.availableQuota = availableQuota;
-        return ba;
+    public void setBankAccountNumber(BankAccountNumber bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
     }
-
-    private boolean generateAccountNumber(){
-        Random rnd = new Random();
-        this.accountNumber = rnd.nextInt();
-        if(this.accountNumber < 0) this.accountNumber *= -1;
-        return true;
-    }
-
-
 }

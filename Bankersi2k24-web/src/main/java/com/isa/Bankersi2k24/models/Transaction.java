@@ -8,11 +8,11 @@ import java.util.Date;
 public class Transaction extends Serializable<Transaction> {
     private String transactionTitle;
     private int quota;
-    private int senderAccountNumber;
-    private int destinationAccountNumber;
+    private BankAccountNumber senderAccountNumber;
+    private BankAccountNumber destinationAccountNumber;
     private Date transactionDate;
 
-    public Transaction(String tranasactionTitle, int quota, int senderAccountNumber, int destinationAccountNumber) {
+    public Transaction(String tranasactionTitle, int quota, BankAccountNumber senderAccountNumber, BankAccountNumber destinationAccountNumber) {
         super(FileName.TRANSACITON, Transaction.class);
         this.transactionTitle = tranasactionTitle;
         this.quota = quota;
@@ -36,19 +36,19 @@ public class Transaction extends Serializable<Transaction> {
         this.quota = quota;
     }
 
-    public int getSenderAccountNumber() {
+    public BankAccountNumber getSenderAccountNumber() {
         return senderAccountNumber;
     }
 
-    public void setSenderAccountNumber(int senderAccountNumber) {
+    public void setSenderAccountNumber(BankAccountNumber senderAccountNumber) {
         this.senderAccountNumber = senderAccountNumber;
     }
 
-    public int getDestinationAccountNumber() {
+    public BankAccountNumber getDestinationAccountNumber() {
         return destinationAccountNumber;
     }
 
-    public void setDestinationAccountNumber(int destinationAccountNumber) {
+    public void setDestinationAccountNumber(BankAccountNumber destinationAccountNumber) {
         this.destinationAccountNumber = destinationAccountNumber;
     }
 
