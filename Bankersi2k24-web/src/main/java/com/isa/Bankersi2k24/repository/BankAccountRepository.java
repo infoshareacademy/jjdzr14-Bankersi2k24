@@ -32,4 +32,10 @@ public class BankAccountRepository extends Serializable {
     public void saveNewBankAccount(BankAccount ban){
         this.save(ban);
     }
+
+    public void updateBankAccount(BankAccount ban){
+        BankAccount tmpBankAccount = getBankAccount(ban.getBankAccountNumber());
+        tmpBankAccount = ban;
+        this.save();
+    }
 }

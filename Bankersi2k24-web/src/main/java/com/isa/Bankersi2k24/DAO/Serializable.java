@@ -39,6 +39,11 @@ public class Serializable<T>{
         this.fileService.saveJson(this.serialize(pojos));
     }
 
+    public void save(){
+        List<T> pojos = this.deserialize(this.fileService.read(), objectType);
+        this.fileService.saveJson(this.serialize(pojos));
+    }
+
     public String serialize(List<T> pojos){
         /**
          * method that converts an object list to JSON entity
