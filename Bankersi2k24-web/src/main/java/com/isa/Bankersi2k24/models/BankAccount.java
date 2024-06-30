@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Random;
 
 public class BankAccount {
-    private Integer accountNumber;
     private Integer availableQuota;
     private Currencies currency;
     private List<Transaction> transactionList;
     private BankAccountNumber bankAccountNumber;
+    private Integer userId;
+
+    public BankAccount() {}
 
     public Integer getUserId() {
         return userId;
@@ -22,16 +24,8 @@ public class BankAccount {
         this.userId = userId;
     }
 
-    private Integer userId;
-
-    public BankAccount() {}
-
     public Currencies getCurrency() {
         return currency;
-    }
-
-    public Integer getAccountNumber() {
-        return this.accountNumber;
     }
 
     public Integer getAvailableQuota() {

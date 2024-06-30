@@ -14,15 +14,19 @@ public class TransacrionService {
     }
 
     public boolean triggerTransaction(Transaction transaction){
-        BankAccount sender = BankAccountService.getBankAccount(transaction.getSenderAccountNumber());
-        BankAccount recipient = BankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
+        BankAccountService bankAccountService = new BankAccountService();
+        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
+        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
 
         if(this.verifyTransaction(sender, recipient)){
             sender.setAvailableQuota(sender.getAvailableQuota()-transaction.getQuota());
             recipient.setAvailableQuota(recipient.getAvailableQuota()+transaction.getQuota());
             transaction.setTransactionDate(new Date());
-            return BankAccountService.addToTransactionList(sender, transaction) &&
-                    BankAccountService.addToTransactionList(recipient, transaction);
+            if(BankAccountService.addToTransactionList(sender, transaction) &&
+                    BankAccountService.addToTransactionList(recipient, transaction)){
+                transaction.setComplete(true);
+                return true;
+            }
         }
         return false;
     }

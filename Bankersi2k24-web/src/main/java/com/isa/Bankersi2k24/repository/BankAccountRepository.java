@@ -13,13 +13,20 @@ import java.util.function.Predicate;
 
 public class BankAccountRepository extends Serializable {
     private List<BankAccount> bankAccounts;
-    public BankAccountRepository() {
+    private static BankAccountRepository INSTANCE = null;
+
+    public static BankAccountRepository BankAccountRepository(){
+        if(INSTANCE == null) {
+            INSTANCE = new BankAccountRepository();
+        }
+        return INSTANCE;
+    }
+    private BankAccountRepository() {
         super(FileName.BANKACCOUNT, BankAccount.class);
         this.bankAccounts = fetchAllObjects();
     }
 
     public List<BankAccount> fetchAllBankAccounts() {
-
         return this.bankAccounts;
     }
 
@@ -34,13 +41,19 @@ public class BankAccountRepository extends Serializable {
         this.save(ban);
     }
 
-    public void updateBankAccount(BankAccount ban){
-        BankAccount tmpBankAccount = getBankAccount(ban.getBankAccountNumber());
-        tmpBankAccount = ban;
+    public void updateBankAccount(BankAccount bankAccount){
+        this.bankAccounts.set(
+                this.bankAccounts.indexOf(bankAccount),
+                bankAccount
+        );
         this.save();
     }
 
     public boolean queryBankAccounts(Predicate<BankAccount> predicate){
         return !this.bankAccounts.stream().noneMatch(predicate);
+    }
+
+    public boolean deleteBankAccount(BankAccountNumber ban){
+        return this.bankAccounts.removeIf(ba -> ba.getBankAccountNumber() == ban);
     }
 }

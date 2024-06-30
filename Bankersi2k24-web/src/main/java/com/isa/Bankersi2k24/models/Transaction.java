@@ -11,6 +11,7 @@ public class Transaction extends Serializable<Transaction> {
     private BankAccountNumber senderAccountNumber;
     private BankAccountNumber destinationAccountNumber;
     private Date transactionDate;
+    private boolean isComplete;
 
     public Transaction(String tranasactionTitle, int quota, BankAccountNumber senderAccountNumber, BankAccountNumber destinationAccountNumber) {
         super(FileName.TRANSACITON, Transaction.class);
@@ -18,14 +19,23 @@ public class Transaction extends Serializable<Transaction> {
         this.quota = quota;
         this.senderAccountNumber = senderAccountNumber;
         this.destinationAccountNumber = destinationAccountNumber;
+        this.isComplete = false;
     }
 
-    public String getTranasactionTitle() {
+    public String getTransactionTitle() {
         return transactionTitle;
     }
 
-    public void setTranasactionTitle(String tranasactionTitle) {
-        this.transactionTitle = tranasactionTitle;
+    public void setTransactionTitle(String transactionTitle) {
+        this.transactionTitle = transactionTitle;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
     }
 
     public int getQuota() {
