@@ -62,10 +62,6 @@ public class BankAccountService {
         }
     }
 
-    public boolean updateBankAccount(String bankAccount) {
-        return false;
-    }
-
     public static boolean addToTransactionList(BankAccount bankAccount, Transaction transaction) {
         if(bankAccount.getTransactionList() != null){
             bankAccount.getTransactionList().add(transaction);

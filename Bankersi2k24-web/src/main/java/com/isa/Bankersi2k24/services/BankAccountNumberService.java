@@ -27,6 +27,8 @@ public class BankAccountNumberService {
                     rnd.ints(0, 99).findFirst().getAsInt(),
                     rnd.ints(0, 9999).findFirst().getAsInt(),
                     rnd.ints(0, 9999).findFirst().getAsInt(),
+                    rnd.ints(0, 9999).findFirst().getAsInt(),
+                    rnd.ints(0, 9999).findFirst().getAsInt(),
                     rnd.ints(0, 9999).findFirst().getAsInt()
             );
         }
@@ -42,7 +44,7 @@ public class BankAccountNumberService {
     public static BankAccountNumber accountNumberStringToBan(String bankAccountNumber){
         List<String> ret = new ArrayList<>();
         String input = bankAccountNumber.replaceAll("\\s", "");
-        Pattern pattern = Pattern.compile("^(.{2})(.{8})(.{8})(.{8}).*");
+        Pattern pattern = Pattern.compile("^(.{2})(.{4})(.{4})(.{4})(.{4})(.{4}).*");
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
@@ -57,7 +59,9 @@ public class BankAccountNumberService {
                 Integer.getInteger(ret.get(0)),
                 Integer.getInteger(ret.get(1)),
                 Integer.getInteger(ret.get(2)),
-                Integer.getInteger(ret.get(3)));
+                Integer.getInteger(ret.get(3)),
+                Integer.getInteger(ret.get(4)),
+                Integer.getInteger(ret.get(5)));
 
         return ban;
     }
