@@ -17,30 +17,7 @@ public class Bankersi2k24Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Bankersi2k24Application.class, args);
 
-		String testBan = "03 0044 0245 1234 0000 0004 0203";
-		BankAccountNumber ban = BankAccountNumberService.accountNumberStringToBan(testBan);
 
-		testBan = "66 2191 3437 6614 2356 470 4114";
-		ban = BankAccountNumberService.accountNumberStringToBan(testBan);
-
-		BankAccountService bankAccountService = new BankAccountService();
-
-		BankAccount ba1 = bankAccountService.createNewBankAccount(1);
-		BankAccount ba2 = bankAccountService.createNewBankAccount(2);
-		String ba1n = ba1.getBankAccountNumber().toString();
-		BankAccount tmp;
-
-		bankAccountService.saveBankAccount(ba1);
-		bankAccountService.saveBankAccount(ba2);
-
-		//bankAccountService = new BankAccountService();
-		tmp = bankAccountService.getBankAccount(ba1n);
-		System.out.printf("%s \n",tmp);
-
-		tmp = bankAccountService.getBankAccount(ba2.getBankAccountNumber());
-
-		BankAccount ba3 = bankAccountService.getBankAccount(ba1.getBankAccountNumber());
-		System.out.printf("--");
 	}
 
 }
