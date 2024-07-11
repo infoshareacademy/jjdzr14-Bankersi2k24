@@ -38,6 +38,7 @@ public class FileService {
         try {
             FileWriter fw = new FileWriter(PATH_TO_FILE.toFile());
             fw.write(json);
+            fw.flush();
             fw.close();
             return true;
         } catch (IOException e) {

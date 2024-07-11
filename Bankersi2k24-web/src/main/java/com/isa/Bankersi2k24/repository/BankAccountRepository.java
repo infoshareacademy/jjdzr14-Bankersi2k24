@@ -32,13 +32,14 @@ public class BankAccountRepository extends Serializable {
 
     public BankAccount getBankAccount(BankAccountNumber ban){
         return this.bankAccounts.stream()
-                .filter(b -> b.getBankAccountNumber() == ban)
+                .filter(b -> b.getBankAccountNumber().equals(ban))
                 .findFirst()
                 .orElseThrow();
     }
 
     public void saveNewBankAccount(BankAccount ban){
         this.save(ban);
+        this.invalidateBankAccountList();
     }
 
     public void updateBankAccount(BankAccount bankAccount){
@@ -47,6 +48,7 @@ public class BankAccountRepository extends Serializable {
                 bankAccount
         );
         this.save();
+        this.invalidateBankAccountList();
     }
 
     public boolean queryBankAccounts(Predicate<BankAccount> predicate){
@@ -55,5 +57,9 @@ public class BankAccountRepository extends Serializable {
 
     public boolean deleteBankAccount(BankAccountNumber ban){
         return this.bankAccounts.removeIf(ba -> ba.getBankAccountNumber() == ban);
+    }
+
+    private void invalidateBankAccountList(){
+        this.bankAccounts = fetchAllObjects();
     }
 }
