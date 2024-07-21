@@ -1,4 +1,4 @@
-package com.isa.Bankersi2k24.dataAccess;
+package com.isa.Bankersi2k24.DAO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,9 +33,14 @@ public class Serializable<T>{
         this.fileService = new FileService(fileName.toString());
     }
 
+    public void save(T obj){
+        List<T> pojos = this.deserialize(this.fileService.read(), objectType);
+        pojos.add((T) obj);
+        this.fileService.saveJson(this.serialize(pojos));
+    }
+
     public void save(){
         List<T> pojos = this.deserialize(this.fileService.read(), objectType);
-        pojos.add((T) this);
         this.fileService.saveJson(this.serialize(pojos));
     }
 

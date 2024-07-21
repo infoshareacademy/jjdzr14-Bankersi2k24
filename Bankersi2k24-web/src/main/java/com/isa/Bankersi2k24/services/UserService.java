@@ -1,8 +1,8 @@
 package com.isa.Bankersi2k24.services;
 
-import com.isa.Bankersi2k24.dataAccess.FileService;
-import com.isa.Bankersi2k24.dataAccess.FileName;
-import com.isa.Bankersi2k24.dataAccess.Serializable;
+import com.isa.Bankersi2k24.DAO.FileService;
+import com.isa.Bankersi2k24.DAO.FileName;
+import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.models.User;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +14,13 @@ public class UserService {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PESEL_REGEX =
             Pattern.compile("\\d{11}", Pattern.CASE_INSENSITIVE);
+
+    public static User saveNewUser(User user){
+        user.setId(User.generateNewId(User.class));
+        user.save(user);
+
+        return user;
+    }
 
     public static User findUserByLogin(String login){
         List<User> users = fetchAllUsers();
@@ -66,13 +73,6 @@ public class UserService {
         Serializable<User> objectToJson = new Serializable<>(FileName.USER, User.class);
 
         return objectToJson.deserialize(fileService.read(), User.class);
-    }
-
-    public static User saveNewUser(User user){
-        user.setId(User.generateNewId(User.class));
-        user.save();
-
-        return user;
     }
 
 }
