@@ -31,6 +31,16 @@ public class BankAccountService {
         this.bankAccountRepository.saveNewBankAccount(bankAccount);
     }
 
+    public boolean updateBankAccount(BankAccount bankAccount) throws Exception {
+        if(this.bankAccountRepository.queryBankAccounts(ba->ba == bankAccount)){
+            this.bankAccountRepository.updateBankAccount(bankAccount);
+            return true;
+        }else{
+            throw new Exception(String.format("Such bank account (number: %s) does not exist",
+                    bankAccount.getBankAccountNumber()));
+        }
+    }
+
     public boolean deleteBankAccount(BankAccountNumber bankAccountNumber) throws Exception {
         // need to perform checks if there are any transactions assosiated with this BAN
         if(this.bankAccountRepository.queryBankAccounts(ba -> (ba.getBankAccountNumber() == bankAccountNumber &&
@@ -50,16 +60,6 @@ public class BankAccountService {
 
     public boolean deleteBankAccount(String ban) throws Exception {
         return this.deleteBankAccount(BankAccountNumberService.accountNumberStringToBan(ban));
-    }
-
-    public boolean updateBankAccount(BankAccount bankAccount) throws Exception {
-        if(this.bankAccountRepository.queryBankAccounts(ba->ba == bankAccount)){
-            this.bankAccountRepository.updateBankAccount(bankAccount);
-            return true;
-        }else{
-            throw new Exception(String.format("Such bank account (number: %s) does not exist",
-                    bankAccount.getBankAccountNumber()));
-        }
     }
 
     public static boolean addToTransactionList(BankAccount bankAccount, Transaction transaction) {

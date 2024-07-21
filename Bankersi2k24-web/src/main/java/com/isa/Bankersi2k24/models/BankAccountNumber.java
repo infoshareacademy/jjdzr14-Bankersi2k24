@@ -1,9 +1,5 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.DAO.FileName;
-import com.isa.Bankersi2k24.DAO.Serializable;
-
-import java.io.Serial;
 import java.util.Objects;
 
 public class BankAccountNumber {

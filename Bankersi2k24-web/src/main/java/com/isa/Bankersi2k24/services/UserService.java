@@ -15,6 +15,13 @@ public class UserService {
     public static final Pattern VALID_PESEL_REGEX =
             Pattern.compile("\\d{11}", Pattern.CASE_INSENSITIVE);
 
+    public static User saveNewUser(User user){
+        user.setId(User.generateNewId(User.class));
+        user.save(user);
+
+        return user;
+    }
+
     public static User findUserByLogin(String login){
         List<User> users = fetchAllUsers();
 
@@ -66,13 +73,6 @@ public class UserService {
         Serializable<User> objectToJson = new Serializable<>(FileName.USER, User.class);
 
         return objectToJson.deserialize(fileService.read(), User.class);
-    }
-
-    public static User saveNewUser(User user){
-        user.setId(User.generateNewId(User.class));
-        user.save(user);
-
-        return user;
     }
 
 }

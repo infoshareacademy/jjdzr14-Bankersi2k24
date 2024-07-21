@@ -4,10 +4,6 @@ import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
-import com.isa.Bankersi2k24.services.BankAccountNumberService;
-import com.isa.Bankersi2k24.services.BankAccountService;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
