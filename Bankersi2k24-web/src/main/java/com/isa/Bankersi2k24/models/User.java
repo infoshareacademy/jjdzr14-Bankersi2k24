@@ -7,8 +7,7 @@ import com.isa.Bankersi2k24.services.UserService;
 import java.util.Date;
 import java.util.Objects;
 
-public class User extends Serializable<User> {
-    private BankAccount bankAccount;
+public class User{
     private String name ;
     private String login;
     private String password;
@@ -16,10 +15,9 @@ public class User extends Serializable<User> {
     private String email;
     private String pesel;
     private Date creationDate;
+    private Integer id;
 
     public User() {
-        super(FileName.USER, User.class);
-        this.bankAccount = new BankAccount();
         this.creationDate = new Date();
     }
 
@@ -71,12 +69,6 @@ public class User extends Serializable<User> {
         this.lastName = lastName;
 
     }
-
-    public BankAccount getBankAccount(){ return this.bankAccount;}
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -97,11 +89,19 @@ public class User extends Serializable<User> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getName(), user.getName()) && Objects.equals(getLogin(), user.getLogin()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getCreationDate(), user.getCreationDate());
+        return Objects.equals(getName(), user.getName()) && Objects.equals(getLogin(), user.getLogin()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getCreationDate(), user.getCreationDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getLogin(), getEmail(), getCreationDate());
+        return Objects.hash(getName(), getLogin(), getEmail(), getCreationDate());
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
