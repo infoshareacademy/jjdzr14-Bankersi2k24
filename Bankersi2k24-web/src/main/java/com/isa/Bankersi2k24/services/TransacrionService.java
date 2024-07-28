@@ -3,6 +3,7 @@ package com.isa.Bankersi2k24.services;
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.Transaction;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TransacrionService {
@@ -21,7 +22,7 @@ public class TransacrionService {
         if(this.verifyTransaction(sender, recipient)){
             sender.setAvailableQuota(sender.getAvailableQuota()-transaction.getQuota());
             recipient.setAvailableQuota(recipient.getAvailableQuota()+transaction.getQuota());
-            transaction.setTransactionDate(new Date());
+            transaction.setTransactionDate(LocalDateTime.now());
             if(BankAccountService.addToTransactionList(sender, transaction) &&
                     BankAccountService.addToTransactionList(recipient, transaction)){
                 transaction.setComplete(true);

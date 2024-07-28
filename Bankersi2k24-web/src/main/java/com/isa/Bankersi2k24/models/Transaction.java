@@ -3,15 +3,20 @@ package com.isa.Bankersi2k24.models;
 import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 public class Transaction extends Serializable<Transaction> {
     private String transactionTitle;
     private int quota;
     private BankAccountNumber senderAccountNumber;
     private BankAccountNumber destinationAccountNumber;
-    private Date transactionDate;
+    private LocalDateTime transactionDate;
     private boolean isComplete;
+    private Integer trackingNumber;
+
 
     public Transaction(String tranasactionTitle, int quota, BankAccountNumber senderAccountNumber, BankAccountNumber destinationAccountNumber) {
         super(FileName.TRANSACITON, Transaction.class);
@@ -62,14 +67,29 @@ public class Transaction extends Serializable<Transaction> {
         this.destinationAccountNumber = destinationAccountNumber;
     }
 
-    public Date getTransactionDate() {
+    public LocalDateTime getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
+    public void setTransactionDate(LocalDateTime transactionDate) {
         this.transactionDate = transactionDate;
     }
 
+    public Integer getTrackingNumber() {
+        this.trackingNumber = this.hashCode();
+        return trackingNumber;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return getQuota() == that.getQuota() && isComplete() == that.isComplete() && Objects.equals(getTransactionTitle(), that.getTransactionTitle()) && Objects.equals(getSenderAccountNumber(), that.getSenderAccountNumber()) && Objects.equals(getDestinationAccountNumber(), that.getDestinationAccountNumber()) && Objects.equals(getTransactionDate(), that.getTransactionDate()) && Objects.equals(trackingNumber, that.trackingNumber);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTransactionTitle(), getQuota(), getSenderAccountNumber(), getDestinationAccountNumber(), getTransactionDate());
+    }
 }
