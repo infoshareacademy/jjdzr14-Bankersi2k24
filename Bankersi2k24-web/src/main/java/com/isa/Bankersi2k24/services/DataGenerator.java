@@ -1,7 +1,6 @@
 package com.isa.Bankersi2k24.services;
 
-import com.isa.Bankersi2k24.models.BankAccount;
-import com.isa.Bankersi2k24.models.User;
+import com.isa.Bankersi2k24.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +12,51 @@ public class DataGenerator {
 
     private Random random;
 
-    public DataGenerator() {
+    public DataGenerator(int howMany) {
         this.random = new Random();
         UserService userService = new UserService();
+        TransacrionService transacrionService = new TransacrionService();
+        BankAccountService bankAccountService = new BankAccountService();
 
-        List<User> users = this.generateUsers(10);
+        List<User> users = this.generateUsers(howMany);
         users.forEach(userService::saveNewUser);
-        users.forEach(this::addBankAccountToUsers);
+
+        List<BankAccount> bankAccountList = this.generateBankAccountsForUsers(users);
+        bankAccountList.forEach(bankAccountService::saveBankAccount);
+
+        List<Transaction> transactions = this.generateRandomTranssactions(howMany, bankAccountList);
+        transactions.forEach(transacrionService::triggerTransaction);
+        //transactions.forEach(transacrionService::saveNewTransaction);
     }
 
-    private void addBankAccountToUsers(User user){
+    private List<Transaction> generateRandomTranssactions(int howMany, List<BankAccount> bankAccountList){
+        List<Transaction> ret = new ArrayList<>();
+        for (int i = 0; i < howMany; i++) {
+            BankAccount ba1 = bankAccountList.get(this.random.nextInt(0, bankAccountList.size()));
+            BankAccount ba2 = bankAccountList.stream()
+                        .filter(ba -> !(ba1.equals(bankAccountList.indexOf(ba1))))
+                        .findFirst()
+                        .get();
+            Transaction transaction = new Transaction();
+            transaction.setTransactionTitle("transactionTitle-"+String.valueOf(this.random.nextInt(0,1000)));
+            transaction.setQuota(this.random.nextInt(0,350));
+            transaction.setSenderAccountNumber(ba1.getBankAccountNumber());
+            transaction.setDestinationAccountNumber(ba2.getBankAccountNumber());
+            ret.add(transaction);
+        }
+        return ret;
+    }
+
+    private List<BankAccount> generateBankAccountsForUsers(List<User> users){
+        List<BankAccount> bankAccounts = new ArrayList<>(users.size());
         BankAccountService bankAccountService = new BankAccountService();
-        BankAccount bankAccount = bankAccountService.createNewBankAccount(user.getId());
-        bankAccount.setAvailableQuota(new Random().nextInt(0,10000));
-        bankAccountService.saveBankAccount(bankAccount);
+        for(User user : users){
+            BankAccount bankAccount = bankAccountService.createNewBankAccount(user.getId());
+            bankAccount.setAvailableQuota(new Random().nextInt(0,10000));
+            bankAccount.setCurrency(Currencies.EUR);
+            bankAccounts.add(bankAccount);
+        }
+        return bankAccounts;
     }
 
     private List<User> generateUsers(int howMany){
@@ -71,12 +101,12 @@ public class DataGenerator {
         Tamm,
         Saar,
         Sepp,
-        Mägi,
+        Magi,
         Kask,
         Kukk,
         Rebane,
         Ilves,
-        Pärn,
+        Parn,
         Koppel
     }
 

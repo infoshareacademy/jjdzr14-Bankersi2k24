@@ -5,6 +5,7 @@ import com.isa.Bankersi2k24.DAO.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class BankAccount {
@@ -14,7 +15,9 @@ public class BankAccount {
     private BankAccountNumber bankAccountNumber;
     private Integer userId;
 
-    public BankAccount() {}
+    public BankAccount() {
+        this.transactionList = new ArrayList<>();
+    }
 
     public Integer getUserId() {
         return userId;
@@ -26,6 +29,10 @@ public class BankAccount {
 
     public Currencies getCurrency() {
         return currency;
+    }
+
+    public void setCurrency(Currencies currency) {
+        this.currency = currency;
     }
 
     public Integer getAvailableQuota() {
@@ -45,5 +52,18 @@ public class BankAccount {
 
     public void setBankAccountNumber(BankAccountNumber bankAccountNumber) {
         this.bankAccountNumber = bankAccountNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BankAccount that = (BankAccount) o;
+        return getCurrency() == that.getCurrency() && Objects.equals(getBankAccountNumber(), that.getBankAccountNumber()) && Objects.equals(getUserId(), that.getUserId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCurrency(), getBankAccountNumber(), getUserId());
     }
 }

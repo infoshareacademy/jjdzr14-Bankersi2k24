@@ -4,12 +4,14 @@ import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
 import com.isa.Bankersi2k24.models.Transaction;
 import com.isa.Bankersi2k24.repository.BankAccountRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
 
     public BankAccountService() {
-        this.bankAccountRepository = BankAccountRepository.BankAccountRepository();
+        this.bankAccountRepository = new BankAccountRepository();
     }
 
     public BankAccount getBankAccount(String ban) {
@@ -24,6 +26,7 @@ public class BankAccountService {
         BankAccount ban = new BankAccount();
         ban.setUserId(forUserId);
         ban.setBankAccountNumber(BankAccountNumberService.generateRandomBankAccountNumber());
+
         return ban;
     }
 
@@ -62,14 +65,8 @@ public class BankAccountService {
         return this.deleteBankAccount(BankAccountNumberService.accountNumberStringToBan(ban));
     }
 
-    public static boolean addToTransactionList(BankAccount bankAccount, Transaction transaction) {
-        if(bankAccount.getTransactionList() != null){
-            bankAccount.getTransactionList().add(transaction);
-            return true;
-        }else{
-            //try reading from DB again? and then  save
-            return false;
-        }
+    public void addToTransactionList(BankAccount bankAccount, Transaction transaction) {
+        bankAccount.getTransactionList().add(transaction);
     }
 
 }

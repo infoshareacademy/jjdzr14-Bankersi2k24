@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-public class Transaction extends Serializable<Transaction> {
+public class Transaction {
     private String transactionTitle;
     private int quota;
     private BankAccountNumber senderAccountNumber;
@@ -17,14 +17,7 @@ public class Transaction extends Serializable<Transaction> {
     private boolean isComplete;
     private Integer trackingNumber;
 
-
-    public Transaction(String tranasactionTitle, int quota, BankAccountNumber senderAccountNumber, BankAccountNumber destinationAccountNumber) {
-        super(FileName.TRANSACITON, Transaction.class);
-        this.transactionTitle = tranasactionTitle;
-        this.quota = quota;
-        this.senderAccountNumber = senderAccountNumber;
-        this.destinationAccountNumber = destinationAccountNumber;
-        this.isComplete = false;
+    public Transaction() {
     }
 
     public String getTransactionTitle() {
@@ -79,6 +72,11 @@ public class Transaction extends Serializable<Transaction> {
         this.trackingNumber = this.hashCode();
         return trackingNumber;
     }
+
+    public void setTrackingNumber() {
+        this.trackingNumber = (this.hashCode() < 0 ? this.hashCode() * (-1) : this.hashCode());
+    }
+
 
     @Override
     public boolean equals(Object o) {

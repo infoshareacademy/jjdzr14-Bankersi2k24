@@ -1,0 +1,28 @@
+<div class="container">
+    <p><h1>Transactions list:</h1></p>
+    <table class="table table-striped tfixed mt-5">
+        <thead>
+        <tr>
+            <th>Date submitted</th>
+            <th>From</th>
+            <th>Destination</th>
+            <th>Ammount</th>
+            <th>Title</th>
+            <th>Is Complete</th>
+            <th>Tracking number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${transactionList}" th:object="${transactionList}">
+            <td th:text="*{transactionDate}"></td>
+            <td th:text="*{senderAccountNumber}"></td>
+            <td th:text="*{destinationAccountNumber}"></td>
+            <td th:text="*{quota}"></td>
+            <td th:text="*{transactionTitle}"></td>
+            <td th:text="*{isComplete}"></td>
+            <td th:text="*{trackingNumber}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/tasks/edit}" class="btn btn-primary">Add new task</a>
+</div>

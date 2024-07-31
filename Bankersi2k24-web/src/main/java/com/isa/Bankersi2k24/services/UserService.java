@@ -5,12 +5,14 @@ import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.models.User;
 import com.isa.Bankersi2k24.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
 public class UserService {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
@@ -19,7 +21,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserService() {
-        this.userRepository = UserRepository.UserRepository();
+        this.userRepository = new UserRepository();
     }
 
     public User saveNewUser(User user){
@@ -39,30 +41,6 @@ public class UserService {
                     .max()
                     .orElseThrow() +1;
         }
-    }
-
-    public static User findUserByLogin(String login){
-        List<User> users = fetchAllUsers();
-
-        for(User u : users){
-            if(login.equals(u.getLogin())){
-                return u;
-            }
-        }
-        return null;
-    }
-    public static User findUserByPesel(String pesel){
-        FileService fileService = new FileService(FileName.USER.toString());
-        Serializable<User> objectToJson = new Serializable<>(FileName.USER, User.class);
-
-        List<User> users = objectToJson.deserialize(fileService.read(), User.class);
-
-        for(User user : users){
-            if(pesel.equals(user.getPesel())){
-                return user;
-            }
-        }
-        return null;
     }
 
     public static boolean verifyEmail(String email){
@@ -87,11 +65,8 @@ public class UserService {
         else return false;
     }
 
-    private static List<User> fetchAllUsers(){
-        FileService fileService = new FileService(FileName.USER.toString());
-        Serializable<User> objectToJson = new Serializable<>(FileName.USER, User.class);
-
-        return objectToJson.deserialize(fileService.read(), User.class);
+    private List<User> fetchAllUsers(){
+        return this.userRepository.fetchAllUsers();
     }
 
 }

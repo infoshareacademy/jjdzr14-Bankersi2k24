@@ -7,17 +7,17 @@ import com.isa.Bankersi2k24.models.BankAccountNumber;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BankAccountRepository extends Serializable {
+public class BankAccountRepository extends Serializable<BankAccount> {
     private List<BankAccount> bankAccounts;
-    private static BankAccountRepository INSTANCE = null;
+//    private static BankAccountRepository INSTANCE = null;
 
-    public static BankAccountRepository BankAccountRepository(){
-        if(INSTANCE == null) {
-            INSTANCE = new BankAccountRepository();
-        }
-        return INSTANCE;
-    }
-    private BankAccountRepository() {
+//    public static BankAccountRepository BankAccountRepository(){
+//        if(INSTANCE == null) {
+//            INSTANCE = new BankAccountRepository();
+//        }
+//        return INSTANCE;
+//    }
+    public BankAccountRepository() {
         super(FileName.BANKACCOUNT, BankAccount.class);
         this.bankAccounts = fetchAllObjects();
     }

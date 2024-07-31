@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class TransactionRepository extends Serializable {
+public class TransactionRepository extends Serializable<Transaction> {
     private List<Transaction> transactionList;
 
     public TransactionRepository(FileName fileName, Class objectType) {

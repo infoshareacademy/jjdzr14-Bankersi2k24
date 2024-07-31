@@ -30,7 +30,7 @@ public class Serializable<T>{
     public Serializable(FileName fileName, Class<T> objectType) {
         this.objectType = objectType;
         this.objectMapper = new ObjectMapper();
-        this.fileService = new FileService(fileName.toString());
+        this.fileService = new FileService(fileName.getName());
     }
 
     public void save(T obj){

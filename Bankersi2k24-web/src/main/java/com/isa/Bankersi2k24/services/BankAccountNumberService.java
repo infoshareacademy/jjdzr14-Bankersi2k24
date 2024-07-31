@@ -33,7 +33,7 @@ public class BankAccountNumberService {
     }
 
     public static boolean checkIfBANexists(BankAccountNumber bankAccountNumber){
-        BankAccountRepository bankAccountRepository = BankAccountRepository.BankAccountRepository();
+        BankAccountRepository bankAccountRepository = new BankAccountRepository();
         return bankAccountRepository.queryBankAccounts(b -> b.getBankAccountNumber() == bankAccountNumber);
     }
 

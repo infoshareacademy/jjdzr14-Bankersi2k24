@@ -7,17 +7,17 @@ import com.isa.Bankersi2k24.models.User;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class UserRepository extends Serializable {
+public class UserRepository extends Serializable<User> {
     private List<User> users;
-    private static UserRepository INSTANCE = null;
+//    private static UserRepository INSTANCE = null;
 
-    public static UserRepository UserRepository(){
-        if(INSTANCE == null) {
-            INSTANCE = new UserRepository();
-        }
-        return INSTANCE;
-    }
-    private UserRepository() {
+//    public static UserRepository UserRepository(){
+//        if(INSTANCE == null) {
+//            INSTANCE = new UserRepository();
+//        }
+//        return INSTANCE;
+//    }
+    public UserRepository() {
         super(FileName.USER, User.class);
         this.users = fetchAllObjects();
     }

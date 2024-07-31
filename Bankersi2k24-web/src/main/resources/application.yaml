@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: Bankersi2k24
+  thymeleaf:
+    check-template-location: true
+    cache: false
+    #prefix: file:./src/main/resources/templates/
+    #mvc:
+    #  format:
+    #    date: dd.MM.yyyy
+    #    date-time: iso
