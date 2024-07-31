@@ -15,7 +15,7 @@
         <tbody>
         <tr th:each="transaction : ${transactionList}" >
             <td th:text="*{#temporals.format(transaction.transactionDate, 'dd-MM-yyyy HH:mm')} ?: 'not set yet'"></td>
-            <td th:text="*{transaction.senderAccountNumber}"></td>
+            <td th:text="*{transaction.senderAccountNumber.toString()}"></td>
             <td th:text="*{transaction.destinationAccountNumber}"></td>
             <td th:text="*{transaction.quota}"></td>
             <td th:text="*{transaction.transactionTitle}"></td>

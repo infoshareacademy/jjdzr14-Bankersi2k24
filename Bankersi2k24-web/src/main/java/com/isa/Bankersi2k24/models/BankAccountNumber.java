@@ -12,11 +12,11 @@ public class BankAccountNumber {
      */
     private Integer controlSum =0;
     private Integer sortCode = 0 ;
+    private Integer sortCode_2 = 0;
     private Integer individualNumber_1 = 0;
     private Integer individualNumber_2 = 0;
     private Integer individualNumber_3 = 0;
     private Integer individualNumber_4 = 0;
-    private Integer individualNumber_5 = 0;
 
     public BankAccountNumber() {
     }
@@ -28,14 +28,14 @@ public class BankAccountNumber {
             Integer individualNumber_2,
             Integer individualNumber_3,
             Integer individualNumber_4,
-            Integer individualNumber_5) {
+            Integer sortCode_2) {
         this.controlSum = controlSum;
         this.sortCode = sortCode;
         this.individualNumber_1 = individualNumber_1;
         this.individualNumber_2 = individualNumber_2;
         this.individualNumber_3 = individualNumber_3;
         this.individualNumber_4 = individualNumber_4;
-        this.individualNumber_5 = individualNumber_5;
+        this.sortCode_2 = sortCode_2;
     }
 
     public Integer getControlSum() {
@@ -86,12 +86,12 @@ public class BankAccountNumber {
         this.individualNumber_4 = individualNumber_4;
     }
 
-    public Integer getIndividualNumber_5() {
-        return individualNumber_5;
+    public Integer getSortCode_2() {
+        return sortCode_2;
     }
 
-    public void setIndividualNumber_5(Integer individualNumber_5) {
-        this.individualNumber_5 = individualNumber_5;
+    public void setSortCode_2(Integer sortCode_2) {
+        this.sortCode_2 = sortCode_2;
     }
 
     @Override
@@ -99,22 +99,22 @@ public class BankAccountNumber {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BankAccountNumber that = (BankAccountNumber) o;
-        return Objects.equals(getControlSum(), that.getControlSum()) && Objects.equals(getSortCode(), that.getSortCode()) && Objects.equals(getIndividualNumber_1(), that.getIndividualNumber_1()) && Objects.equals(getIndividualNumber_2(), that.getIndividualNumber_2()) && Objects.equals(getIndividualNumber_3(), that.getIndividualNumber_3()) && Objects.equals(getIndividualNumber_4(), that.getIndividualNumber_4()) && Objects.equals(getIndividualNumber_5(), that.getIndividualNumber_5());
+        return Objects.equals(getControlSum(), that.getControlSum()) && Objects.equals(getSortCode(), that.getSortCode()) && Objects.equals(getIndividualNumber_1(), that.getIndividualNumber_1()) && Objects.equals(getIndividualNumber_2(), that.getIndividualNumber_2()) && Objects.equals(getIndividualNumber_3(), that.getIndividualNumber_3()) && Objects.equals(getIndividualNumber_4(), that.getIndividualNumber_4()) && Objects.equals(getSortCode_2(), that.getSortCode_2());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getControlSum(), getSortCode(), getIndividualNumber_1(), getIndividualNumber_2(), getIndividualNumber_3(), getIndividualNumber_4(), getIndividualNumber_5());
+        return Objects.hash(getControlSum(), getSortCode(), getIndividualNumber_1(), getIndividualNumber_2(), getIndividualNumber_3(), getIndividualNumber_4(), getSortCode_2());
     }
 
     @Override
     public String toString() {
-        return String.join(" ", controlSum.toString(),
-                String.format(sortCode.toString(), "%02d"),
-                String.format(individualNumber_1.toString(), "%04d"),
-                String.format(individualNumber_2.toString(), "%04d"),
-                String.format(individualNumber_3.toString(), "%04d"),
-                String.format(individualNumber_4.toString(), "%04d"),
-                String.format(individualNumber_5.toString(), "%04d"));
+        return String.join(" ", String.format("%02d", controlSum),
+                String.format("%04d", sortCode),
+                String.format("%04d", sortCode_2),
+                String.format("%04d", individualNumber_1),
+                String.format("%04d", individualNumber_2),
+                String.format("%04d", individualNumber_3),
+                String.format("%04d", individualNumber_4));
     }
 }
