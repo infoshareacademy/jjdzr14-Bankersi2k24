@@ -34,6 +34,7 @@ public class DataGenerator {
         List<Transaction> ret = new ArrayList<>();
         for (int i = 0; i < howMany; i++) {
             BankAccount ba1 = bankAccountList.get(this.random.nextInt(0, bankAccountList.size()));
+            Collections.shuffle(bankAccountList);
             BankAccount ba2 = bankAccountList.stream()
                         .filter(ba -> !(ba1.equals(bankAccountList.indexOf(ba1))))
                         .findFirst()

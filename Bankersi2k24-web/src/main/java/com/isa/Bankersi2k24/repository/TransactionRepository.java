@@ -19,8 +19,6 @@ public class TransactionRepository extends Serializable<Transaction> {
     }
 
     public List<Transaction> getAllTransactions() {
-        for(Transaction t:transactionList)
-            System.out.println(t.getSenderAccountNumber().toString());
         return this.transactionList;
     }
 
