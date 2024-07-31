@@ -35,8 +35,7 @@ public class TransactionRepository extends Serializable<Transaction> {
     }
 
     public void addTransaction(Transaction transaction){
-        this.transactionList.add(transaction);
-        this.save();
+        this.save(transaction);
         this.invalidateTransactionList();
     }
 

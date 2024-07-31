@@ -3,27 +3,28 @@ package com.isa.Bankersi2k24.models;
 import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class BankAccount {
+public class BankAccount extends Entity{
     private Integer availableQuota;
     private Currencies currency;
     private List<Transaction> transactionList;
     private BankAccountNumber bankAccountNumber;
-    private Integer userId;
+    private BigInteger userId;
 
     public BankAccount() {
         this.transactionList = new ArrayList<>();
     }
 
-    public Integer getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 

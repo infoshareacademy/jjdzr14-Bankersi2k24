@@ -6,6 +6,8 @@ import com.isa.Bankersi2k24.models.Transaction;
 import com.isa.Bankersi2k24.repository.BankAccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+
 @Service
 public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
@@ -22,7 +24,7 @@ public class BankAccountService {
         return this.bankAccountRepository.getBankAccount(ban);
     }
 
-    public BankAccount createNewBankAccount(Integer forUserId){
+    public BankAccount createNewBankAccount(BigInteger forUserId){
         BankAccount ban = new BankAccount();
         ban.setUserId(forUserId);
         ban.setBankAccountNumber(BankAccountNumberService.generateRandomBankAccountNumber());
@@ -32,16 +34,6 @@ public class BankAccountService {
 
     public void saveBankAccount(BankAccount bankAccount){
         this.bankAccountRepository.saveNewBankAccount(bankAccount);
-    }
-
-    public boolean updateBankAccount(BankAccount bankAccount) throws Exception {
-        if(this.bankAccountRepository.queryBankAccounts(ba->ba == bankAccount)){
-            this.bankAccountRepository.updateBankAccount(bankAccount);
-            return true;
-        }else{
-            throw new Exception(String.format("Such bank account (number: %s) does not exist",
-                    bankAccount.getBankAccountNumber()));
-        }
     }
 
     public boolean deleteBankAccount(BankAccountNumber bankAccountNumber) throws Exception {

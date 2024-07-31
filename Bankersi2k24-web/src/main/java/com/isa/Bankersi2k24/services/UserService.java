@@ -7,6 +7,7 @@ import com.isa.Bankersi2k24.models.User;
 import com.isa.Bankersi2k24.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -31,15 +32,11 @@ public class UserService {
         return user;
     }
 
-    private Integer findNewIdForUser(){
+    private BigInteger findNewIdForUser(){
         if(this.userRepository.fetchAllUsers().isEmpty())
-            return 1;
+            return BigInteger.ONE;
         else {
-            return this.userRepository.fetchAllUsers()
-                    .stream()
-                    .mapToInt(User::getId)
-                    .max()
-                    .orElseThrow() +1;
+            return this.userRepository.getNewId();
         }
     }
 

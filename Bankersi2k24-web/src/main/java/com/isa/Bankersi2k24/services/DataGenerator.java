@@ -3,6 +3,7 @@ package com.isa.Bankersi2k24.services;
 import com.isa.Bankersi2k24.models.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class DataGenerator {
 
         List<Transaction> transactions = this.generateRandomTranssactions(howMany, bankAccountList);
         transactions.forEach(transacrionService::triggerTransaction);
-        //transactions.forEach(transacrionService::saveNewTransaction);
+        transactions.forEach(transacrionService::saveNewTransaction);
     }
 
     private List<Transaction> generateRandomTranssactions(int howMany, List<BankAccount> bankAccountList){
@@ -50,6 +51,7 @@ public class DataGenerator {
     private List<BankAccount> generateBankAccountsForUsers(List<User> users){
         List<BankAccount> bankAccounts = new ArrayList<>(users.size());
         BankAccountService bankAccountService = new BankAccountService();
+        Collections.shuffle(users);
         for(User user : users){
             BankAccount bankAccount = bankAccountService.createNewBankAccount(user.getId());
             bankAccount.setAvailableQuota(new Random().nextInt(0,10000));

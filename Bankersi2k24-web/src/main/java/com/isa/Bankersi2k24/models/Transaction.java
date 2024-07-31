@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-public class Transaction {
+public class Transaction extends Entity{
     private String transactionTitle;
     private int quota;
     private BankAccountNumber senderAccountNumber;

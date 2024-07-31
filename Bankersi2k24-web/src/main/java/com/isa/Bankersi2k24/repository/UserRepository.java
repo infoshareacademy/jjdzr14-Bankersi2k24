@@ -38,15 +38,6 @@ public class UserRepository extends Serializable<User> {
         this.invalidateUserList();
     }
 
-    public void updateUser(User User){
-        this.users.set(
-                this.users.indexOf(User),
-                User
-        );
-        this.save();
-        this.invalidateUserList();
-    }
-
     public boolean queryUsers(Predicate<User> predicate){
         return !this.users.stream().noneMatch(predicate);
     }

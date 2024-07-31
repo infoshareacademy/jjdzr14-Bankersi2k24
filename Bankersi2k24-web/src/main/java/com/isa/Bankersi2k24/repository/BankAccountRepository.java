@@ -9,14 +9,7 @@ import java.util.function.Predicate;
 
 public class BankAccountRepository extends Serializable<BankAccount> {
     private List<BankAccount> bankAccounts;
-//    private static BankAccountRepository INSTANCE = null;
 
-//    public static BankAccountRepository BankAccountRepository(){
-//        if(INSTANCE == null) {
-//            INSTANCE = new BankAccountRepository();
-//        }
-//        return INSTANCE;
-//    }
     public BankAccountRepository() {
         super(FileName.BANKACCOUNT, BankAccount.class);
         this.bankAccounts = fetchAllObjects();
@@ -35,15 +28,6 @@ public class BankAccountRepository extends Serializable<BankAccount> {
 
     public void saveNewBankAccount(BankAccount ban){
         this.save(ban);
-        this.invalidateBankAccountList();
-    }
-
-    public void updateBankAccount(BankAccount bankAccount){
-        this.bankAccounts.set(
-                this.bankAccounts.indexOf(bankAccount),
-                bankAccount
-        );
-        this.save();
         this.invalidateBankAccountList();
     }
 

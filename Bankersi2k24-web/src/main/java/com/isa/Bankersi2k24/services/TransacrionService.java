@@ -38,7 +38,8 @@ public class TransacrionService {
         BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
         BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
 
-        if(this.verifyTransaction(sender, recipient)){
+        try{
+            this.verifyTransaction(sender, recipient);
             sender.setAvailableQuota(sender.getAvailableQuota()-transaction.getQuota());
             recipient.setAvailableQuota(recipient.getAvailableQuota()+transaction.getQuota());
 
@@ -50,6 +51,8 @@ public class TransacrionService {
             bankAccountService.addToTransactionList(recipient, transaction);
 
             return true;
+        } catch (Exception e){
+            //there was no available quota, print the msg
         }
         return false;
     }
