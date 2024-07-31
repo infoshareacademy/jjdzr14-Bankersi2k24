@@ -69,7 +69,6 @@ public class Transaction extends Entity{
     }
 
     public Integer getTrackingNumber() {
-        this.trackingNumber = this.hashCode();
         return trackingNumber;
     }
 

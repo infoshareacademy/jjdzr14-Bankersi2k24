@@ -26,7 +26,6 @@ public class Serializable<T extends Entity>{
     public Serializable(FileName fileName, Class<T> objectType) {
         this.objectType = objectType;
         this.objectMapper = new ObjectMapper();
-        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         this.objectMapper.registerModule(new JavaTimeModule());
         this.fileService = new FileService(fileName.getName());
     }
