@@ -13,14 +13,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="transaction : ${transactionList}" th:object="${transactionList}">
-            <td th:text="*{transactionDate}"></td>
-            <td th:text="*{senderAccountNumber}"></td>
-            <td th:text="*{destinationAccountNumber}"></td>
-            <td th:text="*{quota}"></td>
-            <td th:text="*{transactionTitle}"></td>
-            <td th:text="*{isComplete}"></td>
-            <td th:text="*{trackingNumber}"></td>
+        <tr th:each="transaction : ${transactionList}" >
+            <td th:text="*{#temporals.format(transaction.transactionDate, 'dd-MM-yyyy HH:mm')} ?: 'not set yet'"></td>
+            <td th:text="*{transaction.senderAccountNumber}"></td>
+            <td th:text="*{transaction.destinationAccountNumber}"></td>
+            <td th:text="*{transaction.quota}"></td>
+            <td th:text="*{transaction.transactionTitle}"></td>
+            <td th:text="*{transaction.isComplete}"></td>
+            <td th:text="*{transaction.trackingNumber}"></td>
         </tr>
         </tbody>
     </table>

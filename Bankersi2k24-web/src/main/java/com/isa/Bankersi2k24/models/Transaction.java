@@ -2,6 +2,7 @@ package com.isa.Bankersi2k24.models;
 
 import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -73,7 +74,8 @@ public class Transaction extends Entity{
     }
 
     public void setTrackingNumber() {
-        this.trackingNumber = (this.hashCode() < 0 ? this.hashCode() * (-1) : this.hashCode());
+        this.trackingNumber = this.hashCode();
+        if(this.trackingNumber < 0 ) this.trackingNumber *= -1;
     }
 
 
