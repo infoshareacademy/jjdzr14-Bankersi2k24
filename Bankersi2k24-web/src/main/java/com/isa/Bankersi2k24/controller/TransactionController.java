@@ -4,6 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.isa.Bankersi2k24.services.TransacrionService;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.math.BigInteger;
 
 @Controller
 public class TransactionController {

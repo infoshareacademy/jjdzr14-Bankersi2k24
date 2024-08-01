@@ -7,6 +7,8 @@ import com.isa.Bankersi2k24.repository.BankAccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BankAccountService {
@@ -14,6 +16,11 @@ public class BankAccountService {
 
     public BankAccountService() {
         this.bankAccountRepository = new BankAccountRepository();
+    }
+
+    public List<BankAccount> getBankAccountsForUser(BigInteger userId){
+        return this.bankAccountRepository.fetchAllBankAccounts().stream().filter (
+                ba -> ba.getUserId().equals(userId)).collect(Collectors.toList());
     }
 
     public BankAccount getBankAccount(String ban) {
@@ -38,19 +45,20 @@ public class BankAccountService {
 
     public boolean deleteBankAccount(BankAccountNumber bankAccountNumber) throws Exception {
         // need to perform checks if there are any transactions assosiated with this BAN
-        if(this.bankAccountRepository.queryBankAccounts(ba -> (ba.getBankAccountNumber() == bankAccountNumber &&
-                                                                    ba.getTransactionList()
-                                                                            .stream()
-                                                                            .anyMatch(t -> !t.isComplete())))){
-            throw new Exception(String.format("Bank account of number %s has open transactions and cannot be deleted",
-                    bankAccountNumber.toString()));
-        }else {
-            if(this.bankAccountRepository.deleteBankAccount(bankAccountNumber))
-                return true;
-            else
-                throw new Exception(String.format("Could not delete bank account %s from DB",
-                        bankAccountNumber.toString()));
-        }
+//        if(this.bankAccountRepository.queryBankAccounts(ba -> (ba.getBankAccountNumber() == bankAccountNumber &&
+//                                                                    ba.getTransactionList()
+//                                                                            .stream()
+//                                                                            .anyMatch(t -> !t.isComplete())))){
+//            throw new Exception(String.format("Bank account of number %s has open transactions and cannot be deleted",
+//                    bankAccountNumber.toString()));
+//        }else {
+//            if(this.bankAccountRepository.deleteBankAccount(bankAccountNumber))
+//                return true;
+//            else
+//                throw new Exception(String.format("Could not delete bank account %s from DB",
+//                        bankAccountNumber.toString()));
+//        }
+        return false;
     }
 
     public boolean deleteBankAccount(String ban) throws Exception {
@@ -58,7 +66,12 @@ public class BankAccountService {
     }
 
     public void addToTransactionList(BankAccount bankAccount, Transaction transaction) {
-        bankAccount.getTransactionList().add(transaction);
+        bankAccount.getTransactionList().add(transaction.getId());
+        try {
+            bankAccountRepository.updateBankAccount(bankAccount);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 }

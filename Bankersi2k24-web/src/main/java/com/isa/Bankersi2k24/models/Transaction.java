@@ -84,11 +84,14 @@ public class Transaction extends Entity{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return getQuota() == that.getQuota() && isComplete() == that.isComplete() && Objects.equals(getTransactionTitle(), that.getTransactionTitle()) && Objects.equals(getSenderAccountNumber(), that.getSenderAccountNumber()) && Objects.equals(getDestinationAccountNumber(), that.getDestinationAccountNumber()) && Objects.equals(getTransactionDate(), that.getTransactionDate()) && Objects.equals(trackingNumber, that.trackingNumber);
+        return getQuota() == that.getQuota() && Objects.equals(getTransactionTitle(), that.getTransactionTitle()) && Objects.equals(getSenderAccountNumber(), that.getSenderAccountNumber()) && Objects.equals(getDestinationAccountNumber(), that.getDestinationAccountNumber()) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTransactionTitle(), getQuota(), getSenderAccountNumber(), getDestinationAccountNumber(), getTransactionDate());
+        //if(this.trackingNumber == null)
+            return Objects.hash(getTransactionTitle(), getQuota(), getSenderAccountNumber(), getDestinationAccountNumber());
+//        else
+//            return Objects.hash(getTransactionTitle(), getQuota(), getSenderAccountNumber(), getDestinationAccountNumber(), getTrackingNumber(), getId());
     }
 }

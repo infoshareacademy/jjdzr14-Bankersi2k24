@@ -12,7 +12,7 @@ import java.util.Random;
 public class BankAccount extends Entity{
     private Integer availableQuota;
     private Currencies currency;
-    private List<Transaction> transactionList;
+    private List<BigInteger> transactionList;
     private BankAccountNumber bankAccountNumber;
     private BigInteger userId;
 
@@ -43,7 +43,7 @@ public class BankAccount extends Entity{
     public void setAvailableQuota(Integer availableQuota) {
         this.availableQuota = availableQuota;
     }
-    public List<Transaction> getTransactionList() {
+    public List<BigInteger> getTransactionList() {
         return transactionList;
     }
 

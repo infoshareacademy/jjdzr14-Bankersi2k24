@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" th:unless="${errorMsg}">
     <p><h1>Transactions list:</h1></p>
     <table class="table table-striped tfixed mt-5">
         <thead>
@@ -16,7 +16,7 @@
         <tr th:each="transaction : ${transactionList}" >
             <td th:text="*{#temporals.format(transaction.transactionDate, 'dd-MM-yyyy HH:mm')} ?: 'not set yet'"></td>
             <td th:text="*{transaction.senderAccountNumber.toString()}"></td>
-            <td th:text="*{transaction.destinationAccountNumber}"></td>
+            <td th:text="*{transaction.destinationAccountNumber.toString()}"></td>
             <td th:text="*{transaction.quota}"></td>
             <td th:text="*{transaction.transactionTitle}"></td>
             <td th:text="*{transaction.isComplete}"></td>

@@ -15,7 +15,6 @@ public class User extends Entity{
     private String email;
     private String pesel;
     private Date creationDate;
-    private Integer id;
 
     public User() {
         this.creationDate = new Date();

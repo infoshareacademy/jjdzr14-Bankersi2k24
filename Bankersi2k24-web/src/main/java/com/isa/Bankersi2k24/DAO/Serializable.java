@@ -38,6 +38,10 @@ public class Serializable<T extends Entity>{
         this.fileService.saveJson(this.serialize(pojos));
     }
 
+    public void saveAllObjects(List<T> updatedList){
+        this.fileService.saveJson(this.serialize(updatedList));
+    }
+
     public String serialize(List<T> pojos){
         /**
          * method that converts an object list to JSON entity

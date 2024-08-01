@@ -26,8 +26,9 @@ public class DataGenerator {
         bankAccountList.forEach(bankAccountService::saveBankAccount);
 
         List<Transaction> transactions = this.generateRandomTranssactions(howMany, bankAccountList);
-        transactions.forEach(transacrionService::triggerTransaction);
         transactions.forEach(transacrionService::saveNewTransaction);
+        transactions.forEach(transacrionService::triggerTransaction);
+        transactions.forEach(transacrionService::updateTransaction);
     }
 
     private List<Transaction> generateRandomTranssactions(int howMany, List<BankAccount> bankAccountList){
@@ -36,7 +37,7 @@ public class DataGenerator {
             BankAccount ba1 = bankAccountList.get(this.random.nextInt(0, bankAccountList.size()));
             Collections.shuffle(bankAccountList);
             BankAccount ba2 = bankAccountList.stream()
-                        .filter(ba -> !(ba1.equals(bankAccountList.indexOf(ba1))))
+                        .filter(ba -> !(ba1.equals(ba)))
                         .findFirst()
                         .get();
             Transaction transaction = new Transaction();

@@ -66,4 +66,16 @@ public class UserService {
         return this.userRepository.fetchAllUsers();
     }
 
+    public String getUserName(BigInteger id) throws Exception {
+        try{
+            return this.fetchAllUsers().stream().filter(u -> u.getId().equals(id))
+                    .findFirst()
+                    .orElseThrow()
+                    .getName();
+        }catch (Exception e){
+            throw new Exception(String.format("User with id: %d does not exist", id));
+        }
+
+    }
+
 }

@@ -4,6 +4,9 @@
 <body class="h-100">
 <main class="flex-shrink-0">
     <div th:replace="~{fragments::menu}" class="container"></div>
+    <div th:if="${errorMsg}">
+        <div th:replace="~{fragments::errorBox}"></div>
+    </div>
     <div th:replace="~{${content}}"></div>
 </main>
 <footer th:replace="~{fragments::footer}"></footer>

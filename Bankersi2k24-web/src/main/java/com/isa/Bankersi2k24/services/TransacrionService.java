@@ -22,9 +22,12 @@ public class TransacrionService {
         return this.transactionRepository.getAllTransactions();
     }
 
-    private boolean verifyTransaction(BankAccount sender, BankAccount recepient) throws RuntimeException{
-        if(sender.getAvailableQuota() < recepient.getAvailableQuota()){
+    private boolean verifyTransaction(BankAccount sender, BankAccount recepient, Transaction transaction) throws RuntimeException{
+        if(sender.getAvailableQuota() < transaction.getQuota()){
             throw new RuntimeException("Not enough quota on sender account");
+        }
+        if(sender.getCurrency() != recepient.getCurrency()){
+            throw new RuntimeException("Currencies do not match");
         }
         return true;
     }
@@ -33,19 +36,28 @@ public class TransacrionService {
         this.transactionRepository.addTransaction(transaction);
     }
 
+    public void updateTransaction(Transaction transaction) {
+        try{
+            this.transactionRepository.updateTransaction(transaction);
+        }catch (Exception e){
+            // handle this error
+        }
+    }
+
     public boolean triggerTransaction(Transaction transaction){
         BankAccountService bankAccountService = new BankAccountService();
         BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
         BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
 
         try{
-            this.verifyTransaction(sender, recipient);
+            this.verifyTransaction(sender, recipient, transaction);
             sender.setAvailableQuota(sender.getAvailableQuota()-transaction.getQuota());
             recipient.setAvailableQuota(recipient.getAvailableQuota()+transaction.getQuota());
 
             transaction.setTransactionDate(LocalDateTime.now());
             transaction.setComplete(true);
             transaction.setTrackingNumber();
+            this.updateTransaction(transaction);
 
             bankAccountService.addToTransactionList(sender, transaction);
             bankAccountService.addToTransactionList(recipient, transaction);

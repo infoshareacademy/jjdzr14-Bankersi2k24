@@ -31,6 +31,16 @@ public class BankAccountRepository extends Serializable<BankAccount> {
         this.invalidateBankAccountList();
     }
 
+    public void updateBankAccount(BankAccount bankAccount) throws Exception {
+        int index = this.bankAccounts.indexOf(bankAccount);
+        if(index < 0) {
+            throw new Exception(String.format("Bank account of id: %d does not exist", bankAccount.getId()));
+        } else{
+            this.bankAccounts.set(index, bankAccount);
+            this.saveAllObjects(this.bankAccounts);
+        }
+    }
+
     public boolean queryBankAccounts(Predicate<BankAccount> predicate){
         return !this.bankAccounts.stream().noneMatch(predicate);
     }

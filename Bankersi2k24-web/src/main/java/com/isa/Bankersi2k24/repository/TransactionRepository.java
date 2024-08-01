@@ -43,4 +43,14 @@ public class TransactionRepository extends Serializable<Transaction> {
         this.transactionList = fetchAllObjects();
     }
 
+    public void updateTransaction(Transaction transaction) throws Exception{
+int index = this.transactionList.indexOf(transaction);
+        if(index < 0){
+            throw new Exception(String.format("Bank account of id: %d does not exist", transaction.getId()));
+        }else{
+            this.transactionList.set(index, transaction);
+            this.saveAllObjects(this.transactionList);
+        }
+    }
+
 }
