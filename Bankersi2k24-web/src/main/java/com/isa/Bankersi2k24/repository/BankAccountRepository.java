@@ -4,8 +4,12 @@ import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class BankAccountRepository extends Serializable {
     private List<BankAccount> bankAccounts;
@@ -50,6 +54,10 @@ public class BankAccountRepository extends Serializable {
     public boolean queryBankAccounts(Predicate<BankAccount> predicate){
         return !this.bankAccounts.stream().noneMatch(predicate);
     }
+    public BankAccount bankAccountByUserID(Predicate<BankAccount> predicate){
+        return this.bankAccounts.stream().filter(predicate).collect(Collectors.toList()).get(0);
+    }
+
 
     public boolean deleteBankAccount(BankAccountNumber ban){
         return this.bankAccounts.removeIf(ba -> ba.getBankAccountNumber() == ban);
