@@ -1,10 +1,10 @@
 <div class="container" th:unless="${errorMsg}">
-    <p><h1>Transactions list:</h1></p>
+    <p><h1>Transaction history:</h1></p>
+    <p><h2>Outgoing transactions list:</h2></p>
     <table class="table table-striped tfixed mt-5">
         <thead>
         <tr>
             <th>Date submitted</th>
-            <th>From</th>
             <th>Destination</th>
             <th>Ammount</th>
             <th>Title</th>
@@ -13,10 +13,32 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="transaction : ${transactionList}" >
+        <tr th:each="transaction : ${outgoingTransactionList}" >
+            <td th:text="*{#temporals.format(transaction.transactionDate, 'dd-MM-yyyy HH:mm')} ?: 'not set yet'"></td>
+            <td th:text="*{transaction.destinationAccountNumber.toString()}"></td>
+            <td th:text="*{transaction.quota}"></td>
+            <td th:text="*{transaction.transactionTitle}"></td>
+            <td th:text="*{transaction.isComplete}"></td>
+            <td th:text="*{transaction.trackingNumber}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><h2>Incomming transactions list:</h2></p>
+    <table class="table table-striped tfixed mt-5">
+        <thead>
+        <tr>
+            <th>Date submitted</th>
+            <th>From</th>
+            <th>Ammount</th>
+            <th>Title</th>
+            <th>Is Complete</th>
+            <th>Tracking number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${incomingTransactionList}" >
             <td th:text="*{#temporals.format(transaction.transactionDate, 'dd-MM-yyyy HH:mm')} ?: 'not set yet'"></td>
             <td th:text="*{transaction.senderAccountNumber.toString()}"></td>
-            <td th:text="*{transaction.destinationAccountNumber.toString()}"></td>
             <td th:text="*{transaction.quota}"></td>
             <td th:text="*{transaction.transactionTitle}"></td>
             <td th:text="*{transaction.isComplete}"></td>

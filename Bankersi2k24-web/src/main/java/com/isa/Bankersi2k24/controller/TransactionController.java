@@ -2,11 +2,11 @@ package com.isa.Bankersi2k24.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import com.isa.Bankersi2k24.services.TransacrionService;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigInteger;
+import java.util.Collections;
 
 @Controller
 public class TransactionController {
@@ -16,11 +16,20 @@ public class TransactionController {
         this.transacrionService = transacrionService;
     }
 
-    @GetMapping("/transactions")
-    public String getAllTransactions(Model model){
-        model.addAttribute("content", "transactionContent")
-                .addAttribute("transactionList", this.transacrionService.getAllTransactions());
-        return "main";
+    @PostMapping(value="/transactions")
+    public String getAllTransactions(@RequestParam("accountId") BigInteger accountId, Model model){
+        try {
+            model.addAttribute("content", "transactionContent")
+                    .addAttribute("outgoingTransactionList", this.transacrionService.getAllOutgoingTransactionsForAccount(accountId))
+                    .addAttribute("incomingTransactionList", this.transacrionService.getAllIncommingTransactionsForAccount(accountId));
+            return "main";
+        }catch (Exception e){
+            model.addAttribute("content", "transactionContent")
+                    .addAttribute("transactionList", Collections.emptyList())
+                    .addAttribute("errorMsg", e.getMessage());
+            return "main";
+        }
+
     }
 
 }

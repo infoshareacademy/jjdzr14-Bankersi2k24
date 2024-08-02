@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +22,12 @@ public class BankAccountService {
     public List<BankAccount> getBankAccountsForUser(BigInteger userId){
         return this.bankAccountRepository.fetchAllBankAccounts().stream().filter (
                 ba -> ba.getUserId().equals(userId)).collect(Collectors.toList());
+    }
+
+    public BankAccount getBankAccount(BigInteger accountId) throws Exception {
+        return this.bankAccountRepository.fetchAllBankAccounts().stream().filter(
+                ba -> Objects.equals(ba.getId(), accountId))
+                .findFirst().orElseThrow();
     }
 
     public BankAccount getBankAccount(String ban) {
@@ -66,7 +73,11 @@ public class BankAccountService {
     }
 
     public void addToTransactionList(BankAccount bankAccount, Transaction transaction) {
-        bankAccount.getTransactionList().add(transaction.getId());
+        if(bankAccount.getBankAccountNumber().equals(transaction.getDestinationAccountNumber()))
+            bankAccount.getIncomingTransactionList().add(transaction.getId());
+        else
+            bankAccount.getOutGoingTransactionList().add(transaction.getId());
+
         try {
             bankAccountRepository.updateBankAccount(bankAccount);
         } catch (Exception e) {

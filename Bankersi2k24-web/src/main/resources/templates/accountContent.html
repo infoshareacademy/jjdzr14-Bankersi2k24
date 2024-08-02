@@ -3,22 +3,32 @@
     <table class="table table-striped tfixed mt-5">
         <thead>
         <tr>
-            <th>ID</th>
+            <!--<th>ID</th>-->
             <th>Account number</th>
             <th>Available quota</th>
             <th>Currency</th>
-            <th>Transactions</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="account : ${accountList}" >
-            <td th:text="*{account.getId()}"></td>
+<!--            <td th:text="*{account.getId()}"></td>-->
             <td th:text="*{account.getBankAccountNumber.toString()}"></td>
             <td th:text="*{account.getAvailableQuota()}"></td>
             <td th:text="*{account.getCurrency()}"></td>
-            <td th:text="*{account.getTransactionList().size()}"></td>
+            <!--<td th:text="*{account.getTransactionList().size()}"></td>-->
+            <td>
+                <form method="POST" th:action="@{/transactions}">
+                    <input type="hidden" name="accountId" id="accountId" th:value="${account.getId()}" />
+                    <button type="submit" name="submit" value="value" class="btn btn-primary">Show transasction history</button>
+                </form>
+                <form method="POST" th:action="@{/transactinos/new}">
+                    <input type="hidden" name="accountId" id="accountId" th:value="${account.getId()}" />
+                    <button type="submit" name="submit" value="value" class="btn btn-primary">Create a new transaction</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/tasks/edit}" class="btn btn-primary">Add new task</a>
+
 </div>

@@ -6,6 +6,7 @@ import com.isa.Bankersi2k24.models.Transaction;
 import com.isa.Bankersi2k24.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,6 +21,30 @@ public class TransacrionService {
 
     public List<Transaction> getAllTransactions(){
         return this.transactionRepository.getAllTransactions();
+    }
+
+    public List<Transaction> getAllOutgoingTransactionsForAccount(BigInteger accountId){
+        BankAccountService bankAccountService = new BankAccountService();
+        try {
+            List<BigInteger> transactions = bankAccountService
+                    .getBankAccount(accountId)
+                    .getOutGoingTransactionList();
+            return this.transactionRepository.getTransactionListForIds(transactions);
+        }catch (Exception e){
+            throw new RuntimeException(String.format("No transactions were found for account: %d", accountId));
+        }
+    }
+
+    public List<Transaction> getAllIncommingTransactionsForAccount(BigInteger accountId){
+        BankAccountService bankAccountService = new BankAccountService();
+        try {
+            List<BigInteger> transactions = bankAccountService
+                    .getBankAccount(accountId)
+                    .getIncomingTransactionList();
+            return this.transactionRepository.getTransactionListForIds(transactions);
+        }catch (Exception e){
+            throw new RuntimeException(String.format("No transactions were found for account: %d", accountId));
+        }
     }
 
     private boolean verifyTransaction(BankAccount sender, BankAccount recepient, Transaction transaction) throws RuntimeException{

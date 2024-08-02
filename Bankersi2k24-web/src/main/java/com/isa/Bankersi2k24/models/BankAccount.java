@@ -1,23 +1,21 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.DAO.FileName;
-import com.isa.Bankersi2k24.DAO.Serializable;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class BankAccount extends Entity{
     private Integer availableQuota;
     private Currencies currency;
-    private List<BigInteger> transactionList;
+    private List<BigInteger> outGoingTransactionList;
+    private List<BigInteger> incomingTransactionList;
     private BankAccountNumber bankAccountNumber;
     private BigInteger userId;
 
     public BankAccount() {
-        this.transactionList = new ArrayList<>();
+        this.outGoingTransactionList = new ArrayList<>();
+        this.incomingTransactionList = new ArrayList<>();
     }
 
     public BigInteger getUserId() {
@@ -43,9 +41,22 @@ public class BankAccount extends Entity{
     public void setAvailableQuota(Integer availableQuota) {
         this.availableQuota = availableQuota;
     }
-    public List<BigInteger> getTransactionList() {
-        return transactionList;
+    public List<BigInteger> getOutGoingTransactionList() {
+        return outGoingTransactionList;
     }
+
+    public void setOutGoingTransactionList(List<BigInteger> outGoingTransactionList) {
+        this.outGoingTransactionList = outGoingTransactionList;
+    }
+
+    public List<BigInteger> getIncomingTransactionList() {
+        return incomingTransactionList;
+    }
+
+    public void setIncomingTransactionList(List<BigInteger> incomingTransactionList) {
+        this.incomingTransactionList = incomingTransactionList;
+    }
+
 
     public BankAccountNumber getBankAccountNumber() {
         return bankAccountNumber;

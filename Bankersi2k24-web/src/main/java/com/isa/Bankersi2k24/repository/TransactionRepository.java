@@ -5,7 +5,9 @@ import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
 import com.isa.Bankersi2k24.models.Transaction;
 import com.isa.Bankersi2k24.models.User;
+import com.isa.Bankersi2k24.services.BankAccountService;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -26,6 +28,16 @@ public class TransactionRepository extends Serializable<Transaction> {
         return this.transactionList.stream()
                 .filter(t -> t.getSenderAccountNumber() == bankAccountNumber)
                 .collect(Collectors.toList());
+    }
+
+    public List<Transaction> getTransactionListForIds(List<BigInteger> transactionIds){
+        List<Transaction> ret = this.transactionList.stream()
+                .filter(
+                        t -> transactionIds.stream()
+                                .anyMatch(
+                                        tt -> t.getId().equals(tt)
+                                )).toList();
+        return ret;
     }
 
     public List<Transaction> queryTransactions(Predicate<Transaction> predicate){
