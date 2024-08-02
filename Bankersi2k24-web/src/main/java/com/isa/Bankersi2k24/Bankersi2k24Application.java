@@ -10,7 +10,7 @@ import java.util.List;
 public class Bankersi2k24Application {
 
 	public static void main(String[] args) {
-		//DataGenerator dataGenerator = new DataGenerator();
+		DataGenerator dataGenerator = new DataGenerator();
 		SpringApplication.run(Bankersi2k24Application.class, args);
 
 
