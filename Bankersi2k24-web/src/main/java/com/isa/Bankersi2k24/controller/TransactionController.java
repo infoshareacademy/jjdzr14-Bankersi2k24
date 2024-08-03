@@ -2,8 +2,10 @@ package com.isa.Bankersi2k24.controller;
 
 import com.isa.Bankersi2k24.models.Currencies;
 import com.isa.Bankersi2k24.models.Transaction;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.isa.Bankersi2k24.services.TransacrionService;
 
@@ -51,7 +53,8 @@ public class TransactionController {
     }
 
     @PostMapping(value = "/transactions/createNewTransaction")
-    public String createNewTransaction(@ModelAttribute Transaction transaction,  Model model){
-        return "main";
+    public String createNewTransaction(@ModelAttribute @Valid Transaction transaction, Model model, BindingResult result){
+        //if(result.hasErrors())
+            return "main";
     }
 }

@@ -7,14 +7,18 @@
             <tr>
                 <td>From account: </td>
                 <td th:text="*{senderAccountNumber}"></td>
+                <input type="hidden" name="senderAccountNumber" id="senderAccountNumber" th:value="*{senderAccountNumber}" />
+                <td></td>
             </tr>
             <tr>
                 <td>Destination account number:</td>
                 <td><input type="text" th:field="*{destinationAccountNumber}" class="form-text"/></td>
+                <td th:if="${#fields.hasErrors('destinationAccountNumber')}" th:errors="*{destinationAccountNumber}"></td>
             </tr>
             <tr>
                 <td>Amount</td>
                 <td><input type="text" th:field="*{quota}"/></td>
+                <td th:if="${#fields.hasErrors('quota')}" th:errors="*{quota}"></td>
             </tr>
             <tr>
                 <td>Currency</td>
