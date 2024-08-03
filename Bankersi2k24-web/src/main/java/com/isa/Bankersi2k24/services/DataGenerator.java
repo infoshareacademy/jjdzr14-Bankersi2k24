@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class DataGenerator {
 
@@ -25,13 +24,13 @@ public class DataGenerator {
         List<BankAccount> bankAccountList = this.generateBankAccountsForUsers(users);
         bankAccountList.forEach(bankAccountService::saveBankAccount);
 
-        List<Transaction> transactions = this.generateRandomTranssactions(howMany, bankAccountList);
+        List<Transaction> transactions = this.generateRandomTransactions(howMany, bankAccountList);
         transactions.forEach(transacrionService::saveNewTransaction);
         transactions.forEach(transacrionService::triggerTransaction);
         transactions.forEach(transacrionService::updateTransaction);
     }
 
-    private List<Transaction> generateRandomTranssactions(int howMany, List<BankAccount> bankAccountList){
+    private List<Transaction> generateRandomTransactions(int howMany, List<BankAccount> bankAccountList){
         List<Transaction> ret = new ArrayList<>();
         for (int i = 0; i < howMany; i++) {
             BankAccount ba1 = bankAccountList.get(this.random.nextInt(0, bankAccountList.size()));
@@ -45,6 +44,7 @@ public class DataGenerator {
             transaction.setQuota(this.random.nextInt(0,350));
             transaction.setSenderAccountNumber(ba1.getBankAccountNumber());
             transaction.setDestinationAccountNumber(ba2.getBankAccountNumber());
+            transaction.setCurrency(Currencies.EUR);
             ret.add(transaction);
         }
         return ret;

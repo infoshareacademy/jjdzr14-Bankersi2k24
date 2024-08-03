@@ -22,7 +22,7 @@
                     <input type="hidden" name="accountId" id="accountId" th:value="${account.getId()}" />
                     <button type="submit" name="submit" value="value" class="btn btn-primary">Show transasction history</button>
                 </form>
-                <form method="POST" th:action="@{/transactinos/new}">
+                <form method="POST" th:action="@{/transactions/new}">
                     <input type="hidden" name="accountId" id="accountId" th:value="${account.getId()}" />
                     <button type="submit" name="submit" value="value" class="btn btn-primary">Create a new transaction</button>
                 </form>

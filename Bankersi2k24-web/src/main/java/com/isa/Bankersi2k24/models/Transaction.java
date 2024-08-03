@@ -1,17 +1,12 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.DAO.FileName;
-import com.isa.Bankersi2k24.DAO.Serializable;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 public class Transaction extends Entity{
     private String transactionTitle;
     private int quota;
+    private Currencies currency;
     private BankAccountNumber senderAccountNumber;
     private BankAccountNumber destinationAccountNumber;
     private LocalDateTime transactionDate;
@@ -78,6 +73,13 @@ public class Transaction extends Entity{
         if(this.trackingNumber < 0 ) this.trackingNumber *= -1;
     }
 
+    public Currencies getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currencies currency) {
+        this.currency = currency;
+    }
 
     @Override
     public boolean equals(Object o) {

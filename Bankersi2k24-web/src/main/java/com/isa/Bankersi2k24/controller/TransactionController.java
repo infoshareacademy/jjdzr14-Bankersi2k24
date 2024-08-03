@@ -1,5 +1,7 @@
 package com.isa.Bankersi2k24.controller;
 
+import com.isa.Bankersi2k24.models.Currencies;
+import com.isa.Bankersi2k24.models.Transaction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,27 @@ public class TransactionController {
                     .addAttribute("errorMsg", e.getMessage());
             return "main";
         }
-
     }
 
+    @PostMapping(value="/transactions/new")
+    public String newTransactionForm(@RequestParam("accountId") BigInteger accountId, Model model){
+        try{
+            model.addAttribute("content", "newTransaction")
+                    .addAttribute("accountId", accountId)
+                    .addAttribute("transaction", this.transacrionService.prepareDraftTransactionForAccount(accountId))
+                    .addAttribute("accountDefaultCurrency",transacrionService.getCurrencyForAccount(accountId))
+                    .addAttribute("currencies", Currencies.values());
+            return "main";
+        }catch (Exception e){
+            model.addAttribute("content", "transactionContent")
+                    .addAttribute("transactionList", Collections.emptyList())
+                    .addAttribute("errorMsg", e.getMessage());
+            return "main";
+        }
+    }
+
+    @PostMapping(value = "/transactions/createNewTransaction")
+    public String createNewTransaction(@ModelAttribute Transaction transaction,  Model model){
+        return "main";
+    }
 }

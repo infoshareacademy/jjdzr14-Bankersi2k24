@@ -1,0 +1,40 @@
+<div class="container" th:unless="${errorMsg}">
+    <p><h1>New transaction:</h1></p>
+    <form method="POST" th:action="@{/transactions/createNewTransaction}" th:object="${transaction}">
+        <input type="hidden" name="senderAccountId" id="senderAccountId" th:value="${accountId}" />
+        <table class="table table-striped tfixed mt-5" >
+            <tbody>
+            <tr>
+                <td>From account: </td>
+                <td th:text="*{senderAccountNumber}"></td>
+            </tr>
+            <tr>
+                <td>Destination account number:</td>
+                <td><input type="text" th:field="*{destinationAccountNumber}" class="form-text"/></td>
+            </tr>
+            <tr>
+                <td>Amount</td>
+                <td><input type="text" th:field="*{quota}"/></td>
+            </tr>
+            <tr>
+                <td>Currency</td>
+                <td>
+                    <select id="currency" name="currency" class="form-select">
+                        <option th:each="curr : ${currencies}"
+                                th:value="${curr}"
+                                th:text="${curr}"
+                                th:selected="${accountDefaultCurrency == curr}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td><input type="text" th:field="*{transactionTitle}"/></td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Send</button>
+        <a class="btn btn-outline-secondary" th:href="@{/${accountId}/account-list}">Cancel</a>
+    </form>
+</div>
