@@ -1,5 +1,6 @@
 package com.isa.Bankersi2k24.models;
 
+import com.isa.Bankersi2k24.interfaces.BankAccountNumberConstraint;
 import com.isa.Bankersi2k24.services.BankAccountNumberService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,8 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static com.isa.Bankersi2k24.services.BankAccountNumberService.bankAccountRegexp;
 
 
 public class Transaction extends Entity{
@@ -24,10 +27,12 @@ public class Transaction extends Entity{
     @Length(min = 26, max = 26, message = "Account number in format: AA BBBB CCCC DDDD EEEE FFFF")
     //(^\d{2,26}$)|(^[\d\s]{26,38}$)
     //more strict pattern: (^\d{2,26}$)|(^[\d]{2}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}$)
-    @Pattern(regexp = "(^\\d{2,26}$)|(^[\\d]{2}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}$)",
-            message = "Account number in format: AABBBBCCCCDDDDEEEEFFFF or AA BBBB CCCC DDDD EEEE FFFF")
+//    @Pattern(regexp = bankAccountRegexp,
+//            message = "Account number in format: AABBBBCCCCDDDDEEEEFFFF or AA BBBB CCCC DDDD EEEE FFFF")
+    @BankAccountNumberConstraint
     private BankAccountNumber senderAccountNumber;
     @NotNull
+    @BankAccountNumberConstraint
     private BankAccountNumber destinationAccountNumber;
     private LocalDateTime transactionDate;
     private boolean isComplete;

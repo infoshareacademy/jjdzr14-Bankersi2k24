@@ -54,7 +54,11 @@ public class TransactionController {
 
     @PostMapping(value = "/transactions/createNewTransaction")
     public String createNewTransaction(@ModelAttribute @Valid Transaction transaction, Model model, BindingResult result){
-        //if(result.hasErrors())
-            return "main";
+        if(result.hasErrors()) {
+            model.addAttribute("content", "newTransaction")
+                    .addAttribute("transactionList", Collections.emptyList())
+                    .addAttribute("errorMsg", "BAN in wrong format");
+        }
+        return "main";
     }
 }
