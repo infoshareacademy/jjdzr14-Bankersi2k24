@@ -39,6 +39,6 @@
             </tbody>
         </table>
         <button type="submit" class="btn btn-primary">Send</button>
-        <a class="btn btn-outline-secondary" th:href="@{/accounts/${accountId}/account-list}">Cancel</a>
+        <a class="btn btn-outline-secondary" th:href="@{/accounts/{accountId}/account-list(accountId=${accountId})}">Cancel</a>
     </form>
 </div>
