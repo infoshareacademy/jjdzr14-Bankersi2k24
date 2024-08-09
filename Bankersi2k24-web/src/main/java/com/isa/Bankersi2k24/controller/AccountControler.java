@@ -22,7 +22,7 @@ public class AccountControler {
         this.userService = userService;
     }
 
-    @GetMapping("/{userId}/account-list")
+    @GetMapping("/accounts/{userId}/account-list")
     public String getAccountForUser(@PathVariable(value = "userId") BigInteger id, Model model) {
         try {
             model.addAttribute("content", "accountContent")
