@@ -7,17 +7,10 @@ import com.isa.Bankersi2k24.models.BankAccountNumber;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BankAccountRepository extends Serializable {
+public class BankAccountRepository extends Serializable<BankAccount> {
     private List<BankAccount> bankAccounts;
-    private static BankAccountRepository INSTANCE = null;
 
-    public static BankAccountRepository BankAccountRepository(){
-        if(INSTANCE == null) {
-            INSTANCE = new BankAccountRepository();
-        }
-        return INSTANCE;
-    }
-    private BankAccountRepository() {
+    public BankAccountRepository() {
         super(FileName.BANKACCOUNT, BankAccount.class);
         this.bankAccounts = fetchAllObjects();
     }
@@ -38,13 +31,14 @@ public class BankAccountRepository extends Serializable {
         this.invalidateBankAccountList();
     }
 
-    public void updateBankAccount(BankAccount bankAccount){
-        this.bankAccounts.set(
-                this.bankAccounts.indexOf(bankAccount),
-                bankAccount
-        );
-        this.save();
-        this.invalidateBankAccountList();
+    public void updateBankAccount(BankAccount bankAccount) throws Exception {
+        int index = this.bankAccounts.indexOf(bankAccount);
+        if(index < 0) {
+            throw new Exception(String.format("Bank account of id: %d does not exist", bankAccount.getId()));
+        } else{
+            this.bankAccounts.set(index, bankAccount);
+            this.saveAllObjects(this.bankAccounts);
+        }
     }
 
     public boolean queryBankAccounts(Predicate<BankAccount> predicate){

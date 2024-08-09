@@ -5,6 +5,10 @@ public enum FileName {
     TRANSACITON("transactions.json"),
     BANKACCOUNT("bank_accounts.json");
 
+    public String getName() {
+        return name;
+    }
+
     private final String name;
 
     FileName(String fileName) {

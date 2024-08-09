@@ -10,7 +10,7 @@ public class FileService {
      * at this phase, we're writing objects in JSON format to a .txt file
      */
 
-    private static Path PATH_TO_FILE =null;
+    private Path PATH_TO_FILE = null;
 
     public FileService(String fileName) {
         PATH_TO_FILE = Paths.get(System.getProperty("user.dir"), fileName);

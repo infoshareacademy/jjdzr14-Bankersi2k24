@@ -7,7 +7,7 @@ import com.isa.Bankersi2k24.services.UserService;
 import java.util.Date;
 import java.util.Objects;
 
-public class User{
+public class User extends Entity{
     private String name ;
     private String login;
     private String password;
@@ -15,7 +15,6 @@ public class User{
     private String email;
     private String pesel;
     private Date creationDate;
-    private Integer id;
 
     public User() {
         this.creationDate = new Date();
@@ -97,11 +96,4 @@ public class User{
         return Objects.hash(getName(), getLogin(), getEmail(), getCreationDate());
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

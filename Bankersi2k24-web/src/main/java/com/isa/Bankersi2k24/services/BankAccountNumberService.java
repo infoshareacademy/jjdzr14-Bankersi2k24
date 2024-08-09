@@ -6,6 +6,8 @@ import com.isa.Bankersi2k24.repository.BankAccountRepository;
 import java.util.Random;
 
 public class BankAccountNumberService {
+
+    public static final String bankAccountRegexp = "(^\\d{2,26}$)|(^[\\d]{2}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}$)";
     public void setBankAccountNumber(BankAccount bankAccount, String bankAccountString){
         bankAccount.setBankAccountNumber(accountNumberStringToBan(bankAccountString));
     }
@@ -33,7 +35,7 @@ public class BankAccountNumberService {
     }
 
     public static boolean checkIfBANexists(BankAccountNumber bankAccountNumber){
-        BankAccountRepository bankAccountRepository = BankAccountRepository.BankAccountRepository();
+        BankAccountRepository bankAccountRepository = new BankAccountRepository();
         return bankAccountRepository.queryBankAccounts(b -> b.getBankAccountNumber() == bankAccountNumber);
     }
 
