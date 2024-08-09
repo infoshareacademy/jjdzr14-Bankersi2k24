@@ -53,12 +53,25 @@ public class TransactionController {
     }
 
     @PostMapping(value = "/transactions/createNewTransaction")
-    public String createNewTransaction(@ModelAttribute @Valid Transaction transaction, Model model, BindingResult result){
+    public String createNewTransaction(@ModelAttribute @Valid Transaction transaction, @RequestParam("senderAccountId") BigInteger accountId, Model model, BindingResult result){
         if(result.hasErrors()) {
             model.addAttribute("content", "newTransaction")
                     .addAttribute("transactionList", Collections.emptyList())
                     .addAttribute("errorMsg", "BAN in wrong format");
+            return "main";
         }
-        return "main";
+        this.transacrionService.saveNewTransaction(transaction);
+
+        try {
+            model.addAttribute("content", "transactionContent")
+                    .addAttribute("outgoingTransactionList", this.transacrionService.getAllOutgoingTransactionsForAccount(accountId))
+                    .addAttribute("incomingTransactionList", this.transacrionService.getAllIncommingTransactionsForAccount(accountId));
+            return "main";
+        }catch (Exception e){
+            model.addAttribute("content", "transactionContent")
+                    .addAttribute("transactionList", Collections.emptyList())
+                    .addAttribute("errorMsg", e.getMessage());
+            return "main";
+        }
     }
 }

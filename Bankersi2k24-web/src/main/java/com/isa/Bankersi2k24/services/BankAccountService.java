@@ -73,10 +73,14 @@ public class BankAccountService {
     }
 
     public void addToTransactionList(BankAccount bankAccount, Transaction transaction) {
-        if(bankAccount.getBankAccountNumber().equals(transaction.getDestinationAccountNumber()))
-            bankAccount.getIncomingTransactionList().add(transaction.getId());
-        else
-            bankAccount.getOutGoingTransactionList().add(transaction.getId());
+        if(bankAccount.getBankAccountNumber().equals(transaction.getDestinationAccountNumber())) {
+            if(!bankAccount.getIncomingTransactionList().contains(transaction.getId()))
+                bankAccount.getIncomingTransactionList().add(transaction.getId());
+        }
+        else {
+            if(!bankAccount.getOutGoingTransactionList().contains(transaction.getId()))
+                bankAccount.getOutGoingTransactionList().add(transaction.getId());
+        }
 
         try {
             bankAccountRepository.updateBankAccount(bankAccount);

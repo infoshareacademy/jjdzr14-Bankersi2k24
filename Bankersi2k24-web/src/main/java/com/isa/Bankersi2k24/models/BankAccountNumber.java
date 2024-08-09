@@ -24,11 +24,11 @@ public class BankAccountNumber {
     public void setBankAccountNumber(
             Integer controlSum,
             Integer sortCode,
+            Integer sortCode_2,
             Integer individualNumber_1,
             Integer individualNumber_2,
             Integer individualNumber_3,
-            Integer individualNumber_4,
-            Integer sortCode_2) {
+            Integer individualNumber_4) {
         this.controlSum = controlSum;
         this.sortCode = sortCode;
         this.individualNumber_1 = individualNumber_1;

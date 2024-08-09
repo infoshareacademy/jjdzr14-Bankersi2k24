@@ -15,24 +15,22 @@ import static com.isa.Bankersi2k24.services.BankAccountNumberService.bankAccount
 
 
 public class Transaction extends Entity{
-    @NotNull
-    @Min(value = 1, message = "Title cannot be empty")
+    @NotNull(message = "Title cannot be empty")
     private String transactionTitle;
     @NotNull(message = "Transaction ammount cannot be empty or 0 or negative")
     @Min(0)
     private int quota;
     @NotNull
     private Currencies currency;
+
     @NotNull
-    @Length(min = 26, max = 26, message = "Account number in format: AA BBBB CCCC DDDD EEEE FFFF")
-    //(^\d{2,26}$)|(^[\d\s]{26,38}$)
-    //more strict pattern: (^\d{2,26}$)|(^[\d]{2}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}$)
+    //@Length(min = 26, max = 26, message = "Account number in format: AA BBBB CCCC DDDD EEEE FFFF")
 //    @Pattern(regexp = bankAccountRegexp,
 //            message = "Account number in format: AABBBBCCCCDDDDEEEEFFFF or AA BBBB CCCC DDDD EEEE FFFF")
-    @BankAccountNumberConstraint
+    //@BankAccountNumberConstraint
     private BankAccountNumber senderAccountNumber;
     @NotNull
-    @BankAccountNumberConstraint
+    //@BankAccountNumberConstraint
     private BankAccountNumber destinationAccountNumber;
     private LocalDateTime transactionDate;
     private boolean isComplete;

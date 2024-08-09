@@ -61,6 +61,13 @@ public class TransacrionService {
 
     public void saveNewTransaction(Transaction transaction){
         this.transactionRepository.addTransaction(transaction);
+
+        BankAccountService bankAccountService = new BankAccountService();
+        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
+        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
+
+        bankAccountService.addToTransactionList(sender, transaction);
+        bankAccountService.addToTransactionList(recipient, transaction);
     }
 
     public void updateTransaction(Transaction transaction) {
