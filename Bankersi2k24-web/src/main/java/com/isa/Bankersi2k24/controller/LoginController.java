@@ -29,7 +29,6 @@ public class LoginController {
                             @ModelAttribute("login") String login,
                             @ModelAttribute("password") String password){
         try{
-            boolean aa = model.containsAttribute("login");
             if(userService.loginUser(login, password)){
                 model.addAttribute("content", "dashboard")
                         .addAttribute("userId",userService.findUserByLogin(login).getId());
