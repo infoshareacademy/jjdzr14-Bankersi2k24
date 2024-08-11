@@ -36,9 +36,11 @@ public class BankAccountController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard(Model model){//}, @ModelAttribute Integer userId){
+    public String showDashboard(Model model, @ModelAttribute("userId") BigInteger userId){
+        boolean aa = model.containsAttribute("userId");
+
         try {
-            Dashboard dashboard = this.bankAccountService.prepareUserDashboard(BigInteger.valueOf(3));
+            Dashboard dashboard = this.bankAccountService.prepareUserDashboard(userId);
             model.addAttribute("content", "dashboard")
                     .addAttribute("dashboard", dashboard);
             return "main";
