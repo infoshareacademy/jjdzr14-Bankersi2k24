@@ -25,9 +25,15 @@ public class DataGenerator {
         bankAccountList.forEach(bankAccountService::saveBankAccount);
 
         List<Transaction> transactions = this.generateRandomTransactions(howMany, bankAccountList);
-        transactions.forEach(transacrionService::saveNewTransaction);
-        transactions.forEach(transacrionService::triggerTransaction);
-        transactions.forEach(transacrionService::updateTransaction);
+        try{
+            for (Transaction transaction : transactions) {
+                transacrionService.saveNewTransaction(transaction);
+                transacrionService.triggerTransaction(transaction);
+                transactions.forEach(transacrionService::updateTransaction);
+            }
+        }catch (Exception e){
+            // not enough quota on account or currency
+        }
     }
 
     private List<Transaction> generateRandomTransactions(int howMany, List<BankAccount> bankAccountList){

@@ -74,17 +74,16 @@ public class TransactionController {
                     .addAttribute("errorMsg", "BAN in wrong format");
             return "main";
         }
-        this.transacrionService.saveNewTransaction(transaction);
 
         try {
+            this.transacrionService.saveNewTransaction(transaction);
             model.addAttribute("content", "transactionContent")
                     .addAttribute("outgoingTransactionList", this.transacrionService.getAllOutgoingTransactionsForAccount(accountId))
                     .addAttribute("userId", userId)
                     .addAttribute("incomingTransactionList", this.transacrionService.getAllIncommingTransactionsForAccount(accountId));
             return "main";
         }catch (Exception e){
-            model.addAttribute("content", "transactionContent")
-                    .addAttribute("transactionList", Collections.emptyList())
+            model.addAttribute("content", "newTransaction")
                     .addAttribute("userId", userId)
                     .addAttribute("errorMsg", e.getMessage());
             return "main";
