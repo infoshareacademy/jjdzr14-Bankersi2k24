@@ -20,10 +20,12 @@
             <td>
                 <form method="POST" th:action="@{/transactions}">
                     <input type="hidden" name="accountId" id="accountId" th:value="${account.getId()}" />
+                    <input type="hidden" name="userId" id="userId" th:value="${userId}" />
                     <button type="submit" name="submit" value="value" class="btn btn-primary">Show transasction history</button>
                 </form>
                 <form method="POST" th:action="@{/transactions/new}">
                     <input type="hidden" name="accountId" id="accountId" th:value="${account.getId()}" />
+                    <input type="hidden" name="userId" id="userId" th:value="${userId}" />
                     <button type="submit" name="submit" value="value" class="btn btn-primary">Create a new transaction</button>
                 </form>
             </td>

@@ -36,7 +36,7 @@ public class LoginController {
             boolean aa = model.containsAttribute("login");
             if(userService.loginUser(login, password)){
                 model.addAttribute("content", "dashboard")
-                        .addAttribute("userId",3);
+                        .addAttribute("userId",userService.findUserByLogin(login).getId());
                 redirectAttributes.addFlashAttribute("userId", userService.findUserByLogin(login).getId());
                 return "redirect:/dashboard";
             }else

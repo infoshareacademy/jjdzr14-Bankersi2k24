@@ -2,6 +2,7 @@
     <p><h1>New transaction:</h1></p>
     <form method="POST" th:action="@{/transactions/createNewTransaction}" th:object="${transaction}">
         <input type="hidden" name="senderAccountId" id="senderAccountId" th:value="${accountId}" />
+        <input type="hidden" name="userId" id="userId" th:value="${userId}" />
         <table class="table table-striped tfixed mt-5" >
             <tbody>
             <tr>
@@ -39,6 +40,7 @@
             </tbody>
         </table>
         <button type="submit" class="btn btn-primary">Send</button>
-        <a class="btn btn-outline-secondary" th:href="@{/accounts/{accountId}/account-list(accountId=${accountId})}">Cancel</a>
+         <a class="btn btn-outline-secondary" th:href="@{/accounts/{userId}/account-list(userId=${userId})}">Cancel</a>
+
     </form>
 </div>

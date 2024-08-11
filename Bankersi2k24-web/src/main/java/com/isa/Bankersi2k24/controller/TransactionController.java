@@ -21,31 +21,40 @@ public class TransactionController {
     }
 
     @PostMapping(value="/transactions")
-    public String getAllTransactions(@RequestParam("accountId") BigInteger accountId, Model model){
+    public String getAllTransactions(@RequestParam("accountId") BigInteger accountId,
+                                     @RequestParam("userId") BigInteger userId,
+                                     Model model){
+        boolean aa = model.containsAttribute("userId");
         try {
             model.addAttribute("content", "transactionContent")
+                    .addAttribute("userId", userId)
                     .addAttribute("outgoingTransactionList", this.transacrionService.getAllOutgoingTransactionsForAccount(accountId))
                     .addAttribute("incomingTransactionList", this.transacrionService.getAllIncommingTransactionsForAccount(accountId));
             return "main";
         }catch (Exception e){
             model.addAttribute("content", "transactionContent")
                     .addAttribute("transactionList", Collections.emptyList())
+                    .addAttribute("userId", userId)
                     .addAttribute("errorMsg", e.getMessage());
             return "main";
         }
     }
 
     @PostMapping(value="/transactions/new")
-    public String newTransactionForm(@RequestParam("accountId") BigInteger accountId, Model model){
+    public String newTransactionForm(@RequestParam("accountId") BigInteger accountId,
+                                     @RequestParam("userId") BigInteger userId,
+                                     Model model){
         try{
             model.addAttribute("content", "newTransaction")
                     .addAttribute("accountId", accountId)
+                    .addAttribute("userId", userId)
                     .addAttribute("transaction", this.transacrionService.prepareDraftTransactionForAccount(accountId))
                     .addAttribute("accountDefaultCurrency",transacrionService.getCurrencyForAccount(accountId))
                     .addAttribute("currencies", Currencies.values());
             return "main";
         }catch (Exception e){
             model.addAttribute("content", "transactionContent")
+                    .addAttribute("userId", userId)
                     .addAttribute("transactionList", Collections.emptyList())
                     .addAttribute("errorMsg", e.getMessage());
             return "main";
@@ -53,9 +62,14 @@ public class TransactionController {
     }
 
     @PostMapping(value = "/transactions/createNewTransaction")
-    public String createNewTransaction(@ModelAttribute @Valid Transaction transaction, @RequestParam("senderAccountId") BigInteger accountId, Model model, BindingResult result){
+    public String createNewTransaction(@ModelAttribute @Valid Transaction transaction,
+                                       @RequestParam("senderAccountId") BigInteger accountId,
+                                       @RequestParam("userId") BigInteger userId,
+                                       Model model,
+                                       BindingResult result){
         if(result.hasErrors()) {
             model.addAttribute("content", "newTransaction")
+                    .addAttribute("userId", userId)
                     .addAttribute("transactionList", Collections.emptyList())
                     .addAttribute("errorMsg", "BAN in wrong format");
             return "main";
@@ -65,11 +79,13 @@ public class TransactionController {
         try {
             model.addAttribute("content", "transactionContent")
                     .addAttribute("outgoingTransactionList", this.transacrionService.getAllOutgoingTransactionsForAccount(accountId))
+                    .addAttribute("userId", userId)
                     .addAttribute("incomingTransactionList", this.transacrionService.getAllIncommingTransactionsForAccount(accountId));
             return "main";
         }catch (Exception e){
             model.addAttribute("content", "transactionContent")
                     .addAttribute("transactionList", Collections.emptyList())
+                    .addAttribute("userId", userId)
                     .addAttribute("errorMsg", e.getMessage());
             return "main";
         }
