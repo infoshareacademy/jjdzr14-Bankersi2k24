@@ -36,9 +36,10 @@
           <button type="submit" name="submit" value="value" class="btn btn-primary">Show history</button>
         </form>
 
-
-<!--        <a href="#" class="btn btn-primary">Show history</a>-->
-        <a href="#" class="btn btn-primary">New transaction</a>
+        <form method="POST" th:action="@{/transactions/new}">
+          <input type="hidden" name="accountId" id="accountId" th:value="${item.getId()}" />
+          <button type="submit" name="submit" value="value" class="btn btn-primary">New transaction</button>
+        </form>
       </div>
     </div>
   </div>
