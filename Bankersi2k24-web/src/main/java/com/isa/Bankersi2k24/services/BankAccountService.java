@@ -1,7 +1,9 @@
 package com.isa.Bankersi2k24.services;
 
+import com.isa.Bankersi2k24.controller.AccountControler;
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
+import com.isa.Bankersi2k24.models.Dashboard;
 import com.isa.Bankersi2k24.models.Transaction;
 import com.isa.Bankersi2k24.repository.BankAccountRepository;
 import org.springframework.stereotype.Service;
@@ -87,6 +89,28 @@ public class BankAccountService {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    public Dashboard prepareUserDashboard(BigInteger userId) throws Exception {
+        Dashboard dashboard = new Dashboard();
+        UserService userService = new UserService();
+        dashboard.setAccounts(this.getBankAccountsForUser(userId));
+        dashboard.setUserName(userService.getUserName(userId));
+        dashboard.setNumberOfAccounts(dashboard.getAccounts().size());
+        for(BankAccount ba : dashboard.getAccounts()){
+            if(dashboard.getQuotaPerCurrency().containsKey(ba.getCurrency())){
+                // get obj at key, add new quota to total sum
+                dashboard.getQuotaPerCurrency().replace(
+                    ba.getCurrency(),
+                    dashboard.getQuotaPerCurrency().get(ba.getCurrency()) + ba.getAvailableQuota()
+                );
+            }else
+                dashboard.getQuotaPerCurrency().put(
+                        ba.getCurrency(),
+                        ba.getAvailableQuota()
+                );
+        }
+        return dashboard;
     }
 
 }

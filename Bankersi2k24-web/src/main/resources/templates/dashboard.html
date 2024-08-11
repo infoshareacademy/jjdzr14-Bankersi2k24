@@ -1,0 +1,52 @@
+<div class="container" th:unless="${errorMsg}">
+  <div class="jumbotron jumbotron-fluid" xmlns:th="http://www.w3.org/1999/html">
+    <div class="container">
+      <h1 class="display-4">Welcome to Bankersi2k24</h1>
+      <p class="lead">
+        <span th:text="${dashboard.userName}"></span>
+        here is your personalized dashboard</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <p>Number of accounts:
+      <span class="badge bg-secondary" th:text="${dashboard.numberOfAccounts}"></span>
+    </p>
+    <br/><br/>
+    <p>Total quota in values:</p>
+    <div  class="row">
+      <div class="row col-md-3 boxlayout" th:each="item : ${dashboard.quotaPerCurrency}">
+            <h5 class="card-title" th:text="${item.value}"></h5>
+            <span class="badge bg-secondary" th:text="${item.key}"></span>
+      </div>
+    </div>
+    <br/><br/>
+
+    <div  class="row">
+    <div class="row col-md-3 boxlayout" th:each="item : ${dashboard.accounts}">
+      <div class="card border col-md-3" style="width: 18rem;">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+          <h5>Quota: </h5>
+          <h5 class="card-title" th:text="${item.availableQuota}"></h5>
+          <h5 class="card-title" th:text="${item.currency}"></h5>
+          <p class="card-text" th:text="${item.bankAccountNumber}">Account number:</p><br/>
+
+          <form method="POST" th:action="@{/transactions}">
+            <input type="hidden" name="accountId" id="accountId" th:value="${item.getId()}" />
+            <input type="hidden" name="userId" id="userId" th:value="${userId}" />
+            <button type="submit" name="submit" value="value" class="btn btn-primary">Show history</button>
+          </form>
+
+          <form method="POST" th:action="@{/transactions/new}">
+            <input type="hidden" name="accountId" id="accountId" th:value="${item.getId()}" />
+            <input type="hidden" name="userId" id="userId" th:value="${userId}" />
+            <button type="submit" name="submit" value="value" class="btn btn-primary">New transaction</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+</div>
