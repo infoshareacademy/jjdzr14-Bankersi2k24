@@ -1,32 +1,48 @@
-<div class="jumbotron jumbotron-fluid">
+<div class="jumbotron jumbotron-fluid" xmlns:th="http://www.w3.org/1999/html">
   <div class="container">
     <h1 class="display-4">Welcome to Bankersi2k24</h1>
-    <p class="lead">Here is your personalized dashboard</p>
+    <p class="lead">
+      <span th:text="${dashboard.userName}"></span>
+      here is your personalized dashboard</p>
   </div>
+</div>
 
-  <ul class="list-group">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      Number of accounts
-      <span class="badge badge-primary badge-pill">14</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      Quoita in EUR
-      <span class="badge badge-primary badge-pill">2</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      Quota in USD
-      <span class="badge badge-primary badge-pill">1</span>
-    </li>
-  </ul>
-
-  <div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="..." alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Quota: 576 EUR</h5>
-      <p class="card-text">Account number: 00 1111 2222 3333 4444 5555 6666</p>
-      <a href="#" class="btn btn-primary">Show history</a>
-      <a href="#" class="btn btn-primary">New operation</a>
+<div class="container">
+  <p>Number of accounts:
+    <span class="badge bg-secondary" th:text="${dashboard.numberOfAccounts}"></span>
+  </p>
+  <br/><br/>
+  <p>Total quota in values:</p>
+  <div  class="row">
+    <div class="row col-md-3 boxlayout" th:each="item : ${dashboard.quotaPerCurrency}">
+          <h5 class="card-title" th:text="${item.value}"></h5>
+          <span class="badge bg-secondary" th:text="${item.key}"></span>
     </div>
+  </div>
+  <br/><br/>
+
+  <div  class="row">
+  <div class="row col-md-3 boxlayout" th:each="item : ${dashboard.accounts}">
+    <div class="card border col-md-3" style="width: 18rem;">
+      <img class="card-img-top" src="..." alt="Card image cap">
+      <div class="card-body">
+        <h5>Quota: </h5>
+        <h5 class="card-title" th:text="${item.availableQuota}"></h5>
+        <h5 class="card-title" th:text="${item.currency}"></h5>
+        <p class="card-text" th:text="${item.bankAccountNumber}">Account number:</p><br/>
+
+        <form method="POST" th:action="@{/transactions}">
+          <input type="hidden" name="accountId" id="accountId" th:value="${item.getId()}" />
+          <button type="submit" name="submit" value="value" class="btn btn-primary">Show history</button>
+        </form>
+
+
+<!--        <a href="#" class="btn btn-primary">Show history</a>-->
+        <a href="#" class="btn btn-primary">New transaction</a>
+      </div>
+    </div>
+  </div>
   </div>
 
 </div>
+
