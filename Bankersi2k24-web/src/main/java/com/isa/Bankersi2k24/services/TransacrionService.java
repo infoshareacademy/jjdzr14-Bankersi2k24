@@ -53,21 +53,24 @@ public class TransacrionService {
         if(sender.getAvailableQuota() < transaction.getQuota()){
             throw new RuntimeException("Not enough quota on sender account");
         }
-        if(sender.getCurrency() != recepient.getCurrency()){
+        if(transaction.getCurrency() != recepient.getCurrency() || transaction.getCurrency() != sender.getCurrency()){
             throw new RuntimeException("Currencies do not match");
         }
         return true;
     }
 
-    public void saveNewTransaction(Transaction transaction){
+    public void saveNewTransaction(Transaction transaction) throws Exception {
         this.transactionRepository.addTransaction(transaction);
 
         BankAccountService bankAccountService = new BankAccountService();
         BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
         BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
 
+        this.verifyTransaction(sender, recipient, transaction);
         bankAccountService.addToTransactionList(sender, transaction);
         bankAccountService.addToTransactionList(recipient, transaction);
+
+
     }
 
     public void updateTransaction(Transaction transaction) {
@@ -78,7 +81,7 @@ public class TransacrionService {
         }
     }
 
-    public boolean triggerTransaction(Transaction transaction){
+    public boolean triggerTransaction(Transaction transaction) throws Exception {
         BankAccountService bankAccountService = new BankAccountService();
         BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
         BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
@@ -98,9 +101,8 @@ public class TransacrionService {
 
             return true;
         } catch (Exception e){
-            //there was no available quota, print the msg
+            throw new Exception(e);
         }
-        return false;
     }
 
     public Currencies getCurrencyForAccount(BigInteger accountId) throws Exception {
