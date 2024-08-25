@@ -9,3 +9,16 @@ spring:
     #  format:
     #    date: dd.MM.yyyy
     #    date-time: iso
+  datasource:
+    url: jdbc:mysql://localhost:3307/bank-main
+    username: bankerss
+    password: bankersi2k24!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
