@@ -23,7 +23,7 @@ public class BankAccountService {
 
     public List<BankAccount> getBankAccountsForUser(BigInteger userId){
         return this.bankAccountRepository.fetchAllBankAccounts().stream().filter (
-                ba -> ba.getUserId().equals(userId)).collect(Collectors.toList());
+                ba -> ba.getUser().getId().equals(userId)).collect(Collectors.toList());
     }
 
     public BankAccount getBankAccount(BigInteger accountId) throws Exception {

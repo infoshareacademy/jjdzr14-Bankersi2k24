@@ -1,69 +1,41 @@
 package com.isa.Bankersi2k24.models;
 
+import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import lombok.Data;
+
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BankAccount extends Entity{
-    private Integer availableQuota;
+
+@Data
+@Entity
+public class BankAccount{
+    @Id
+    @GeneratedValue
+    private BigInteger id;
+    private BigDecimal availableQuota;
     private Currencies currency;
+
+    @ElementCollection
+    //https://www.baeldung.com/java-jpa-persist-string-list#elementcollection
     private List<BigInteger> outGoingTransactionList;
+    @ElementCollection
+    //https://www.baeldung.com/java-jpa-persist-string-list#elementcollection
     private List<BigInteger> incomingTransactionList;
+
+    @Convert(converter = String.class)
     private BankAccountNumber bankAccountNumber;
-    private BigInteger userId;
+
+    @OneToOne
+    private User user;
 
     public BankAccount() {
         this.outGoingTransactionList = new ArrayList<>();
         this.incomingTransactionList = new ArrayList<>();
-    }
-
-    public BigInteger getUserId() {
-        return userId;
-    }
-
-    public void setUserId(BigInteger userId) {
-        this.userId = userId;
-    }
-
-    public Currencies getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currencies currency) {
-        this.currency = currency;
-    }
-
-    public Integer getAvailableQuota() {
-        return this.availableQuota;
-    }
-
-    public void setAvailableQuota(Integer availableQuota) {
-        this.availableQuota = availableQuota;
-    }
-    public List<BigInteger> getOutGoingTransactionList() {
-        return outGoingTransactionList;
-    }
-
-    public void setOutGoingTransactionList(List<BigInteger> outGoingTransactionList) {
-        this.outGoingTransactionList = outGoingTransactionList;
-    }
-
-    public List<BigInteger> getIncomingTransactionList() {
-        return incomingTransactionList;
-    }
-
-    public void setIncomingTransactionList(List<BigInteger> incomingTransactionList) {
-        this.incomingTransactionList = incomingTransactionList;
-    }
-
-
-    public BankAccountNumber getBankAccountNumber() {
-        return bankAccountNumber;
-    }
-
-    public void setBankAccountNumber(BankAccountNumber bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
     }
 
     @Override
@@ -71,11 +43,11 @@ public class BankAccount extends Entity{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BankAccount that = (BankAccount) o;
-        return getCurrency() == that.getCurrency() && Objects.equals(getBankAccountNumber(), that.getBankAccountNumber()) && Objects.equals(getUserId(), that.getUserId());
+        return getCurrency() == that.getCurrency() && Objects.equals(getBankAccountNumber(), that.getBankAccountNumber()) && Objects.equals(this.user.getId(), that.user.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCurrency(), getBankAccountNumber(), getUserId());
+        return Objects.hash(getCurrency(), getBankAccountNumber(), this.user.getId());
     }
 }
