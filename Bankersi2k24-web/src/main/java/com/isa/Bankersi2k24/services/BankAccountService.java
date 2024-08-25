@@ -42,7 +42,7 @@ public class BankAccountService {
 
     public BankAccount createNewBankAccount(BigInteger forUserId){
         BankAccount ban = new BankAccount();
-        ban.setUserId(forUserId);
+        ban.getUser().setId(forUserId);
         ban.setBankAccountNumber(BankAccountNumberService.generateRandomBankAccountNumber());
 
         return ban;
