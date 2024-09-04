@@ -1,22 +1,23 @@
 package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.models.*;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class DataGenerator {
 
-    private Random random;
+    private final Random random;
+    private final BankAccountService bankAccountService;
 
-    public DataGenerator(int howMany) {
+    public DataGenerator(BankAccountService bankAccountService, TransacrionService transacrionService, UserService userService) {
         this.random = new Random();
-        UserService userService = new UserService();
-        TransacrionService transacrionService = new TransacrionService();
-        BankAccountService bankAccountService = new BankAccountService();
+        this.bankAccountService = bankAccountService;
+
+        int howMany = 13;
 
         List<User> users = this.generateUsers(howMany);
         users.forEach(userService::saveNewUser);
@@ -46,7 +47,7 @@ public class DataGenerator {
                         .findFirst()
                         .get();
             Transaction transaction = new Transaction();
-            transaction.setTransactionTitle("transactionTitle-"+String.valueOf(this.random.nextInt(0,1000)));
+            transaction.setTransactionTitle("transactionTitle-"+ this.random.nextInt(0, 1000));
             transaction.setQuota(this.random.nextInt(0,350));
             transaction.setSenderAccountNumber(ba1.getBankAccountNumber());
             transaction.setDestinationAccountNumber(ba2.getBankAccountNumber());
@@ -58,11 +59,10 @@ public class DataGenerator {
 
     private List<BankAccount> generateBankAccountsForUsers(List<User> users){
         List<BankAccount> bankAccounts = new ArrayList<>(users.size());
-        BankAccountService bankAccountService = new BankAccountService();
         Collections.shuffle(users);
         for(User user : users){
             BankAccount bankAccount = bankAccountService.createNewBankAccount(user.getId());
-            bankAccount.setAvailableQuota(new Random().nextInt(0,10000));
+            bankAccount.setAvailableQuota(BigDecimal.valueOf(new Random().nextInt(0,10000)));
             bankAccount.setCurrency(Currencies.EUR);
             bankAccounts.add(bankAccount);
         }
@@ -76,18 +76,19 @@ public class DataGenerator {
         ExampleSurnames[] lastNames = ExampleSurnames.values();
 
         for (int i = 0; i < howMany; i++) {
-            User u =new User();
             String name = names[random.nextInt(names.length)].toString();
             String lastName = lastNames[random.nextInt(lastNames.length)].toString();
-
-            u.setName(name);
-            u.setLastName(lastName);
-            u.setLogin(lastName.toLowerCase() + name.toLowerCase().charAt(0));
-            u.setPassword("#" + name.toLowerCase() + "!");
-            u.setEmail(name.toLowerCase() + "." + lastName.toLowerCase() + "@bankersi2k24.biz");
-            u.setPesel(random.ints(9, 0,10)
-                    .mapToObj(String::valueOf)
-                    .collect(Collectors.joining()));
+            User u = User.builder()
+                    .name(name)
+                    .lastName(lastName)
+                    .creationDate(new Date())
+                    .login(lastName.toLowerCase() + name.toLowerCase().charAt(0))
+                    .password("#" + name.toLowerCase() + "!")
+                    .email(name.toLowerCase() + "." + lastName.toLowerCase() + "@bankersi2k24.biz")
+                    .taxId(random.ints(9, 0,10)
+                            .mapToObj(String::valueOf)
+                            .collect(Collectors.joining()))
+                    .build();
             users.add(u);
         }
         return users;

@@ -4,11 +4,6 @@ spring:
   thymeleaf:
     check-template-location: true
     cache: false
-    #prefix: file:./src/main/resources/templates/
-    #mvc:
-    #  format:
-    #    date: dd.MM.yyyy
-    #    date-time: iso
   datasource:
     url: jdbc:mysql://localhost:3307/bank-main
     username: bankerss

@@ -57,7 +57,7 @@ public class UserService {
         List<User> users = objectToJson.deserialize(fileService.read(), User.class);
 
         for(User user : users){
-            if(pesel.equals(user.getPesel())){
+            if(pesel.equals(user.getTaxId())){
                 return user;
             }
         }

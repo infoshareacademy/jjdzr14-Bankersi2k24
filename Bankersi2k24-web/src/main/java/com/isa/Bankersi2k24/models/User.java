@@ -1,18 +1,21 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.DAO.FileName;
-import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.services.UserService;
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 @Data
 @Entity
+@Builder
+@Table(name = "Users")
 public class User{
     @Id
     @GeneratedValue
@@ -22,12 +25,12 @@ public class User{
     private String password;
     private String lastName;
     private String email;
-    private String pesel;
+    private String taxId;
     private Date creationDate;
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private List<BankAccount> bankAccounts = new ArrayList<>();
 
-    public User() {
-        this.creationDate = new Date();
-    }
+    public User() { }
 
     public boolean setEmail(String email) {
         if(UserService.verifyEmail(email)) {
@@ -52,5 +55,4 @@ public class User{
     public int hashCode() {
         return Objects.hash(getName(), getLogin(), getEmail(), getCreationDate());
     }
-
 }
