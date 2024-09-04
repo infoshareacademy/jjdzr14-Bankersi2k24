@@ -1,5 +1,6 @@
 package com.isa.Bankersi2k24.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
+@Builder
 public class Dashboard {
     private Integer numberOfAccounts;
     private List<BankAccount> accounts;

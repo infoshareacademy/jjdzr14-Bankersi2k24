@@ -13,6 +13,7 @@ import java.util.Objects;
 
 @Data
 @Entity
+@Table(name = "BankAccounts")
 public class BankAccount{
     @Id
     @GeneratedValue
@@ -30,7 +31,8 @@ public class BankAccount{
     @Convert(converter = String.class)
     private BankAccountNumber bankAccountNumber;
 
-    @OneToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "bankAccount_id", nullable = false)
     private User user;
 
     public BankAccount() {

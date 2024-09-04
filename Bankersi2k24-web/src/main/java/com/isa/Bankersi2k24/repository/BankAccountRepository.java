@@ -4,14 +4,17 @@ import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BankAccountRepository extends Serializable<BankAccount> {
+@Repository
+public class BankAccountRepository {
     private List<BankAccount> bankAccounts;
 
     public BankAccountRepository() {
-        super(FileName.BANKACCOUNT, BankAccount.class);
         this.bankAccounts = fetchAllObjects();
     }
 
