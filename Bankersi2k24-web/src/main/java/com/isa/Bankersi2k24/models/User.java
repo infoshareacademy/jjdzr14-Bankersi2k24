@@ -3,13 +3,16 @@ package com.isa.Bankersi2k24.models;
 import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.services.UserService;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Date;
 import java.util.Objects;
 
 public class User extends Entity{
     private String name ;
+    @NotBlank(message = "Please provide a login")
     private String login;
+    @NotBlank(message = "Please provide a password")
     private String password;
     private String lastName;
     private String email;
