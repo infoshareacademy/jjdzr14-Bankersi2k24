@@ -1,56 +1,51 @@
 package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.DAO.FileName;
-import com.isa.Bankersi2k24.models.BankAccount;
-import com.isa.Bankersi2k24.models.Currencies;
-import com.isa.Bankersi2k24.models.Transaction;
+import com.isa.Bankersi2k24.models.*;
 import com.isa.Bankersi2k24.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.Currency;
 import java.util.List;
 
 @Service
-public class TransacrionService {
+public class TransactionService {
 
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
+    private final BankAccountService bankAccountService;
 
-    public TransacrionService() {
+    public TransactionService(BankAccountService bankAccountService ) {
         this.transactionRepository = new TransactionRepository(FileName.TRANSACITON, Transaction.class);
+        this.bankAccountService = bankAccountService;
     }
 
     public List<Transaction> getAllTransactions(){
         return this.transactionRepository.getAllTransactions();
     }
 
-    public List<Transaction> getAllOutgoingTransactionsForAccount(BigInteger accountId){
-        BankAccountService bankAccountService = new BankAccountService();
-        try {
-            List<BigInteger> transactions = bankAccountService
-                    .getBankAccount(accountId)
-                    .getOutGoingTransactionList();
-            return this.transactionRepository.getTransactionListForIds(transactions);
-        }catch (Exception e){
-            throw new RuntimeException(String.format("No transactions were found for account: %d", accountId));
-        }
+    public List<Transaction> getAllOutgoingTransactionsForAccount(BigInteger accountId) throws Exception {
+        BankAccountNumber bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
+        List<BigInteger> outgoingTransactions = this.getAllTransactions()
+                .stream()
+                .filter(t -> t.getSenderAccountNumber() == bankAccountNumber)
+                .map(transaction -> BigInteger.valueOf(transaction.getId()))
+                .toList();
+        return this.transactionRepository.getTransactionListForIds(outgoingTransactions);
     }
 
-    public List<Transaction> getAllIncommingTransactionsForAccount(BigInteger accountId){
-        BankAccountService bankAccountService = new BankAccountService();
-        try {
-            List<BigInteger> transactions = bankAccountService
-                    .getBankAccount(accountId)
-                    .getIncomingTransactionList();
-            return this.transactionRepository.getTransactionListForIds(transactions);
-        }catch (Exception e){
-            throw new RuntimeException(String.format("No transactions were found for account: %d", accountId));
-        }
+    public List<Transaction> getAllIncomingTransactionsForAccount(BigInteger accountId) throws Exception {
+        BankAccountNumber bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
+        List<BigInteger> incomingTransactions = this.getAllTransactions()
+                .stream()
+                .filter(t -> t.getDestinationAccountNumber() == bankAccountNumber)
+                .map(transaction -> BigInteger.valueOf(transaction.getId()))
+                .toList();
+        return this.transactionRepository.getTransactionListForIds(incomingTransactions);
     }
 
     private boolean verifyTransaction(BankAccount sender, BankAccount recepient, Transaction transaction) throws RuntimeException{
-        if(sender.getAvailableQuota() < transaction.getQuota()){
+        if(sender.getAvailableQuota().compareTo(transaction.getQuota()) < 0 ){
             throw new RuntimeException("Not enough quota on sender account");
         }
         if(transaction.getCurrency() != recepient.getCurrency() || transaction.getCurrency() != sender.getCurrency()){
@@ -59,10 +54,9 @@ public class TransacrionService {
         return true;
     }
 
-    public void saveNewTransaction(Transaction transaction) throws Exception {
+    public void saveNewTransaction(Transaction transaction){
         this.transactionRepository.addTransaction(transaction);
 
-        BankAccountService bankAccountService = new BankAccountService();
         BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
         BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
 
@@ -82,14 +76,13 @@ public class TransacrionService {
     }
 
     public boolean triggerTransaction(Transaction transaction) throws Exception {
-        BankAccountService bankAccountService = new BankAccountService();
         BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
         BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
 
         try{
             this.verifyTransaction(sender, recipient, transaction);
-            sender.setAvailableQuota(sender.getAvailableQuota()-transaction.getQuota());
-            recipient.setAvailableQuota(recipient.getAvailableQuota()+transaction.getQuota());
+            sender.setAvailableQuota(sender.getAvailableQuota().subtract(transaction.getQuota()));
+            recipient.setAvailableQuota(recipient.getAvailableQuota().add(transaction.getQuota()));
 
             transaction.setTransactionDate(LocalDateTime.now());
             transaction.setComplete(true);
@@ -106,12 +99,10 @@ public class TransacrionService {
     }
 
     public Currencies getCurrencyForAccount(BigInteger accountId) throws Exception {
-        BankAccountService bankAccountService = new BankAccountService();
         return bankAccountService.getBankAccount(accountId).getCurrency();
     }
 
     public Transaction prepareDraftTransactionForAccount(BigInteger accountId) {
-        BankAccountService bankAccountService = new BankAccountService();
         Transaction transaction = new Transaction();
         try{
             transaction.setCurrency(bankAccountService

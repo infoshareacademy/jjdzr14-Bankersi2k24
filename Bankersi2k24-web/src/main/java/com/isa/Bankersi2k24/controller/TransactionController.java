@@ -7,29 +7,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.isa.Bankersi2k24.services.TransacrionService;
+import com.isa.Bankersi2k24.services.TransactionService;
 
 import java.math.BigInteger;
 import java.util.Collections;
 
 @Controller
 public class TransactionController {
-    private final TransacrionService transacrionService;
+    private final TransactionService transactionService;
 
-    public TransactionController(TransacrionService transacrionService) {
-        this.transacrionService = transacrionService;
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
     @PostMapping(value="/transactions")
     public String getAllTransactions(@RequestParam("accountId") BigInteger accountId,
                                      @RequestParam("userId") BigInteger userId,
                                      Model model){
-        boolean aa = model.containsAttribute("userId");
         try {
             model.addAttribute("content", "transactionContent")
                     .addAttribute("userId", userId)
-                    .addAttribute("outgoingTransactionList", this.transacrionService.getAllOutgoingTransactionsForAccount(accountId))
-                    .addAttribute("incomingTransactionList", this.transacrionService.getAllIncommingTransactionsForAccount(accountId));
+                    .addAttribute("outgoingTransactionList", this.transactionService.getAllOutgoingTransactionsForAccount(accountId))
+                    .addAttribute("incomingTransactionList", this.transactionService.getAllIncomingTransactionsForAccount(accountId));
             return "main";
         }catch (Exception e){
             model.addAttribute("content", "transactionContent")
@@ -48,8 +47,8 @@ public class TransactionController {
             model.addAttribute("content", "newTransaction")
                     .addAttribute("accountId", accountId)
                     .addAttribute("userId", userId)
-                    .addAttribute("transaction", this.transacrionService.prepareDraftTransactionForAccount(accountId))
-                    .addAttribute("accountDefaultCurrency",transacrionService.getCurrencyForAccount(accountId))
+                    .addAttribute("transaction", this.transactionService.prepareDraftTransactionForAccount(accountId))
+                    .addAttribute("accountDefaultCurrency", transactionService.getCurrencyForAccount(accountId))
                     .addAttribute("currencies", Currencies.values());
             return "main";
         }catch (Exception e){
@@ -76,11 +75,11 @@ public class TransactionController {
         }
 
         try {
-            this.transacrionService.saveNewTransaction(transaction);
+            this.transactionService.saveNewTransaction(transaction);
             model.addAttribute("content", "transactionContent")
-                    .addAttribute("outgoingTransactionList", this.transacrionService.getAllOutgoingTransactionsForAccount(accountId))
+                    .addAttribute("outgoingTransactionList", this.transactionService.getAllOutgoingTransactionsForAccount(accountId))
                     .addAttribute("userId", userId)
-                    .addAttribute("incomingTransactionList", this.transacrionService.getAllIncommingTransactionsForAccount(accountId));
+                    .addAttribute("incomingTransactionList", this.transactionService.getAllIncomingTransactionsForAccount(accountId));
             return "main";
         }catch (Exception e){
             model.addAttribute("content", "newTransaction")

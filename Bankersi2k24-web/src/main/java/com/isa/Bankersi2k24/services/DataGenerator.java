@@ -13,7 +13,7 @@ public class DataGenerator {
     private final Random random;
     private final BankAccountService bankAccountService;
 
-    public DataGenerator(BankAccountService bankAccountService, TransacrionService transacrionService, UserService userService) {
+    public DataGenerator(BankAccountService bankAccountService, TransactionService transactionService, UserService userService) {
         this.random = new Random();
         this.bankAccountService = bankAccountService;
 
@@ -28,9 +28,9 @@ public class DataGenerator {
         List<Transaction> transactions = this.generateRandomTransactions(howMany, bankAccountList);
         try{
             for (Transaction transaction : transactions) {
-                transacrionService.saveNewTransaction(transaction);
-                transacrionService.triggerTransaction(transaction);
-                transactions.forEach(transacrionService::updateTransaction);
+                transactionService.saveNewTransaction(transaction);
+                transactionService.triggerTransaction(transaction);
+                transactions.forEach(transactionService::updateTransaction);
             }
         }catch (Exception e){
             // not enough quota on account or currency
@@ -48,7 +48,7 @@ public class DataGenerator {
                         .get();
             Transaction transaction = new Transaction();
             transaction.setTransactionTitle("transactionTitle-"+ this.random.nextInt(0, 1000));
-            transaction.setQuota(this.random.nextInt(0,350));
+            transaction.setQuota(BigDecimal.valueOf(this.random.nextInt(0,350)));
             transaction.setSenderAccountNumber(ba1.getBankAccountNumber());
             transaction.setDestinationAccountNumber(ba2.getBankAccountNumber());
             transaction.setCurrency(Currencies.EUR);
