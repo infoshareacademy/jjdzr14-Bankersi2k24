@@ -1,0 +1,12 @@
+version: '1.0'
+
+services:
+  db:
+    image: mysql:8.0.27
+    ports:
+      - "3307:3307"
+    environment:
+      MYSQL_DATABASE: bank-main
+      MYSQL_USER: bankerss
+      MYSQL_PASSWORD: bankersi2k24!
+      MYSQL_ROOT_PASSWORD: bankersi2k24!

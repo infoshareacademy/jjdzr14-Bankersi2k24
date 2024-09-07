@@ -1,76 +1,36 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.DAO.FileName;
-import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.services.UserService;
+import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
-
-public class User extends Entity{
+@Data
+@Entity
+@Builder
+@Table(name = "Users")
+public class User{
+    @Id
+    @GeneratedValue
+    private BigInteger id;
     private String name ;
     private String login;
     private String password;
     private String lastName;
     private String email;
-    private String pesel;
+    private String taxId;
     private Date creationDate;
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private List<BankAccount> bankAccounts = new ArrayList<>();
 
-    public User() {
-        this.creationDate = new Date();
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-
-    }
-    public String getEmail() {
-        return email;
-    }
+    public User() { }
 
     public boolean setEmail(String email) {
         if(UserService.verifyEmail(email)) {
@@ -95,5 +55,4 @@ public class User extends Entity{
     public int hashCode() {
         return Objects.hash(getName(), getLogin(), getEmail(), getCreationDate());
     }
-
 }

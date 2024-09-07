@@ -8,6 +8,7 @@ import com.isa.Bankersi2k24.models.Transaction;
 import com.isa.Bankersi2k24.repository.BankAccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
@@ -16,14 +17,16 @@ import java.util.stream.Collectors;
 @Service
 public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
+    private final UserService userService;
 
-    public BankAccountService() {
-        this.bankAccountRepository = new BankAccountRepository();
+    public BankAccountService(BankAccountRepository bankAccountRepository, UserService userService) {
+        this.bankAccountRepository = bankAccountRepository;
+        this.userService = userService;
     }
 
     public List<BankAccount> getBankAccountsForUser(BigInteger userId){
         return this.bankAccountRepository.fetchAllBankAccounts().stream().filter (
-                ba -> ba.getUserId().equals(userId)).collect(Collectors.toList());
+                ba -> ba.getUser().getId().equals(userId)).collect(Collectors.toList());
     }
 
     public BankAccount getBankAccount(BigInteger accountId) throws Exception {
@@ -42,7 +45,7 @@ public class BankAccountService {
 
     public BankAccount createNewBankAccount(BigInteger forUserId){
         BankAccount ban = new BankAccount();
-        ban.setUserId(forUserId);
+        ban.getUser().setId(forUserId);
         ban.setBankAccountNumber(BankAccountNumberService.generateRandomBankAccountNumber());
 
         return ban;
@@ -92,17 +95,19 @@ public class BankAccountService {
     }
 
     public Dashboard prepareUserDashboard(BigInteger userId) throws Exception {
-        Dashboard dashboard = new Dashboard();
-        UserService userService = new UserService();
-        dashboard.setAccounts(this.getBankAccountsForUser(userId));
-        dashboard.setUserName(userService.getUserName(userId));
-        dashboard.setNumberOfAccounts(dashboard.getAccounts().size());
+        Dashboard dashboard = Dashboard.builder()
+                .accounts(this.getBankAccountsForUser(userId))
+                .userName(userService.getUserName(userId))
+                .numberOfAccounts(this.getBankAccountsForUser(userId).size())
+                .build();
+
         for(BankAccount ba : dashboard.getAccounts()){
             if(dashboard.getQuotaPerCurrency().containsKey(ba.getCurrency())){
                 // get obj at key, add new quota to total sum
+                BigDecimal ret = ba.getAvailableQuota();
                 dashboard.getQuotaPerCurrency().replace(
                     ba.getCurrency(),
-                    dashboard.getQuotaPerCurrency().get(ba.getCurrency()) + ba.getAvailableQuota()
+                    ret.add(dashboard.getQuotaPerCurrency().get(ba.getCurrency()))
                 );
             }else
                 dashboard.getQuotaPerCurrency().put(
