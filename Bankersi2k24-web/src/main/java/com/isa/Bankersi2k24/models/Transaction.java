@@ -1,23 +1,24 @@
 package com.isa.Bankersi2k24.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 
 @Data
 @Entity
-@Table
+@Table(name = "transactions")
 public class Transaction{
     @Id
-    private Long id;
+    @GeneratedValue
+    private BigInteger id;
 
     @NotNull(message = "Title cannot be empty")
     private String transactionTitle;
@@ -30,14 +31,24 @@ public class Transaction{
     private Currencies currency;
 
     @NotNull
-    private BankAccountNumber senderAccountNumber;
+    @ManyToOne
+    @JoinColumn(name = "bankaccounts_id")
+//    private BankAccountNumber senderAccountNumber;
+    // try to chenge this to:
+    private BankAccount senderBankAccount;
 
     @NotNull
-    private BankAccountNumber destinationAccountNumber;
+    @ManyToOne
+    @JoinColumn(name = "bankaccounts_id")
+    private BankAccount destinationBankAccount;
+//    private BankAccountNumber destinationAccountNumber;
 
     private LocalDateTime transactionDate;
     private boolean isComplete;
     private Integer trackingNumber;
+
+//    @ManyToMany(mappedBy = "transactions")
+//    private List<BankAccount> bankAccounts;
 
 
     public Transaction() {
@@ -61,12 +72,12 @@ public class Transaction{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return getQuota().equals(that.getQuota()) && Objects.equals(getTransactionTitle(), that.getTransactionTitle()) && Objects.equals(getSenderAccountNumber(), that.getSenderAccountNumber()) && Objects.equals(getDestinationAccountNumber(), that.getDestinationAccountNumber()) ;
+        return getQuota().equals(that.getQuota()) && Objects.equals(getTransactionTitle(), that.getTransactionTitle()) && Objects.equals(getSenderBankAccount(), that.getSenderBankAccount()) && Objects.equals(getDestinationBankAccount(), that.getDestinationBankAccount()) ;
     }
 
     @Override
     public int hashCode() {
-            return Objects.hash(getTransactionTitle(), getQuota(), getSenderAccountNumber(), getDestinationAccountNumber());
+            return Objects.hash(getTransactionTitle(), getQuota(), getSenderBankAccount(), getDestinationBankAccount());
     }
 
 }

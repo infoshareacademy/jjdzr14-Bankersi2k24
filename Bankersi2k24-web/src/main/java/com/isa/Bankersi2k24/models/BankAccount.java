@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Data
 @Entity
-@Table(name = "BankAccounts")
+@Table(name = "bankaccounts")
 public class BankAccount{
     @Id
     @GeneratedValue
@@ -21,12 +21,8 @@ public class BankAccount{
     private BigDecimal availableQuota;
     private Currencies currency;
 
-    @ElementCollection
-    //https://www.baeldung.com/java-jpa-persist-string-list#elementcollection
-    private List<BigInteger> outGoingTransactionList;
-    @ElementCollection
-    //https://www.baeldung.com/java-jpa-persist-string-list#elementcollection
-    private List<BigInteger> incomingTransactionList;
+    @OneToMany(mappedBy = "transactions", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Transaction> transactions;
 
     @Convert(converter = String.class)
     private BankAccountNumber bankAccountNumber;
@@ -36,8 +32,7 @@ public class BankAccount{
     private User user;
 
     public BankAccount() {
-        this.outGoingTransactionList = new ArrayList<>();
-        this.incomingTransactionList = new ArrayList<>();
+        this.transactions = new ArrayList<>();
     }
 
     @Override

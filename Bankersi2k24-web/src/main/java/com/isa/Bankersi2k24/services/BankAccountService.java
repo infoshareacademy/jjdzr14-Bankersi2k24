@@ -1,6 +1,5 @@
 package com.isa.Bankersi2k24.services;
 
-import com.isa.Bankersi2k24.controller.AccountControler;
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
 import com.isa.Bankersi2k24.models.Dashboard;
@@ -25,14 +24,16 @@ public class BankAccountService {
     }
 
     public List<BankAccount> getBankAccountsForUser(BigInteger userId){
-        return this.bankAccountRepository.fetchAllBankAccounts().stream().filter (
-                ba -> ba.getUser().getId().equals(userId)).collect(Collectors.toList());
+        return null;
+//        return this.bankAccountRepository.fetchAllBankAccounts().stream().filter (
+//                ba -> ba.getUser().getId().equals(userId)).collect(Collectors.toList());
     }
 
     public BankAccount getBankAccount(BigInteger accountId) throws Exception {
-        return this.bankAccountRepository.fetchAllBankAccounts().stream().filter(
-                ba -> Objects.equals(ba.getId(), accountId))
-                .findFirst().orElseThrow();
+        return null;
+//        return this.bankAccountRepository.fetchAllBankAccounts().stream().filter(
+//                ba -> Objects.equals(ba.getId(), accountId))
+//                .findFirst().orElseThrow();
     }
 
     public BankAccount getBankAccount(String ban) {
@@ -40,7 +41,8 @@ public class BankAccountService {
     }
 
     public BankAccount getBankAccount(BankAccountNumber ban) {
-        return this.bankAccountRepository.getBankAccount(ban);
+        return null;
+//        return this.bankAccountRepository.getBankAccount(ban);
     }
 
     public BankAccount createNewBankAccount(BigInteger forUserId){
@@ -52,7 +54,7 @@ public class BankAccountService {
     }
 
     public void saveBankAccount(BankAccount bankAccount){
-        this.bankAccountRepository.saveNewBankAccount(bankAccount);
+//        this.bankAccountRepository.saveNewBankAccount(bankAccount);
     }
 
     public boolean deleteBankAccount(BankAccountNumber bankAccountNumber) throws Exception {
@@ -88,7 +90,7 @@ public class BankAccountService {
         }
 
         try {
-            bankAccountRepository.updateBankAccount(bankAccount);
+//            bankAccountRepository.updateBankAccount(bankAccount);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

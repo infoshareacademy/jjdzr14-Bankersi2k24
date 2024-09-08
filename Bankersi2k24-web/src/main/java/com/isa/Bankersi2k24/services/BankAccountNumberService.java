@@ -2,7 +2,7 @@ package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
-import com.isa.Bankersi2k24.repository.BankAccountRepository;
+
 import java.util.Random;
 
 public class BankAccountNumberService {
@@ -35,7 +35,7 @@ public class BankAccountNumberService {
     }
 
     public static boolean checkIfBANexists(BankAccountNumber bankAccountNumber){
-        BankAccountRepository bankAccountRepository = new BankAccountRepository();
+        old_BankAccountRepository bankAccountRepository = new old_BankAccountRepository();
         return bankAccountRepository.queryBankAccounts(b -> b.getBankAccountNumber() == bankAccountNumber);
     }
 

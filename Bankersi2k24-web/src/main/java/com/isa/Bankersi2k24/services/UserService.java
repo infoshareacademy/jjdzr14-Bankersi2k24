@@ -4,7 +4,6 @@ import com.isa.Bankersi2k24.DAO.FileService;
 import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.models.User;
-import com.isa.Bankersi2k24.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -19,10 +18,10 @@ public class UserService {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PESEL_REGEX =
             Pattern.compile("\\d{11}", Pattern.CASE_INSENSITIVE);
-    private UserRepository userRepository;
+    private old_UserRepository userRepository;
 
     public UserService() {
-        this.userRepository = new UserRepository();
+        this.userRepository = new old_UserRepository();
     }
 
     public User saveNewUser(User user){

@@ -2,7 +2,6 @@ package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.models.*;
-import com.isa.Bankersi2k24.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -12,11 +11,11 @@ import java.util.List;
 @Service
 public class TransactionService {
 
-    private final TransactionRepository transactionRepository;
+    private final old_TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
 
     public TransactionService(BankAccountService bankAccountService ) {
-        this.transactionRepository = new TransactionRepository(FileName.TRANSACITON, Transaction.class);
+        this.transactionRepository = new old_TransactionRepository(FileName.TRANSACITON, Transaction.class);
         this.bankAccountService = bankAccountService;
     }
 
