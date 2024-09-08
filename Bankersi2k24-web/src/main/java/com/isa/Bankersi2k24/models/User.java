@@ -1,17 +1,18 @@
 package com.isa.Bankersi2k24.models;
 
 import com.isa.Bankersi2k24.services.UserService;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
 @Data
 @Entity
 @Builder
@@ -21,7 +22,9 @@ public class User{
     @GeneratedValue
     private BigInteger id;
     private String name ;
+    @NotBlank(message = "Please provide a login")
     private String login;
+    @NotBlank(message = "Please provide a password")
     private String password;
     private String lastName;
     private String email;
