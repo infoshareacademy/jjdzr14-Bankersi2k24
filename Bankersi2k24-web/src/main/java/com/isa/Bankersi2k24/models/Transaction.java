@@ -22,7 +22,7 @@ public class Transaction{
     @NotNull(message = "Title cannot be empty")
     private String transactionTitle;
 
-    @NotNull(message = "Transaction ammount cannot be empty or 0 or negative")
+    @NotNull(message = "Transaction amount cannot be empty or 0 or negative")
     @Min(0)
     private BigDecimal quota;
 
