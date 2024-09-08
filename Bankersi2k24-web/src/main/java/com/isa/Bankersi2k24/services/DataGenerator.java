@@ -13,7 +13,8 @@ public class DataGenerator {
     private final Random random;
     private final BankAccountService bankAccountService;
 
-    public DataGenerator(BankAccountService bankAccountService, TransactionService transactionService, UserService userService) {
+
+    public DataGenerator(BankAccountService bankAccountService, TransacrionService transacrionService, UserService userService) {
         this.random = new Random();
         this.bankAccountService = bankAccountService;
 
@@ -49,6 +50,7 @@ public class DataGenerator {
             Transaction transaction = new Transaction();
             transaction.setTransactionTitle("transactionTitle-"+ this.random.nextInt(0, 1000));
             transaction.setQuota(BigDecimal.valueOf(this.random.nextInt(0,350)));
+
             transaction.setSenderAccountNumber(ba1.getBankAccountNumber());
             transaction.setDestinationAccountNumber(ba2.getBankAccountNumber());
             transaction.setCurrency(Currencies.EUR);

@@ -1,11 +1,15 @@
 package com.isa.Bankersi2k24.controller;
 
+import com.isa.Bankersi2k24.models.User;
 import com.isa.Bankersi2k24.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,18 +28,31 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public String viewHomePage(Model model) {
+    public String viewHomePage(User user, Model model) {
         model.addAttribute("content", "loginForm");
+        model.addAttribute("user", user);
         return "main";
     }
 
     @PostMapping("/login")
-    public String loginUser(ModelMap model,
-                                  @ModelAttribute("login") String login,
-                                  @ModelAttribute("password") String password,
-                                  final RedirectAttributes redirectAttributes){
+    public String loginUser(@Valid User user, BindingResult bindingResult, ModelMap model,
+                            @ModelAttribute("login") String login,
+                            @ModelAttribute("password") String password,
+                            final RedirectAttributes redirectAttributes){
         try{
+            if(bindingResult.hasErrors()){
+                String errMessage="";
+                for (ObjectError objectError:bindingResult.getAllErrors()) {
+                    errMessage +=objectError.getDefaultMessage()+"  ";
+
+                }
+
+                model.addAttribute("content", "loginForm");
+                model.addAttribute("errorMsg", errMessage);
+                return "main";
+            }
             boolean aa = model.containsAttribute("login");
+
             if(userService.loginUser(login, password)){
                 model.addAttribute("content", "dashboard")
                         .addAttribute("userId",userService.findUserByLogin(login).getId());
