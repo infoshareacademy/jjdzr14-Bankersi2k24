@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+
 @Entity
 @Builder
 @Getter
@@ -23,7 +24,9 @@ public class User{
     @GeneratedValue
     private BigInteger id;
     private String name ;
+    @NotBlank(message = "Please provide a login")
     private String login;
+    @NotBlank(message = "Please provide a password")
     private String password;
     private String lastName;
     private String email;
