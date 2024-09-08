@@ -21,11 +21,11 @@ public class BankAccount{
     private BigDecimal availableQuota;
     private Currencies currency;
 
-    @OneToMany(mappedBy = "transactions", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private List<Transaction> transactions;
 
-    @Convert(converter = String.class)
-    private BankAccountNumber bankAccountNumber;
+//    @Convert(converter = String.class)
+    private String bankAccountNumber;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "bankAccount_id", nullable = false)

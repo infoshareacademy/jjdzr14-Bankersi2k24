@@ -1,6 +1,5 @@
 package com.isa.Bankersi2k24.services;
 
-import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
 
 import java.util.Random;
@@ -8,13 +7,13 @@ import java.util.Random;
 public class BankAccountNumberService {
 
     public static final String bankAccountRegexp = "(^\\d{2,26}$)|(^[\\d]{2}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}$)";
-    public void setBankAccountNumber(BankAccount bankAccount, String bankAccountString){
-        bankAccount.setBankAccountNumber(accountNumberStringToBan(bankAccountString));
-    }
-
-    public void setBankAccountNumber(BankAccount bankAccount, BankAccountNumber bankAccountNumber){
-        bankAccount.setBankAccountNumber(bankAccountNumber);
-    }
+//    public void setBankAccountNumber(BankAccount bankAccount, String bankAccountString){
+//        bankAccount.setBankAccountNumber(accountNumberStringToBan(bankAccountString));
+//    }
+//
+//    public void setBankAccountNumber(BankAccount bankAccount, BankAccountNumber bankAccountNumber){
+//        bankAccount.setBankAccountNumber(bankAccountNumber);
+//    }
 
     public static BankAccountNumber generateRandomBankAccountNumber(){
         Random rnd = new Random();
@@ -35,8 +34,9 @@ public class BankAccountNumberService {
     }
 
     public static boolean checkIfBANexists(BankAccountNumber bankAccountNumber){
-        old_BankAccountRepository bankAccountRepository = new old_BankAccountRepository();
-        return bankAccountRepository.queryBankAccounts(b -> b.getBankAccountNumber() == bankAccountNumber);
+//        old_BankAccountRepository bankAccountRepository = new old_BankAccountRepository();
+//        return bankAccountRepository.queryBankAccounts(b -> b.getBankAccountNumber() == bankAccountNumber);
+        return true;
     }
 
     public static BankAccountNumber accountNumberStringToBan(String bankAccountNumber){

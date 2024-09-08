@@ -1,9 +1,7 @@
 package com.isa.Bankersi2k24.services;
 
-import com.isa.Bankersi2k24.DAO.FileService;
-import com.isa.Bankersi2k24.DAO.FileName;
-import com.isa.Bankersi2k24.DAO.Serializable;
 import com.isa.Bankersi2k24.models.User;
+import com.isa.Bankersi2k24.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -18,25 +16,26 @@ public class UserService {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PESEL_REGEX =
             Pattern.compile("\\d{11}", Pattern.CASE_INSENSITIVE);
-    private old_UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserService() {
-        this.userRepository = new old_UserRepository();
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public User saveNewUser(User user){
         if(user.getId() == null)
             user.setId(this.findNewIdForUser());
-        this.userRepository.saveNewUser(user);
+        //this.userRepository.saveNewUser(user);
         return user;
     }
 
     private BigInteger findNewIdForUser(){
-        if(this.userRepository.fetchAllUsers().isEmpty())
-            return BigInteger.ONE;
-        else {
-            return this.userRepository.getNewId();
-        }
+//        if(this.userRepository.fetchAllUsers().isEmpty())
+//            return BigInteger.ONE;
+//        else {
+//            return this.userRepository.getNewId();
+//        }
+        return null;
     }
 
     public User findUserByLogin(String login){
@@ -45,19 +44,6 @@ public class UserService {
         for(User u : users){
             if(login.equals(u.getLogin())){
                 return u;
-            }
-        }
-        return null;
-    }
-    public User findUserByPesel(String pesel){
-        FileService fileService = new FileService(FileName.USER.toString());
-        Serializable<User> objectToJson = new Serializable<>(FileName.USER, User.class);
-
-        List<User> users = objectToJson.deserialize(fileService.read(), User.class);
-
-        for(User user : users){
-            if(pesel.equals(user.getTaxId())){
-                return user;
             }
         }
         return null;
@@ -86,7 +72,8 @@ public class UserService {
     }
 
     private List<User> fetchAllUsers(){
-        return this.userRepository.fetchAllUsers();
+        return null;
+//        return this.userRepository.fetchAllUsers();
     }
 
     public String getUserName(BigInteger id) throws Exception {

@@ -48,7 +48,7 @@ public class BankAccountService {
     public BankAccount createNewBankAccount(BigInteger forUserId){
         BankAccount ban = new BankAccount();
         ban.getUser().setId(forUserId);
-        ban.setBankAccountNumber(BankAccountNumberService.generateRandomBankAccountNumber());
+//        ban.setBankAccountNumber(BankAccountNumberService.generateRandomBankAccountNumber());
 
         return ban;
     }
@@ -80,14 +80,8 @@ public class BankAccountService {
     }
 
     public void addToTransactionList(BankAccount bankAccount, Transaction transaction) {
-        if(bankAccount.getBankAccountNumber().equals(transaction.getDestinationAccountNumber())) {
-            if(!bankAccount.getIncomingTransactionList().contains(transaction.getId()))
-                bankAccount.getIncomingTransactionList().add(transaction.getId());
-        }
-        else {
-            if(!bankAccount.getOutGoingTransactionList().contains(transaction.getId()))
-                bankAccount.getOutGoingTransactionList().add(transaction.getId());
-        }
+        if(!bankAccount.getTransactions().contains(transaction))
+            bankAccount.getTransactions().add(transaction);
 
         try {
 //            bankAccountRepository.updateBankAccount(bankAccount);

@@ -32,16 +32,13 @@ public class Transaction{
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "bankaccounts_id")
-//    private BankAccountNumber senderAccountNumber;
-    // try to chenge this to:
+    @JoinColumn(name = "senderBankaccount_id")
     private BankAccount senderBankAccount;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "bankaccounts_id")
+    @JoinColumn(name = "destinationBankaccount_id")
     private BankAccount destinationBankAccount;
-//    private BankAccountNumber destinationAccountNumber;
 
     private LocalDateTime transactionDate;
     private boolean isComplete;
