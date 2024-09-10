@@ -22,11 +22,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User saveNewUser(User user){
-        if(user.getId() == null)
-            user.setId(this.findNewIdForUser());
-        //this.userRepository.saveNewUser(user);
-        return user;
+    public void saveNewUser(User user){
+        userRepository.save(user);
     }
 
     private BigInteger findNewIdForUser(){
@@ -94,6 +91,10 @@ public class UserService {
         }else{
             throw new Exception("Login failed - check your credentials");
         }
+    }
+
+    public List<User> getAllUsers() {
+        return this.userRepository.findAll();
     }
 }
 

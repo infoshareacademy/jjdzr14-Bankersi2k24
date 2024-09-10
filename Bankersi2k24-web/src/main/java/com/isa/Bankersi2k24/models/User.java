@@ -4,7 +4,6 @@ import com.isa.Bankersi2k24.services.UserService;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +33,6 @@ public class User{
     private Date creationDate;
     @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<BankAccount> bankAccounts = new ArrayList<>();
-
 
     public boolean setEmail(String email) {
         if(UserService.verifyEmail(email)) {

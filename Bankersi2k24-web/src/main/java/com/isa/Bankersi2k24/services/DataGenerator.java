@@ -1,29 +1,25 @@
 package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.models.*;
-import org.springframework.stereotype.Service;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class DataGenerator {
-//
-//    private final Random random;
-//    private final BankAccountService bankAccountService;
-//
-//    public DataGenerator(BankAccountService bankAccountService, TransactionService transactionService, UserService userService) {
-//        this.random = new Random();
-//        this.bankAccountService = bankAccountService;
-//
-//        int howMany = 13;
-//
-//        List<User> users = this.generateUsers(howMany);
-//        users.forEach(userService::saveNewUser);
-//
-//        List<BankAccount> bankAccountList = this.generateBankAccountsForUsers(users);
-//        bankAccountList.forEach(bankAccountService::saveBankAccount);
+    private Random random;
+    @Autowired
+    private BankAccountService bankAccountService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private TransactionService transactionService;
+
+//    public DataGenerator() {
 //
 //        List<Transaction> transactions = this.generateRandomTransactions(howMany, bankAccountList);
 //        try{
