@@ -1,17 +1,12 @@
 package com.isa.Bankersi2k24.services;
 
-import com.isa.Bankersi2k24.models.BankAccount;
-import com.isa.Bankersi2k24.models.BankAccountNumber;
-import com.isa.Bankersi2k24.models.Dashboard;
-import com.isa.Bankersi2k24.models.Transaction;
+import com.isa.Bankersi2k24.models.*;
 import com.isa.Bankersi2k24.repository.BankAccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class BankAccountService {
@@ -45,16 +40,25 @@ public class BankAccountService {
 //        return this.bankAccountRepository.getBankAccount(ban);
     }
 
-    public BankAccount createNewBankAccount(BigInteger forUserId){
-        BankAccount ban = new BankAccount();
-        ban.getUser().setId(forUserId);
-//        ban.setBankAccountNumber(BankAccountNumberService.generateRandomBankAccountNumber());
+    public BankAccount createNewBankAccountForUser(User user, BigDecimal quota, Currencies currency){
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setUser(user);
+        BankAccountNumber bankAccountNumber;
+        do bankAccountNumber = BankAccountNumberService.generateRandomBankAccountNumber();
+        while(!isBankAccountNumberUnique(bankAccountNumber));
 
-        return ban;
+        bankAccount.setBankAccountNumber(bankAccountNumber.toString());
+        bankAccount.setAvailableQuota(quota);
+        bankAccount.setCurrency(currency);
+        return bankAccount;
+    }
+
+    private boolean isBankAccountNumberUnique(BankAccountNumber bankAccountNumber){
+        return bankAccountRepository.findBankAccountByBankAccountNumber(bankAccountNumber.toString()).isEmpty();
     }
 
     public void saveBankAccount(BankAccount bankAccount){
-//        this.bankAccountRepository.saveNewBankAccount(bankAccount);
+        this.bankAccountRepository.save(bankAccount);
     }
 
     public boolean deleteBankAccount(BankAccountNumber bankAccountNumber) throws Exception {
@@ -114,4 +118,7 @@ public class BankAccountService {
         return dashboard;
     }
 
+    public List<BankAccount> getAllBankAccounts() {
+        return this.bankAccountRepository.findAll();
+    }
 }

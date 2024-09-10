@@ -24,11 +24,10 @@ public class BankAccount{
     @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private List<Transaction> transactions;
 
-//    @Convert(converter = String.class)
     private String bankAccountNumber;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "bankAccount_id", nullable = false)
+    @ManyToOne(cascade = { CascadeType.MERGE})
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public BankAccount() {
