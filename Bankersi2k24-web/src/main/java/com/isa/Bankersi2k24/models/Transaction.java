@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -43,10 +42,6 @@ public class Transaction{
     private LocalDateTime transactionDate;
     private boolean isComplete;
     private Integer trackingNumber;
-
-//    @ManyToMany(mappedBy = "transactions")
-//    private List<BankAccount> bankAccounts;
-
 
     public Transaction() {
     }
