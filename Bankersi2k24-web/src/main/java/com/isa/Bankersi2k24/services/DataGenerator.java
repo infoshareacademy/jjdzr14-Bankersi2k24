@@ -75,6 +75,7 @@ public class DataGenerator {
             transaction.setQuota(BigDecimal.valueOf(this.random.nextInt(0,350)));
             transaction.setSenderBankAccount(ba1);
             transaction.setDestinationBankAccount(ba2);
+
             transaction.setCurrency(Currencies.EUR);
             ret.add(transaction);
         }
@@ -104,7 +105,6 @@ public class DataGenerator {
             String name = names[random.nextInt(names.length)].toString();
             String lastName = lastNames[random.nextInt(lastNames.length)].toString();
             User u = User.builder()
-//                    .id(BigInteger.valueOf(1))
                     .name(name)
                     .lastName(lastName)
                     .creationDate(new Date())
