@@ -1,15 +1,16 @@
 package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.models.*;
-import org.springframework.stereotype.Service;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class DataGenerator {
-
     private final Random random;
     private final BankAccountService bankAccountService;
 
@@ -122,5 +123,4 @@ public class DataGenerator {
         Parn,
         Koppel
     }
-
 }

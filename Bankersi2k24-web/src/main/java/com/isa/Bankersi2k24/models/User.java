@@ -1,23 +1,23 @@
 package com.isa.Bankersi2k24.models;
 
 import com.isa.Bankersi2k24.services.UserService;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-
+import lombok.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@Data
+
 @Entity
 @Builder
-@Table(name = "Users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class User{
     @Id
     @GeneratedValue
@@ -33,8 +33,6 @@ public class User{
     private Date creationDate;
     @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<BankAccount> bankAccounts = new ArrayList<>();
-
-    public User() { }
 
     public boolean setEmail(String email) {
         if(UserService.verifyEmail(email)) {

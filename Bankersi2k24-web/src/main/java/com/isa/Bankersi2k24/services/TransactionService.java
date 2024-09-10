@@ -1,6 +1,5 @@
 package com.isa.Bankersi2k24.services;
 
-import com.isa.Bankersi2k24.DAO.FileName;
 import com.isa.Bankersi2k24.models.*;
 import com.isa.Bankersi2k24.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -15,33 +14,36 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
 
-    public TransactionService(BankAccountService bankAccountService ) {
-        this.transactionRepository = new TransactionRepository(FileName.TRANSACITON, Transaction.class);
+    public TransactionService(BankAccountService bankAccountService, TransactionRepository transactionRepository ) {
+        this.transactionRepository = transactionRepository;
         this.bankAccountService = bankAccountService;
     }
 
     public List<Transaction> getAllTransactions(){
-        return this.transactionRepository.getAllTransactions();
+        return null;
+//        return this.transactionRepository.getAllTransactions();
     }
 
     public List<Transaction> getAllOutgoingTransactionsForAccount(BigInteger accountId) throws Exception {
-        BankAccountNumber bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
-        List<BigInteger> outgoingTransactions = this.getAllTransactions()
-                .stream()
-                .filter(t -> t.getSenderAccountNumber() == bankAccountNumber)
-                .map(transaction -> BigInteger.valueOf(transaction.getId()))
-                .toList();
-        return this.transactionRepository.getTransactionListForIds(outgoingTransactions);
+//        BankAccountNumber bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
+//        List<BigInteger> outgoingTransactions = this.getAllTransactions()
+//                .stream()
+//                .filter(t -> t.getSenderBankAccount().getBankAccountNumber() == bankAccountNumber)
+//                .map(Transaction::getId)
+//                .toList();
+        return null;
+        //        return this.transactionRepository.getTransactionListForIds(outgoingTransactions);
     }
 
     public List<Transaction> getAllIncomingTransactionsForAccount(BigInteger accountId) throws Exception {
-        BankAccountNumber bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
-        List<BigInteger> incomingTransactions = this.getAllTransactions()
-                .stream()
-                .filter(t -> t.getDestinationAccountNumber() == bankAccountNumber)
-                .map(transaction -> BigInteger.valueOf(transaction.getId()))
-                .toList();
-        return this.transactionRepository.getTransactionListForIds(incomingTransactions);
+//        BankAccountNumber bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
+//        List<BigInteger> incomingTransactions = this.getAllTransactions()
+//                .stream()
+//                .filter(t -> t.getDestinationBankAccount().getBankAccountNumber() == bankAccountNumber)
+//                .map(Transaction::getId)
+//                .toList();
+        return null;
+//        return this.transactionRepository.getTransactionListForIds(incomingTransactions);
     }
 
     private boolean verifyTransaction(BankAccount sender, BankAccount recepient, Transaction transaction) throws RuntimeException{
@@ -54,11 +56,11 @@ public class TransactionService {
         return true;
     }
 
-    public void saveNewTransaction(Transaction transaction){
-        this.transactionRepository.addTransaction(transaction);
+    public void saveNewTransaction(Transaction transaction) throws Exception {
+        //this.transactionRepository.addTransaction(transaction);
 
-        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
-        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
+        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderBankAccount().getId());
+        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationBankAccount().getId());
 
         this.verifyTransaction(sender, recipient, transaction);
         bankAccountService.addToTransactionList(sender, transaction);
@@ -69,15 +71,15 @@ public class TransactionService {
 
     public void updateTransaction(Transaction transaction) {
         try{
-            this.transactionRepository.updateTransaction(transaction);
+            //this.transactionRepository.updateTransaction(transaction);
         }catch (Exception e){
             // handle this error
         }
     }
 
     public boolean triggerTransaction(Transaction transaction) throws Exception {
-        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderAccountNumber());
-        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationAccountNumber());
+        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderBankAccount().getId());
+        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationBankAccount().getId());
 
         try{
             this.verifyTransaction(sender, recipient, transaction);
@@ -108,9 +110,8 @@ public class TransactionService {
             transaction.setCurrency(bankAccountService
                     .getBankAccount(accountId)
                     .getCurrency());
-            transaction.setSenderAccountNumber(bankAccountService
-                    .getBankAccount(accountId)
-                    .getBankAccountNumber());
+            transaction.setSenderBankAccount(bankAccountService
+                    .getBankAccount(accountId));
             return transaction;
         } catch (Exception e) {
             throw new RuntimeException(e);
