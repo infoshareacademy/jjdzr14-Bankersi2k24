@@ -83,7 +83,15 @@ public class UserService {
             throw new Exception(String.format("User with id: %d does not exist", id));
         }
     }
-
+    public User getUserById(BigInteger id){
+        try{
+            return this.fetchAllUsers().stream().filter(u -> u.getId().equals(id))
+                    .findFirst().get();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
     public boolean loginUser(String login, String password) throws Exception {
         User user = this.findUserByLogin(login);
         if(user != null){
