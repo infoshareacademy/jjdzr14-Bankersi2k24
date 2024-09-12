@@ -72,7 +72,7 @@ public class LoginController {
     @GetMapping("/user/{id}")
     public String getUserDetailsByUserId(@PathVariable BigInteger id,
                                          Model model) {
-        UserService userService = null;
+//        UserService userService = null;
         try {
             User user = userService.getUserById(id);
             model.addAttribute("id", id);
