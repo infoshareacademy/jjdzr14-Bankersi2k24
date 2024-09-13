@@ -11,13 +11,11 @@
 <body>
 <div class="container p-5 my-5 bg-primary text-white">
     <h1 th:text="'User details'"></h1>
-    <p th:text="'Id:          ' +${id}"></p>
     <div th:if="${user != null}">
         <p th:text="'Name:          ' +${user.name}"></p>
         <p th:text="'Last name:     ' + ${user.lastName}"></p>
         <p th:text="'Pesel:         ' +${user.pesel}"></p>
         <p th:text="'Login:         ' +${user.login}"></p>
-        <p th:text="'Password:      ' +${user.password}"></p>
         <p th:text="'E-mail:        ' +${user.email}"></p>
         <p th:text="'Creation date: ' +${user.creationDate}"></p>
     </div>

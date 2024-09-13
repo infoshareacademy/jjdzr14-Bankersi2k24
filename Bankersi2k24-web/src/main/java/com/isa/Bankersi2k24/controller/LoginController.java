@@ -72,16 +72,8 @@ public class LoginController {
     @GetMapping("/user/{id}")
     public String getUserDetailsByUserId(@PathVariable BigInteger id,
                                          Model model) {
-//        UserService userService = null;
-        try {
             User user = userService.getUserById(id);
-            model.addAttribute("id", id);
-            model.addAttribute("user", user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("id", id);
-            model.addAttribute("user", null);
-        }
+             model.addAttribute("user", user);
         return "userDetails";
     }
 }
