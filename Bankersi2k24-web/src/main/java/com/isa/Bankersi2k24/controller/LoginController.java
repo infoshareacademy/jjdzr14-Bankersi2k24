@@ -10,12 +10,11 @@ import org.springframework.ui.ModelMap;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.math.BigInteger;
 
 
 @Controller
@@ -70,6 +69,12 @@ public class LoginController {
             return "main";
         }
     }
-
+    @GetMapping("/user/{id}")
+    public String getUserDetailsByUserId(@PathVariable BigInteger id,
+                                         Model model) {
+            User user = userService.getUserById(id);
+             model.addAttribute("user", user);
+        return "userDetails";
+    }
 }
 

@@ -2,6 +2,7 @@ package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.models.User;
 import com.isa.Bankersi2k24.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -83,7 +84,10 @@ public class UserService {
             throw new Exception(String.format("User with id: %d does not exist", id));
         }
     }
-
+    public User getUserById(BigInteger id){
+        return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Not found user with given Id:  %s", id)));
+    }
     public boolean loginUser(String login, String password) throws Exception {
         User user = this.findUserByLogin(login);
         if(user != null){
