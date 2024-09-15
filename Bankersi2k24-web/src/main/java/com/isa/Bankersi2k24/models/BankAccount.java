@@ -26,7 +26,7 @@ public class BankAccount{
     private BigDecimal availableQuota;
     private Currencies currency;
 
-    @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "transaction_id", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private List<Transaction> transactions = new ArrayList<>();
 
     private String bankAccountNumber;

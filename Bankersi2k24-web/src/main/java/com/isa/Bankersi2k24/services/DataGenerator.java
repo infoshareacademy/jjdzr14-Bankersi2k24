@@ -42,7 +42,7 @@ public class DataGenerator {
         List<User> users = new ArrayList<>();
         List<Transaction> transactions = new ArrayList<>();
 
-        int phase = 10;
+        int phase = 0;
 
         switch(phase) {
             case 0:
@@ -50,16 +50,16 @@ public class DataGenerator {
                 for (User user : users) {
                     userService.saveNewUser(user);
                 }
-                break;
+//                break;
             case 1:
                 users = this.userService.getAllUsers();
                 bankAccountList = this.generateBankAccountsForUsers(users);
                 bankAccountList.forEach(bankAccountService::saveBankAccount);
-                break;
+//                break;
             case 2:
                 transactions = this.generateRandomTransactions(howMany, bankAccountService.getAllBankAccounts());
                 transactions.forEach(transactionService::saveNewTransaction);
-                break;
+//                break;
             case 10:
                 bankAccountList = bankAccountService.getAllBankAccounts();
                 users = userService.getAllUsers();
