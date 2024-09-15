@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,11 +35,12 @@ public class DataGenerator {
     }
 
     @PostConstruct
-    public void generate(){
+    public void init(){
         this.random = new Random();
         int howMany = 13;
         List<BankAccount> bankAccountList = new ArrayList<>();
         List<User> users = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
 
         int phase = 10;
 
@@ -54,15 +56,20 @@ public class DataGenerator {
                 bankAccountList = this.generateBankAccountsForUsers(users);
                 bankAccountList.forEach(bankAccountService::saveBankAccount);
                 break;
+            case 2:
+                transactions = this.generateRandomTransactions(howMany, bankAccountService.getAllBankAccounts());
+                transactions.forEach(transactionService::saveNewTransaction);
+                break;
             case 10:
                 bankAccountList = bankAccountService.getAllBankAccounts();
                 users = userService.getAllUsers();
+                transactions = transactionService.getAllTransactions();
                 break;
         }
     }
 
     private List<Transaction> generateRandomTransactions(int howMany, List<BankAccount> bankAccountList){
-        List<Transaction> ret = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
         for (int i = 0; i < howMany; i++) {
             BankAccount ba1 = bankAccountList.get(this.random.nextInt(0, bankAccountList.size()));
             Collections.shuffle(bankAccountList);
@@ -70,15 +77,20 @@ public class DataGenerator {
                         .filter(ba -> !(ba1.equals(ba)))
                         .findFirst()
                         .get();
-            Transaction transaction = new Transaction();
-            transaction.setTransactionTitle("transactionTitle-"+ this.random.nextInt(0, 1000));
-            transaction.setQuota(BigDecimal.valueOf(this.random.nextInt(0,350)));
-            transaction.setSenderBankAccount(ba1);
-            transaction.setDestinationBankAccount(ba2);
-            transaction.setCurrency(Currencies.EUR);
-            ret.add(transaction);
+            Transaction transaction = Transaction.builder()
+                    .quota(BigDecimal.valueOf(this.random.nextInt(0,350)))
+                    .transactionDate(LocalDateTime.now())
+                    .transactionTitle("transactionTitle-"+ this.random.nextInt(0, 1000))
+                    .currency(Currencies.EUR)
+                    .isComplete(this.random.nextBoolean())
+                    .senderBankAccount(ba1)
+                    .destinationBankAccount(ba2)
+                    .build();
+            if(transaction.isComplete())
+                transaction.setTrackingNumber();
+            transactions.add(transaction);
         }
-        return ret;
+        return transactions;
     }
 
     private List<BankAccount> generateBankAccountsForUsers(List<User> users){

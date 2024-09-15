@@ -2,7 +2,7 @@ package com.isa.Bankersi2k24.models;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,8 +11,13 @@ import java.util.List;
 import java.util.Objects;
 
 
-@Data
+
 @Entity
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "bankaccounts")
 public class BankAccount{
     @Id
@@ -22,17 +27,13 @@ public class BankAccount{
     private Currencies currency;
 
     @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
     private String bankAccountNumber;
 
     @ManyToOne(cascade = { CascadeType.MERGE})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    public BankAccount() {
-        this.transactions = new ArrayList<>();
-    }
 
     @Override
     public boolean equals(Object o) {

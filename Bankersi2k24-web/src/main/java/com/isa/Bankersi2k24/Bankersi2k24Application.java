@@ -12,7 +12,7 @@ public class Bankersi2k24Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Bankersi2k24Application.class, args);
 		DataGenerator dataGenerator = new DataGenerator();
-		dataGenerator.generate();
+		dataGenerator.init();
 	}
 
 }

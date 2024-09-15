@@ -41,16 +41,15 @@ public class BankAccountService {
     }
 
     public BankAccount createNewBankAccountForUser(User user, BigDecimal quota, Currencies currency){
-        BankAccount bankAccount = new BankAccount();
-        bankAccount.setUser(user);
         BankAccountNumber bankAccountNumber;
         do bankAccountNumber = BankAccountNumberService.generateRandomBankAccountNumber();
         while(!isBankAccountNumberUnique(bankAccountNumber));
-
-        bankAccount.setBankAccountNumber(bankAccountNumber.toString());
-        bankAccount.setAvailableQuota(quota);
-        bankAccount.setCurrency(currency);
-        return bankAccount;
+        return BankAccount.builder()
+                .user(user)
+                .bankAccountNumber(bankAccountNumber.toString())
+                .availableQuota(quota)
+                .currency(currency)
+                .build();
     }
 
     private boolean isBankAccountNumberUnique(BankAccountNumber bankAccountNumber){

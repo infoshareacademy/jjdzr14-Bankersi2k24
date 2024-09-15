@@ -2,7 +2,9 @@ package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.models.*;
 import com.isa.Bankersi2k24.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -20,8 +22,7 @@ public class TransactionService {
     }
 
     public List<Transaction> getAllTransactions(){
-        return null;
-//        return this.transactionRepository.getAllTransactions();
+        return this.transactionRepository.findAll();
     }
 
     public List<Transaction> getAllOutgoingTransactionsForAccount(BigInteger accountId) throws Exception {
@@ -56,17 +57,9 @@ public class TransactionService {
         return true;
     }
 
-    public void saveNewTransaction(Transaction transaction) throws Exception {
-        //this.transactionRepository.addTransaction(transaction);
-
-        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderBankAccount().getId());
-        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationBankAccount().getId());
-
-        this.verifyTransaction(sender, recipient, transaction);
-        bankAccountService.addToTransactionList(sender, transaction);
-        bankAccountService.addToTransactionList(recipient, transaction);
-
-
+    @Transactional
+    public void saveNewTransaction(Transaction transaction) {
+        this.transactionRepository.save(transaction);
     }
 
     public void updateTransaction(Transaction transaction) {
@@ -105,13 +98,15 @@ public class TransactionService {
     }
 
     public Transaction prepareDraftTransactionForAccount(BigInteger accountId) {
-        Transaction transaction = new Transaction();
+        Transaction transaction;
         try{
-            transaction.setCurrency(bankAccountService
-                    .getBankAccount(accountId)
-                    .getCurrency());
-            transaction.setSenderBankAccount(bankAccountService
-                    .getBankAccount(accountId));
+            transaction = Transaction.builder()
+                    .currency(bankAccountService
+                            .getBankAccount(accountId)
+                            .getCurrency())
+                    .senderBankAccount(bankAccountService
+                            .getBankAccount(accountId))
+                    .build();
             return transaction;
         } catch (Exception e) {
             throw new RuntimeException(e);
