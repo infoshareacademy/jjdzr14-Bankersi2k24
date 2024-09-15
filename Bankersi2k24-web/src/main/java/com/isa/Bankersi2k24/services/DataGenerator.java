@@ -12,22 +12,37 @@ import java.util.stream.Collectors;
 
 @Component
 public class DataGenerator {
-    private final Random random;
-    private final BankAccountService bankAccountService;
+    private Random random;
+    @Autowired
+    private BankAccountService bankAccountService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private TransactionService transactionService;
 
+    public DataGenerator() {
+//
+//        List<Transaction> transactions = this.generateRandomTransactions(howMany, bankAccountList);
+//        try{
+//            for (Transaction transaction : transactions) {
+//                transactionService.saveNewTransaction(transaction);
+//                transactionService.triggerTransaction(transaction);
+//                transactions.forEach(transactionService::updateTransaction);
+//            }
+//        }catch (Exception e){
+//            // not enough quota on account or currency
+//        }
+    }
 
     @PostConstruct
     public void init(){
-
         this.random = new Random();
-        this.bankAccountService = bankAccountService;
-
         int howMany = 13;
         List<BankAccount> bankAccountList = new ArrayList<>();
         List<User> users = new ArrayList<>();
         List<Transaction> transactions = new ArrayList<>();
 
-        int phase = 0;
+        int phase = 10;
 
         switch(phase) {
             case 0:
@@ -35,16 +50,16 @@ public class DataGenerator {
                 for (User user : users) {
                     userService.saveNewUser(user);
                 }
-//                break;
+                break;
             case 1:
                 users = this.userService.getAllUsers();
                 bankAccountList = this.generateBankAccountsForUsers(users);
                 bankAccountList.forEach(bankAccountService::saveBankAccount);
-//                break;
+                break;
             case 2:
                 transactions = this.generateRandomTransactions(howMany, bankAccountService.getAllBankAccounts());
                 transactions.forEach(transactionService::saveNewTransaction);
-//                break;
+                break;
             case 10:
                 bankAccountList = bankAccountService.getAllBankAccounts();
                 users = userService.getAllUsers();
@@ -82,9 +97,10 @@ public class DataGenerator {
         List<BankAccount> bankAccounts = new ArrayList<>(users.size());
         Collections.shuffle(users);
         for(User user : users){
-            BankAccount bankAccount = bankAccountService.createNewBankAccount(user.getId());
-            bankAccount.setAvailableQuota(BigDecimal.valueOf(new Random().nextInt(0,10000)));
-            bankAccount.setCurrency(Currencies.EUR);
+            BankAccount bankAccount = bankAccountService.createNewBankAccountForUser(
+                                                    user,
+                                                    BigDecimal.valueOf(new Random().nextInt(0,10000)),
+                                                    Currencies.EUR);
             bankAccounts.add(bankAccount);
         }
         return bankAccounts;
@@ -100,6 +116,7 @@ public class DataGenerator {
             String name = names[random.nextInt(names.length)].toString();
             String lastName = lastNames[random.nextInt(lastNames.length)].toString();
             User u = User.builder()
+//                    .id(BigInteger.valueOf(1))
                     .name(name)
                     .lastName(lastName)
                     .creationDate(new Date())
@@ -109,6 +126,7 @@ public class DataGenerator {
                     .taxId(random.ints(9, 0,10)
                             .mapToObj(String::valueOf)
                             .collect(Collectors.joining()))
+                    .bankAccounts(Collections.emptyList())
                     .build();
             users.add(u);
         }
@@ -141,4 +159,5 @@ public class DataGenerator {
         Parn,
         Koppel
     }
+
 }
