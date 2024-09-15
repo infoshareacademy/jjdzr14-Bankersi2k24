@@ -44,10 +44,6 @@ public class Transaction{
     private boolean isComplete;
     private Integer trackingNumber;
 
-//    @ManyToMany(mappedBy = "transactions")
-//    private List<BankAccount> bankAccounts;
-
-
     public Transaction() {
     }
 
