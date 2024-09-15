@@ -12,31 +12,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class DataGenerator {
-    private Random random;
-    @Autowired
-    private BankAccountService bankAccountService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TransactionService transactionService;
+    private final Random random;
+    private final BankAccountService bankAccountService;
 
-    public DataGenerator() {
-//
-//        List<Transaction> transactions = this.generateRandomTransactions(howMany, bankAccountList);
-//        try{
-//            for (Transaction transaction : transactions) {
-//                transactionService.saveNewTransaction(transaction);
-//                transactionService.triggerTransaction(transaction);
-//                transactions.forEach(transactionService::updateTransaction);
-//            }
-//        }catch (Exception e){
-//            // not enough quota on account or currency
-//        }
-    }
 
     @PostConstruct
     public void init(){
+
         this.random = new Random();
+        this.bankAccountService = bankAccountService;
+
         int howMany = 13;
         List<BankAccount> bankAccountList = new ArrayList<>();
         List<User> users = new ArrayList<>();
@@ -97,10 +82,9 @@ public class DataGenerator {
         List<BankAccount> bankAccounts = new ArrayList<>(users.size());
         Collections.shuffle(users);
         for(User user : users){
-            BankAccount bankAccount = bankAccountService.createNewBankAccountForUser(
-                                                    user,
-                                                    BigDecimal.valueOf(new Random().nextInt(0,10000)),
-                                                    Currencies.EUR);
+            BankAccount bankAccount = bankAccountService.createNewBankAccount(user.getId());
+            bankAccount.setAvailableQuota(BigDecimal.valueOf(new Random().nextInt(0,10000)));
+            bankAccount.setCurrency(Currencies.EUR);
             bankAccounts.add(bankAccount);
         }
         return bankAccounts;
@@ -116,7 +100,6 @@ public class DataGenerator {
             String name = names[random.nextInt(names.length)].toString();
             String lastName = lastNames[random.nextInt(lastNames.length)].toString();
             User u = User.builder()
-//                    .id(BigInteger.valueOf(1))
                     .name(name)
                     .lastName(lastName)
                     .creationDate(new Date())
@@ -126,7 +109,6 @@ public class DataGenerator {
                     .taxId(random.ints(9, 0,10)
                             .mapToObj(String::valueOf)
                             .collect(Collectors.joining()))
-                    .bankAccounts(Collections.emptyList())
                     .build();
             users.add(u);
         }
@@ -159,5 +141,4 @@ public class DataGenerator {
         Parn,
         Koppel
     }
-
 }

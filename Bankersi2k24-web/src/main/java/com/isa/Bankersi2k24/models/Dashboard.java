@@ -1,13 +1,14 @@
 package com.isa.Bankersi2k24.models;
 
+
 import lombok.*;
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 @Builder
 @Getter

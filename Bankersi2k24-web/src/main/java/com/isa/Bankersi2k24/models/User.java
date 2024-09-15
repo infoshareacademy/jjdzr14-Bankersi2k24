@@ -4,12 +4,12 @@ import com.isa.Bankersi2k24.services.UserService;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
 
 @Entity
 @Builder
@@ -23,7 +23,9 @@ public class User{
     @GeneratedValue
     private BigInteger id;
     private String name ;
+    @NotBlank(message = "Please provide a login")
     private String login;
+    @NotBlank(message = "Please provide a password")
     private String password;
     private String lastName;
     private String email;
@@ -31,7 +33,6 @@ public class User{
     private Date creationDate;
     @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<BankAccount> bankAccounts = new ArrayList<>();
-
 
     public boolean setEmail(String email) {
         if(UserService.verifyEmail(email)) {
