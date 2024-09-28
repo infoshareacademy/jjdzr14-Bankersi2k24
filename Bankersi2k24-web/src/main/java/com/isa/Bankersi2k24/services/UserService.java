@@ -36,6 +36,7 @@ public class UserService {
         return null;
     }
 
+
     public User findUserByLogin(String login){
         List<User> users = fetchAllUsers();
 
@@ -73,6 +74,16 @@ public class UserService {
         return null;
 //        return this.userRepository.fetchAllUsers();
     }
+    public void editUser(BigInteger id, String newLogin, String newEmail,
+                         String newLastName, String newName){
+        User user = userRepository.findById(id).get();
+        user.setLogin(newLogin);
+        user.setEmail(newEmail);
+        user.setLastName(newLastName);
+        user.setName(newName);
+        userRepository.save(user);
+    }
+
 
     public String getUserName(BigInteger id) throws Exception {
         try{

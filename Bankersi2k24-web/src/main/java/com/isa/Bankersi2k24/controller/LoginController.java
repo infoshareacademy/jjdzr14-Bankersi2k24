@@ -76,5 +76,25 @@ public class LoginController {
              model.addAttribute("user", user);
         return "userDetails";
     }
+    @GetMapping("/user/edit/{id}")
+    public String editUserDetails(@PathVariable BigInteger id,
+                                  Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "editUserDetails";
+    }
+
+    @PostMapping("/editUser")
+    public String executeEditUserDetails(@RequestParam BigInteger id,
+                                         @RequestParam String newLogin,
+                                         @RequestParam String newEmail,
+                                         @RequestParam String newLastName,
+                                         @RequestParam String newName,
+                                         Model model) {
+
+        userService.editUser(id, newLogin, newEmail, newLastName, newName);
+
+        return "redirect:/user/" + id;
+    }
 }
 
