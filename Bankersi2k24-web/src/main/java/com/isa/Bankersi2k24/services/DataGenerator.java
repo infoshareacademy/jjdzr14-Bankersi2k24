@@ -13,12 +13,15 @@ import java.util.stream.Collectors;
 @Component
 public class DataGenerator {
     private Random random;
-    @Autowired
-    private BankAccountService bankAccountService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TransactionService transactionService;
+    private final BankAccountService bankAccountService;
+    private final UserService userService;
+    private final TransactionService transactionService;
+
+    public DataGenerator(BankAccountService bankAccountService, UserService userService, TransactionService transactionService) {
+        this.bankAccountService = bankAccountService;
+        this.userService = userService;
+        this.transactionService = transactionService;
+    }
 
     @PostConstruct
     public void init(){

@@ -3,6 +3,7 @@ package com.isa.Bankersi2k24.models;
 import com.isa.Bankersi2k24.services.UserService;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
