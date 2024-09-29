@@ -82,16 +82,16 @@ public class BankAccountService {
         return this.deleteBankAccount(BankAccountNumberService.accountNumberStringToBan(ban));
     }
 
-    public void addToTransactionList(BankAccount bankAccount, Transaction transaction) {
-        if(!bankAccount.getTransactions().contains(transaction))
-            bankAccount.getTransactions().add(transaction);
-
-        try {
-//            bankAccountRepository.updateBankAccount(bankAccount);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
+//    public void addToTransactionList(BankAccount bankAccount, Transaction transaction) {
+//        if(!bankAccount.getTransactions().contains(transaction))
+//            bankAccount.getTransactions().add(transaction);
+//
+//        try {
+////            bankAccountRepository.updateBankAccount(bankAccount);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e.getMessage());
+//        }
+//    }
 
     public Dashboard prepareUserDashboard(BigInteger userId) throws Exception {
         Dashboard dashboard = Dashboard.builder()

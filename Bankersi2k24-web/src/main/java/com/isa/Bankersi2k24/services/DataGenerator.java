@@ -20,20 +20,6 @@ public class DataGenerator {
     @Autowired
     private TransactionService transactionService;
 
-    public DataGenerator() {
-//
-//        List<Transaction> transactions = this.generateRandomTransactions(howMany, bankAccountList);
-//        try{
-//            for (Transaction transaction : transactions) {
-//                transactionService.saveNewTransaction(transaction);
-//                transactionService.triggerTransaction(transaction);
-//                transactions.forEach(transactionService::updateTransaction);
-//            }
-//        }catch (Exception e){
-//            // not enough quota on account or currency
-//        }
-    }
-
     @PostConstruct
     public void init(){
         this.random = new Random();
@@ -42,7 +28,7 @@ public class DataGenerator {
         List<User> users = new ArrayList<>();
         List<Transaction> transactions = new ArrayList<>();
 
-        int phase = 10;
+        int phase = 0;
 
         switch(phase) {
             case 0:
@@ -50,16 +36,20 @@ public class DataGenerator {
                 for (User user : users) {
                     userService.saveNewUser(user);
                 }
-                break;
+//                break;
             case 1:
                 users = this.userService.getAllUsers();
                 bankAccountList = this.generateBankAccountsForUsers(users);
                 bankAccountList.forEach(bankAccountService::saveBankAccount);
-                break;
+//                break;
             case 2:
                 transactions = this.generateRandomTransactions(howMany, bankAccountService.getAllBankAccounts());
                 transactions.forEach(transactionService::saveNewTransaction);
-                break;
+//                break;
+            case 666:
+                List<Transaction> transactions1 = this.transactionService.getAllTransactionsForBankAccount(
+                        this.bankAccountService.getAllBankAccounts().get(1)
+                );
             case 10:
                 bankAccountList = bankAccountService.getAllBankAccounts();
                 users = userService.getAllUsers();
@@ -83,8 +73,8 @@ public class DataGenerator {
                     .transactionTitle("transactionTitle-"+ this.random.nextInt(0, 1000))
                     .currency(Currencies.EUR)
                     .isComplete(this.random.nextBoolean())
-                    .senderBankAccount(ba1)
-                    .destinationBankAccount(ba2)
+                    .senderBankAccountNumber(ba1.getBankAccountNumber())
+                    .destinationBankAccountNumber(ba2.getBankAccountNumber())
                     .build();
             if(transaction.isComplete())
                 transaction.setTrackingNumber();

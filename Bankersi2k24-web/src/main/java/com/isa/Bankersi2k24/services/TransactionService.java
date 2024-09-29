@@ -70,28 +70,28 @@ public class TransactionService {
         }
     }
 
-    public boolean triggerTransaction(Transaction transaction) throws Exception {
-        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderBankAccount().getId());
-        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationBankAccount().getId());
-
-        try{
-            this.verifyTransaction(sender, recipient, transaction);
-            sender.setAvailableQuota(sender.getAvailableQuota().subtract(transaction.getQuota()));
-            recipient.setAvailableQuota(recipient.getAvailableQuota().add(transaction.getQuota()));
-
-            transaction.setTransactionDate(LocalDateTime.now());
-            transaction.setComplete(true);
-            transaction.setTrackingNumber();
-            this.updateTransaction(transaction);
-
-            bankAccountService.addToTransactionList(sender, transaction);
-            bankAccountService.addToTransactionList(recipient, transaction);
-
-            return true;
-        } catch (Exception e){
-            throw new Exception(e);
-        }
-    }
+//    public boolean triggerTransaction(Transaction transaction) throws Exception {
+//        BankAccount sender = bankAccountService.getBankAccount(transaction.getSenderBankAccount().getId());
+//        BankAccount recipient = bankAccountService.getBankAccount(transaction.getDestinationBankAccount().getId());
+//
+//        try{
+//            this.verifyTransaction(sender, recipient, transaction);
+//            sender.setAvailableQuota(sender.getAvailableQuota().subtract(transaction.getQuota()));
+//            recipient.setAvailableQuota(recipient.getAvailableQuota().add(transaction.getQuota()));
+//
+//            transaction.setTransactionDate(LocalDateTime.now());
+//            transaction.setComplete(true);
+//            transaction.setTrackingNumber();
+//            this.updateTransaction(transaction);
+//
+//            bankAccountService.addToTransactionList(sender, transaction);
+//            bankAccountService.addToTransactionList(recipient, transaction);
+//
+//            return true;
+//        } catch (Exception e){
+//            throw new Exception(e);
+//        }
+//    }
 
     public Currencies getCurrencyForAccount(BigInteger accountId) throws Exception {
         return bankAccountService.getBankAccount(accountId).getCurrency();
@@ -104,12 +104,16 @@ public class TransactionService {
                     .currency(bankAccountService
                             .getBankAccount(accountId)
                             .getCurrency())
-                    .senderBankAccount(bankAccountService
-                            .getBankAccount(accountId))
+                    .senderBankAccountNumber(bankAccountService
+                            .getBankAccount(accountId).toString())
                     .build();
             return transaction;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Transaction> getAllTransactionsForBankAccount(BankAccount bankAccount) {
+        return this.transactionRepository.findTransactionsBySenderBankAccountNumberIs(bankAccount.getBankAccountNumber());
     }
 }

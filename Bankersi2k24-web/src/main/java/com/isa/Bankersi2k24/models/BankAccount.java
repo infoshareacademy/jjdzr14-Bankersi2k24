@@ -1,8 +1,10 @@
 package com.isa.Bankersi2k24.models;
 
+import com.isa.Bankersi2k24.services.TransactionService;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,8 +25,8 @@ public class BankAccount{
     @Id
     @GeneratedValue
     private BigInteger id;
-    private BigDecimal availableQuota;
-    private Currencies currency;
+    private BigDecimal availableQuota = BigDecimal.valueOf(0);
+    private Currencies currency = Currencies.NONE;
 
     @OneToMany(mappedBy = "id", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private List<Transaction> transactions = new ArrayList<>();
