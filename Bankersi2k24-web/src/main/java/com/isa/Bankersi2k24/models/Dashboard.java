@@ -18,7 +18,11 @@ import java.util.Map;
 public class Dashboard {
     private Integer numberOfAccounts;
     private List<BankAccount> accounts = new ArrayList<>();
-    private Map<Currencies, BigDecimal> quotaPerCurrency = new HashMap<>();;
+    private Map<Currencies, BigDecimal> quotaPerCurrency = new HashMap<>();
     private String userName;
+
+    public void addQuotaPerCurrency(Currencies currency, BigDecimal ammount){
+        this.quotaPerCurrency.put(currency, ammount);
+    }
 
 }

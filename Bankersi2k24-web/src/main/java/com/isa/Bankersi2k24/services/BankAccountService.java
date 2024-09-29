@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -19,9 +21,8 @@ public class BankAccountService {
     }
 
     public List<BankAccount> getBankAccountsForUser(BigInteger userId){
-        return null;
-//        return this.bankAccountRepository.fetchAllBankAccounts().stream().filter (
-//                ba -> ba.getUser().getId().equals(userId)).collect(Collectors.toList());
+        var bankAccounts = bankAccountRepository.findBankAccountByUserId(userId);
+        return (bankAccounts != null) ?  bankAccounts : Collections.emptyList();
     }
 
     public BankAccount getBankAccount(BigInteger accountId) throws Exception {
@@ -93,11 +94,12 @@ public class BankAccountService {
 //        }
 //    }
 
-    public Dashboard prepareUserDashboard(BigInteger userId) throws Exception {
+    public Dashboard prepareUserDashboard(BigInteger userId) {
         Dashboard dashboard = Dashboard.builder()
-                .accounts(this.getBankAccountsForUser(userId))
+                .accounts(getBankAccountsForUser(userId))
                 .userName(userService.getUserName(userId))
-                .numberOfAccounts(this.getBankAccountsForUser(userId).size())
+                .numberOfAccounts(getBankAccountsForUser(userId).size())
+                .quotaPerCurrency(new HashMap<>())
                 .build();
 
         for(BankAccount ba : dashboard.getAccounts()){

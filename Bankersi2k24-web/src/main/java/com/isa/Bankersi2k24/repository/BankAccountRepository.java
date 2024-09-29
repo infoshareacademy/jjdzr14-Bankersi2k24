@@ -14,4 +14,7 @@ import java.util.List;
 public interface BankAccountRepository extends JpaRepository<BankAccount, BigInteger> {
     @Query("select ba from BankAccount ba where ba.bankAccountNumber = ?1")
     List<BankAccount> findBankAccountByBankAccountNumber(String bankAccountNumber);
+
+    @Query("select ba from BankAccount ba where ba.user.id =?1")
+    List<BankAccount> findBankAccountByUserId(BigInteger userId);
 }
