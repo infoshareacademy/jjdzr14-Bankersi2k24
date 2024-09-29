@@ -7,10 +7,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, BigInteger> {
     @Query("select u from User u where u.login like ?1")
-    User findUserByLogin(String login);
+    Optional<User> findUserByLogin(String login);
 
 }

@@ -1,9 +1,13 @@
 package com.isa.Bankersi2k24.models;
 
-import com.isa.Bankersi2k24.services.UserService;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,22 +32,14 @@ public class User{
     @NotBlank(message = "Please provide a password")
     private String password;
     private String lastName;
+    @Email(message = "Provide valid email format")
+//    @NotBlank(message = "email cannot be empty")
+//    @NotNull(message = "email cannot be empty")
     private String email;
     private String taxId;
     private Date creationDate;
     @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<BankAccount> bankAccounts = new ArrayList<>();
-
-    public boolean setEmail(String email) {
-        if(UserService.verifyEmail(email)) {
-            this.email = email;
-            return true;
-        }
-        else {
-            this.email = "";
-            return false;
-        }
-    }
 
     @Override
     public boolean equals(Object o) {
