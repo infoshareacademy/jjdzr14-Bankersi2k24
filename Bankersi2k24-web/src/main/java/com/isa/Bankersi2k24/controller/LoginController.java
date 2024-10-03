@@ -85,16 +85,23 @@ public class LoginController {
     }
 
     @PostMapping("/editUser")
-    public String executeEditUserDetails(@RequestParam BigInteger id,
-                                         @RequestParam String newLogin,
-                                         @RequestParam String newEmail,
-                                         @RequestParam String newLastName,
-                                         @RequestParam String newName,
+    public String executeEditUserDetails(@Valid @ModelAttribute("user") User editedUser,
+                                         BindingResult bindingResult,
+                                         final RedirectAttributes redirectAttributes,
                                          Model model) {
+        if (bindingResult.hasErrors()) {
+            String errMessage = "";
+            for (ObjectError objectError : bindingResult.getAllErrors()) {
+                errMessage += objectError.getDefaultMessage() + "  ";
 
-        userService.editUser(id, newLogin, newEmail, newLastName, newName);
+            }
+            System.out.println(errMessage);
+            redirectAttributes.addFlashAttribute("errMessage", errMessage);
 
-        return "redirect:/user/" + id;
+            return "redirect:/user/" + editedUser.getId();
+        }
+        userService.editUser(editedUser);
+        return "redirect:/user/" + editedUser.getId();
     }
 }
 

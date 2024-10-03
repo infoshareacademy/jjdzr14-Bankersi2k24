@@ -9,26 +9,31 @@
 
 </head>
 <body>
-<form class="container" action="/editUser" method="post">
-    <input type="hidden" th:value="${user.id}" class="form-control" id="id" name="id">
+<form class="container" th:object="${user}" action="/editUser" method="post">
+    <input type="hidden" th:value="${user.id}" class="form-control" id="id" name="id" th:field="*{id}">
     <div class="form-group">
         <label for="newName" class="col-sm-2 col-form-label">Name</label>
-        <input type="text" th:value="${user.name}" class="form-control" id="newName" name="newName">
+        <input type="text" th:value="${user.name}" class="form-control" id="newName" name="newName" th:field="*{name}">
 
     </div>
     <div class="form-group">
         <label for="newLastName" class="col-sm-2 col-form-label">Last name</label>
-        <input type="text" th:value="${user.lastName}" class="form-control" id="newLastName" name="newLastName">
+        <input type="text" th:value="${user.lastName}" class="form-control" id="newLastName" name="newLastName" th:field="*{lastName}">
 
     </div>
     <div class="form-group">
         <label for="newLogin" class="col-sm-2 col-form-label">Login</label>
-        <input type="text" th:value="${user.login}" class="form-control" id="newLogin" name="newLogin">
+        <input type="text" th:value="${user.login}" class="form-control" id="newLogin" name="newLogin" th:field="*{login}">
+
+    </div>
+    <div class="form-group">
+        <!-- <label for="newPassword" class="col-sm-2 col-form-label">Password</label>-->
+        <input type="hidden" th:value="${user.password}" class="form-control" id="newPassword" name="newLogin" th:field="*{password}">
 
     </div>
     <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
-        <input type="email" th:value="${user.email}" class="form-control" id="exampleInputEmail1" name="newEmail" aria-describedby="emailHelp" placeholder="Enter email">
+        <input type="email" th:value="${user.email}" class="form-control" id="exampleInputEmail1" name="newEmail" aria-describedby="emailHelp" placeholder="Enter email" th:field="*{email}">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <button type="submit" class="btn btn-primary">Change</button>

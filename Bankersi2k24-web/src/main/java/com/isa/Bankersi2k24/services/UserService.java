@@ -74,16 +74,18 @@ public class UserService {
         return null;
 //        return this.userRepository.fetchAllUsers();
     }
-    public void editUser(BigInteger id, String newLogin, String newEmail,
-                         String newLastName, String newName){
-        User user = userRepository.findById(id).get();
-        user.setLogin(newLogin);
-        user.setEmail(newEmail);
-        user.setLastName(newLastName);
-        user.setName(newName);
-        userRepository.save(user);
+    public void editUser(User editedUser){
+        try {
+            User user = userRepository.findById(editedUser.getId()).get();
+            user.setLogin(editedUser.getLogin());
+            user.setEmail(editedUser.getEmail());
+            user.setLastName(editedUser.getLastName());
+            user.setName(editedUser.getName());
+            userRepository.save(user);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
-
 
     public String getUserName(BigInteger id) throws Exception {
         try{
