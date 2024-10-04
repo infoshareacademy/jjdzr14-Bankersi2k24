@@ -83,7 +83,7 @@ public class LoginController {
         model.addAttribute("user", user);
         return "editUserDetails";
     }
-
+// test
     @PostMapping("/editUser")
     public String executeEditUserDetails(@Valid @ModelAttribute("user") User editedUser,
                                          BindingResult bindingResult,
