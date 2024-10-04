@@ -6,41 +6,63 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class DataGenerator {
-    private final Random random;
+    private Random random;
     private final BankAccountService bankAccountService;
+    private final UserService userService;
+    private final TransactionService transactionService;
 
-
-    public DataGenerator(BankAccountService bankAccountService, TransacrionService transacrionService, UserService userService) {
-        this.random = new Random();
+    public DataGenerator(BankAccountService bankAccountService, UserService userService, TransactionService transactionService) {
         this.bankAccountService = bankAccountService;
+        this.userService = userService;
+        this.transactionService = transactionService;
+    }
 
+    @PostConstruct
+    public void init(){
+        this.random = new Random();
         int howMany = 13;
+        List<BankAccount> bankAccountList = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
 
-        List<User> users = this.generateUsers(howMany);
-        users.forEach(userService::saveNewUser);
+        int phase = 0;
 
-        List<BankAccount> bankAccountList = this.generateBankAccountsForUsers(users);
-        bankAccountList.forEach(bankAccountService::saveBankAccount);
-
-        List<Transaction> transactions = this.generateRandomTransactions(howMany, bankAccountList);
-        try{
-            for (Transaction transaction : transactions) {
-                transactionService.saveNewTransaction(transaction);
-                transactionService.triggerTransaction(transaction);
-                transactions.forEach(transactionService::updateTransaction);
-            }
-        }catch (Exception e){
-            // not enough quota on account or currency
+        switch(phase) {
+            case 0:
+                users = this.generateUsers(howMany);
+                for (User user : users) {
+                    userService.saveNewUser(user);
+                }
+//                break;
+            case 1:
+                users = this.userService.getAllUsers();
+                bankAccountList = this.generateBankAccountsForUsers(users);
+                bankAccountList.forEach(bankAccountService::saveBankAccount);
+//                break;
+            case 2:
+                transactions = this.generateRandomTransactions(howMany, bankAccountService.getAllBankAccounts());
+                transactions.forEach(transactionService::saveNewTransaction);
+//                break;
+            case 666:
+                List<Transaction> transactions1 = this.transactionService.getAllTransactionsForBankAccount(
+                        this.bankAccountService.getAllBankAccounts().get(1)
+                );
+            case 10:
+                bankAccountList = bankAccountService.getAllBankAccounts();
+                users = userService.getAllUsers();
+                transactions = transactionService.getAllTransactions();
+                break;
         }
     }
 
     private List<Transaction> generateRandomTransactions(int howMany, List<BankAccount> bankAccountList){
-        List<Transaction> ret = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
         for (int i = 0; i < howMany; i++) {
             BankAccount ba1 = bankAccountList.get(this.random.nextInt(0, bankAccountList.size()));
             Collections.shuffle(bankAccountList);
@@ -48,25 +70,30 @@ public class DataGenerator {
                         .filter(ba -> !(ba1.equals(ba)))
                         .findFirst()
                         .get();
-            Transaction transaction = new Transaction();
-            transaction.setTransactionTitle("transactionTitle-"+ this.random.nextInt(0, 1000));
-            transaction.setQuota(BigDecimal.valueOf(this.random.nextInt(0,350)));
-
-            transaction.setSenderAccountNumber(ba1.getBankAccountNumber());
-            transaction.setDestinationAccountNumber(ba2.getBankAccountNumber());
-            transaction.setCurrency(Currencies.EUR);
-            ret.add(transaction);
+            Transaction transaction = Transaction.builder()
+                    .quota(BigDecimal.valueOf(this.random.nextInt(0,350)))
+                    .transactionDate(LocalDateTime.now())
+                    .transactionTitle("transactionTitle-"+ this.random.nextInt(0, 1000))
+                    .currency(Currencies.EUR)
+                    .isComplete(this.random.nextBoolean())
+                    .senderBankAccountNumber(ba1.getBankAccountNumber())
+                    .destinationBankAccountNumber(ba2.getBankAccountNumber())
+                    .build();
+            if(transaction.isComplete())
+                transaction.setTrackingNumber();
+            transactions.add(transaction);
         }
-        return ret;
+        return transactions;
     }
 
     private List<BankAccount> generateBankAccountsForUsers(List<User> users){
         List<BankAccount> bankAccounts = new ArrayList<>(users.size());
         Collections.shuffle(users);
         for(User user : users){
-            BankAccount bankAccount = bankAccountService.createNewBankAccount(user.getId());
-            bankAccount.setAvailableQuota(BigDecimal.valueOf(new Random().nextInt(0,10000)));
-            bankAccount.setCurrency(Currencies.EUR);
+            BankAccount bankAccount = bankAccountService.createNewBankAccountForUser(
+                                                    user,
+                                                    BigDecimal.valueOf(new Random().nextInt(0,10000)),
+                                                    Currencies.EUR);
             bankAccounts.add(bankAccount);
         }
         return bankAccounts;
@@ -82,6 +109,7 @@ public class DataGenerator {
             String name = names[random.nextInt(names.length)].toString();
             String lastName = lastNames[random.nextInt(lastNames.length)].toString();
             User u = User.builder()
+//                    .id(BigInteger.valueOf(1))
                     .name(name)
                     .lastName(lastName)
                     .creationDate(new Date())
@@ -91,6 +119,7 @@ public class DataGenerator {
                     .taxId(random.ints(9, 0,10)
                             .mapToObj(String::valueOf)
                             .collect(Collectors.joining()))
+                    .bankAccounts(Collections.emptyList())
                     .build();
             users.add(u);
         }
@@ -123,4 +152,5 @@ public class DataGenerator {
         Parn,
         Koppel
     }
+
 }

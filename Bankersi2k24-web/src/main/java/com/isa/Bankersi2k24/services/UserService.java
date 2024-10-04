@@ -38,14 +38,9 @@ public class UserService {
 
 
     public User findUserByLogin(String login){
-        List<User> users = fetchAllUsers();
-
-        for(User u : users){
-            if(login.equals(u.getLogin())){
-                return u;
-            }
-        }
-        return null;
+        return userRepository.findUserByLogin(login).orElseThrow(
+                () -> new EntityNotFoundException(String.format("User %s not found", login))
+        );
     }
 
     public static boolean verifyEmail(String email){
@@ -87,20 +82,17 @@ public class UserService {
         }
     }
 
-    public String getUserName(BigInteger id) throws Exception {
-        try{
-            return this.fetchAllUsers().stream().filter(u -> u.getId().equals(id))
-                    .findFirst()
-                    .orElseThrow()
-                    .getName();
-        }catch (Exception e){
-            throw new Exception(String.format("User with id: %d does not exist", id));
-        }
+    public String getUserName(BigInteger id) {
+      User user = getUserById(id);
+      return user.getName();
     }
+        
+
     public User getUserById(BigInteger id){
         return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Not found user with given Id:  %s", id)));
     }
+      
     public boolean loginUser(String login, String password) throws Exception {
         User user = this.findUserByLogin(login);
         if(user != null){

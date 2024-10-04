@@ -4,7 +4,8 @@ public enum Currencies {
     PLN("Polish Złoty"),
     USD("US American Dolar"),
     AUD("Australian Dolar"),
-    EUR("Euro");
+    EUR("Euro"),
+    NONE("None");
 
     private final String name;
     Currencies(String c) {

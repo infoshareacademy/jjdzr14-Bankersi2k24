@@ -1,5 +1,6 @@
 package com.isa.Bankersi2k24.services;
 
+import com.isa.Bankersi2k24.models.BankAccount;
 import com.isa.Bankersi2k24.models.BankAccountNumber;
 
 import java.util.Random;
@@ -7,18 +8,18 @@ import java.util.Random;
 public class BankAccountNumberService {
 
     public static final String bankAccountRegexp = "(^\\d{2,26}$)|(^[\\d]{2}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}\\s[\\d]{4}$)";
-//    public void setBankAccountNumber(BankAccount bankAccount, String bankAccountString){
-//        bankAccount.setBankAccountNumber(accountNumberStringToBan(bankAccountString));
-//    }
-//
-//    public void setBankAccountNumber(BankAccount bankAccount, BankAccountNumber bankAccountNumber){
-//        bankAccount.setBankAccountNumber(bankAccountNumber);
-//    }
+    public void setBankAccountNumber(BankAccount bankAccount, String bankAccountString){
+        bankAccount.setBankAccountNumber(bankAccountString);
+    }
+
+    public void setBankAccountNumber(BankAccount bankAccount, BankAccountNumber bankAccountNumber){
+        bankAccount.setBankAccountNumber(bankAccountNumber.toString());
+    }
 
     public static BankAccountNumber generateRandomBankAccountNumber(){
         Random rnd = new Random();
         BankAccountNumber ban = new BankAccountNumber();
-        do {
+
             ban.setBankAccountNumber(
                     rnd.ints(0, 99).findFirst().getAsInt(),
                     rnd.ints(0, 9999).findFirst().getAsInt(),
@@ -28,15 +29,8 @@ public class BankAccountNumberService {
                     rnd.ints(0, 9999).findFirst().getAsInt(),
                     rnd.ints(0, 9999).findFirst().getAsInt()
             );
-        }
-        while(checkIfBANexists(ban));
-        return ban;
-    }
 
-    public static boolean checkIfBANexists(BankAccountNumber bankAccountNumber){
-//        old_BankAccountRepository bankAccountRepository = new old_BankAccountRepository();
-//        return bankAccountRepository.queryBankAccounts(b -> b.getBankAccountNumber() == bankAccountNumber);
-        return true;
+        return ban;
     }
 
     public static BankAccountNumber accountNumberStringToBan(String bankAccountNumber){

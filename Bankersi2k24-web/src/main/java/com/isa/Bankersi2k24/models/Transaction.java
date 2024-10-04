@@ -3,16 +3,23 @@ package com.isa.Bankersi2k24.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 
-@Data
+
 @Entity
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "transactions")
 public class Transaction{
     @Id
@@ -30,21 +37,14 @@ public class Transaction{
     private Currencies currency;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "senderBankaccount_id")
-    private BankAccount senderBankAccount;
+    private String senderBankAccountNumber;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "destinationBankaccount_id")
-    private BankAccount destinationBankAccount;
+    private String destinationBankAccountNumber;
 
     private LocalDateTime transactionDate;
     private boolean isComplete;
     private Integer trackingNumber;
-
-    public Transaction() {
-    }
 
     public boolean isComplete() {
         return isComplete;
@@ -64,12 +64,12 @@ public class Transaction{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return getQuota().equals(that.getQuota()) && Objects.equals(getTransactionTitle(), that.getTransactionTitle()) && Objects.equals(getSenderBankAccount(), that.getSenderBankAccount()) && Objects.equals(getDestinationBankAccount(), that.getDestinationBankAccount()) ;
+        return getQuota().equals(that.getQuota()) && Objects.equals(getTransactionTitle(), that.getTransactionTitle()) && Objects.equals(getSenderBankAccountNumber(), that.getSenderBankAccountNumber()) && Objects.equals(getDestinationBankAccountNumber(), that.getDestinationBankAccountNumber()) ;
     }
 
     @Override
     public int hashCode() {
-            return Objects.hash(getTransactionTitle(), getQuota(), getSenderBankAccount(), getDestinationBankAccount());
+            return Objects.hash(getTransactionTitle(), getQuota(), getSenderBankAccountNumber(), getDestinationBankAccountNumber());
     }
 
 }
