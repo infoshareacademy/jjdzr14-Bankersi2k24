@@ -74,7 +74,6 @@ public class UserService {
         return null;
 //        return this.userRepository.fetchAllUsers();
     }
-//    test
     public void editUser(User editedUser){
         try {
             User user = userRepository.findById(editedUser.getId()).get();

@@ -9,7 +9,6 @@
 
 </head>
 <body>
-<p>edit user</p>
 <form class="container" th:object="${user}" action="/editUser" method="post">
     <input type="hidden" th:value="${user.id}" class="form-control" id="id" name="id" th:field="*{id}">
     <div class="form-group">
