@@ -36,6 +36,7 @@ public class UserService {
         return null;
     }
 
+
     public User findUserByLogin(String login){
         return userRepository.findUserByLogin(login).orElseThrow(
                 () -> new EntityNotFoundException(String.format("User %s not found", login))
@@ -64,13 +65,34 @@ public class UserService {
         else return false;
     }
 
-    public String getUserName(BigInteger id) {
-        return this.getUserById(id).getName();
+    private List<User> fetchAllUsers(){
+        return null;
+//        return this.userRepository.fetchAllUsers();
     }
+    public void editUser(User editedUser){
+        try {
+            User user = userRepository.findById(editedUser.getId()).get();
+            user.setLogin(editedUser.getLogin());
+            user.setEmail(editedUser.getEmail());
+            user.setLastName(editedUser.getLastName());
+            user.setName(editedUser.getName());
+            userRepository.save(user);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public String getUserName(BigInteger id) {
+      User user = getUserById(id);
+      return user.getName();
+    }
+        
+
     public User getUserById(BigInteger id){
         return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Not found user with given Id:  %s", id)));
     }
+      
     public boolean loginUser(String login, String password) throws Exception {
         User user = this.findUserByLogin(login);
         if(user != null){

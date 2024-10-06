@@ -76,5 +76,31 @@ public class LoginController {
              model.addAttribute("user", user);
         return "userDetails";
     }
+    @GetMapping("/user/edit/{id}")
+    public String editUserDetails(@PathVariable BigInteger id,
+                                  Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "editUserDetails";
+    }
+    @PostMapping("/editUser")
+    public String executeEditUserDetails(@Valid @ModelAttribute("user") User editedUser,
+                                         BindingResult bindingResult,
+                                         final RedirectAttributes redirectAttributes,
+                                         Model model) {
+        if (bindingResult.hasErrors()) {
+            String errMessage = "";
+            for (ObjectError objectError : bindingResult.getAllErrors()) {
+                errMessage += objectError.getDefaultMessage() + "  ";
+
+            }
+            System.out.println(errMessage);
+            redirectAttributes.addFlashAttribute("errMessage", errMessage);
+
+            return "redirect:/user/" + editedUser.getId();
+        }
+        userService.editUser(editedUser);
+        return "redirect:/user/" + editedUser.getId();
+    }
 }
 
