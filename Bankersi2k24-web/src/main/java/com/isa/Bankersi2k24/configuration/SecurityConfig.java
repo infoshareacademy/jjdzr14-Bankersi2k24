@@ -4,11 +4,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
     /**
      *  old way taught in bootcamp is deprecated,
@@ -16,16 +20,22 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated()
-        ).httpBasic(Customizer.withDefaults());
+        http.csrf().disable();
+        http.authorizeRequests()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .and()
+                .authorizeRequests()
+                .requestMatchers("/web/**").authenticated()
+                .and()
+                .authorizeRequests()
+                .requestMatchers("/api**/**").hasRole("API")
+                .and().httpBasic();
+
         return http.build();
     }
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer (){
-        return web -> web.ignoring().requestMatchers(
-                "/",
-                "/public/**");
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

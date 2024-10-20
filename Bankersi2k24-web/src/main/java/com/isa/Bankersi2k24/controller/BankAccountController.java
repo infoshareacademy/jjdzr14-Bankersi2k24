@@ -6,9 +6,7 @@ import com.isa.Bankersi2k24.services.BankAccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -17,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Controller
+@RequestMapping("/web")
 public class BankAccountController {
     private final BankAccountService bankAccountService;
 
@@ -49,5 +48,10 @@ public class BankAccountController {
         model.addAttribute("content", "dashboard")
                 .addAttribute("dashboard", dashboard);
         return "main";
+    }
+
+    @GetMapping("/test")
+    public String test(Model model) {
+        return "test";
     }
 }

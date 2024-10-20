@@ -1,8 +1,10 @@
 package com.isa.Bankersi2k24.services;
 
 import com.isa.Bankersi2k24.models.*;
+import com.isa.Bankersi2k24.repository.UserInfoRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -12,15 +14,17 @@ import java.util.stream.Collectors;
 
 @Component
 public class DataGenerator {
+    private final UserInfoRepository userInfoRepository;
     private Random random;
     private final BankAccountService bankAccountService;
     private final UserService userService;
     private final TransactionService transactionService;
 
-    public DataGenerator(BankAccountService bankAccountService, UserService userService, TransactionService transactionService) {
+    public DataGenerator(BankAccountService bankAccountService, UserService userService, TransactionService transactionService, UserInfoRepository userInfoRepository) {
         this.bankAccountService = bankAccountService;
         this.userService = userService;
         this.transactionService = transactionService;
+        this.userInfoRepository = userInfoRepository;
     }
 
     @PostConstruct
@@ -39,6 +43,19 @@ public class DataGenerator {
                 for (User user : users) {
                     userService.saveNewUser(user);
                 }
+                UserInfo u1 = UserInfo.builder()
+                        .username("user")
+                        .password(new BCryptPasswordEncoder().encode("user"))
+                        .roles("USER")
+                        .build();
+                UserInfo u2 = UserInfo.builder()
+                        .username("admin")
+                        .password(new BCryptPasswordEncoder().encode("admin"))
+                        .roles("ADMIN")
+                        .build();
+                userInfoRepository.save(u1);
+                userInfoRepository.save(u2);
+
 //                break;
             case 1:
                 users = this.userService.getAllUsers();
@@ -109,12 +126,11 @@ public class DataGenerator {
             String name = names[random.nextInt(names.length)].toString();
             String lastName = lastNames[random.nextInt(lastNames.length)].toString();
             User u = User.builder()
-//                    .id(BigInteger.valueOf(1))
                     .name(name)
                     .lastName(lastName)
                     .creationDate(new Date())
                     .login(lastName.toLowerCase() + name.toLowerCase().charAt(0))
-                    .password("#" + name.toLowerCase() + "!")
+                    .password(new BCryptPasswordEncoder().encode("#" + name.toLowerCase() + "!"))
                     .email(name.toLowerCase() + "." + lastName.toLowerCase() + "@bankersi2k24.biz")
                     .taxId(random.ints(9, 0,10)
                             .mapToObj(String::valueOf)
