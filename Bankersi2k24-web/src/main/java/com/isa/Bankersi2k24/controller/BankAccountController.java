@@ -3,6 +3,7 @@ package com.isa.Bankersi2k24.controller;
 import com.isa.Bankersi2k24.models.Dashboard;
 import com.isa.Bankersi2k24.services.BankAccountNumberService;
 import com.isa.Bankersi2k24.services.BankAccountService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,8 +25,8 @@ public class BankAccountController {
     }
 
     @GetMapping("/bankAccount/{bankAccountId}")
-    public String findBankAccountById(@PathVariable("bankAccountId") String bankAccountId, Model model) {
-        System.out.println("bankAccountId = " + bankAccountId);
+    public String findBankAccountById(@PathVariable("bankAccountId") String bankAccountId, Model model, HttpSession session) {
+        System.out.println("username = " + session.getAttribute("username"));
         String bankAccountNumber = "brak";
         try {
             bankAccountNumber = BankAccountNumberService.accountNumberStringToBan(bankAccountId).toString();
