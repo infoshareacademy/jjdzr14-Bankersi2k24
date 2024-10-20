@@ -53,11 +53,17 @@ public class LoginController {
         return null;
     }
 
-    @PostMapping("/web/auth")
+    @GetMapping("/web/auth")
     String authorize(HttpSession httpSession){
         String uname = getAuthorizedUserName();
-        httpSession.setAttribute("username", uname);
-        return "redirect:/web/bankAccount/1";
+        if(uname != null){
+            BigInteger id = userService.findUserByLogin(uname).getId();
+            httpSession.setAttribute("useName", uname);
+            httpSession.setAttribute("userId", id);
+            return "redirect:/web/dashboard";
+        }else
+            return "/login?error";
+
     }
 
 

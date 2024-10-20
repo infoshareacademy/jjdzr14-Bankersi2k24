@@ -2,6 +2,7 @@ package com.isa.Bankersi2k24.controller;
 
 import com.isa.Bankersi2k24.models.Currencies;
 import com.isa.Bankersi2k24.models.Transaction;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import java.math.BigInteger;
 import java.util.Collections;
 
 @Controller
+@RequestMapping("/web")
 public class TransactionController {
     private final TransactionService transactionService;
 
@@ -22,8 +24,9 @@ public class TransactionController {
 
     @PostMapping(value="/transactions")
     public String getAllTransactions(@RequestParam("accountId") BigInteger accountId,
-                                     @RequestParam("userId") BigInteger userId,
-                                     Model model){
+                                     Model model,
+                                     HttpSession session) {
+        BigInteger userId = (BigInteger) session.getAttribute("userId");
         try {
             model.addAttribute("content", "transactionContent")
                     .addAttribute("userId", userId)

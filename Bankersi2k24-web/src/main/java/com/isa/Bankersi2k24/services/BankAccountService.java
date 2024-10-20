@@ -26,10 +26,7 @@ public class BankAccountService {
     }
 
     public BankAccount getBankAccount(BigInteger accountId) throws Exception {
-        return null;
-//        return this.bankAccountRepository.fetchAllBankAccounts().stream().filter(
-//                ba -> Objects.equals(ba.getId(), accountId))
-//                .findFirst().orElseThrow();
+        return bankAccountRepository.findBankAccountById(accountId);
     }
 
     public BankAccount getBankAccount(String ban) {

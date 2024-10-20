@@ -6,14 +6,9 @@ import com.isa.Bankersi2k24.services.BankAccountService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Controller
 @RequestMapping("/web")
@@ -24,9 +19,9 @@ public class BankAccountController {
         this.bankAccountService = bankAccountService;
     }
 
-    @GetMapping("/bankAccount/{bankAccountId}")
-    public String findBankAccountById(@PathVariable("bankAccountId") String bankAccountId, Model model, HttpSession session) {
-        System.out.println("username = " + session.getAttribute("username"));
+    @GetMapping("/bankAccount/{userId}")
+    public String findBankAccountByUserId(@PathVariable("userId") String bankAccountId, Model model, HttpSession session) {
+//        System.out.println("username = " + session.getAttribute("username"));
         String bankAccountNumber = "brak";
         try {
             bankAccountNumber = BankAccountNumberService.accountNumberStringToBan(bankAccountId).toString();
@@ -40,15 +35,18 @@ public class BankAccountController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard(Model model, @ModelAttribute("userId") BigInteger userId, BindingResult bindingResult) {
-        List<String> errorMsg = new ArrayList<>();
-        errorMsg = Arrays.asList(bindingResult.getSuppressedFields());
+    public String showDashboard(Model model, HttpSession session) {
+//        List<String> errorMsg = new ArrayList<>();
+//        errorMsg = Arrays.asList(bindingResult.getSuppressedFields());
 
-
-        Dashboard dashboard = this.bankAccountService.prepareUserDashboard(userId);
-        model.addAttribute("content", "dashboard")
-                .addAttribute("dashboard", dashboard);
-        return "main";
+        if(session != null){
+            BigInteger id = (BigInteger) session.getAttribute("userId");
+            Dashboard dashboard = this.bankAccountService.prepareUserDashboard(id);
+            model.addAttribute("content", "dashboard")
+                    .addAttribute("dashboard", dashboard);
+            return "main";
+        }
+        return "error";
     }
 
     @GetMapping("/test")

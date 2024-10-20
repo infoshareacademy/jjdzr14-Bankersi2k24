@@ -30,7 +30,7 @@ public class DataGenerator {
     @PostConstruct
     public void init(){
         this.random = new Random();
-        int howMany = 13;
+        int howMany = 6;
         List<BankAccount> bankAccountList = new ArrayList<>();
         List<User> users = new ArrayList<>();
         List<Transaction> transactions = new ArrayList<>();
@@ -40,8 +40,15 @@ public class DataGenerator {
         switch(phase) {
             case 0:
                 users = this.generateUsers(howMany);
+                UserInfo userInfo;
                 for (User user : users) {
                     userService.saveNewUser(user);
+                    userInfo = UserInfo.builder()
+                            .username(user.getLogin())
+                            .password(user.getPassword())
+                            .roles("USER")
+                            .build();
+                    userInfoRepository.save(userInfo);
                 }
                 UserInfo u1 = UserInfo.builder()
                         .username("user")
@@ -55,6 +62,12 @@ public class DataGenerator {
                         .build();
                 userInfoRepository.save(u1);
                 userInfoRepository.save(u2);
+
+                User u = User.builder()
+                        .login(u2.getUsername())
+                        .password(u2.getPassword())
+                        .build();
+                userService.saveNewUser(u);
 
 //                break;
             case 1:
@@ -124,13 +137,14 @@ public class DataGenerator {
 
         for (int i = 0; i < howMany; i++) {
             String name = names[random.nextInt(names.length)].toString();
-            String lastName = lastNames[random.nextInt(lastNames.length)].toString();
+            String lastName = lastNames[i].toString(); //lastNames[random.nextInt(lastNames.length)].toString();
             User u = User.builder()
                     .name(name)
                     .lastName(lastName)
                     .creationDate(new Date())
                     .login(lastName.toLowerCase() + name.toLowerCase().charAt(0))
-                    .password(new BCryptPasswordEncoder().encode("#" + name.toLowerCase() + "!"))
+//                    .password(new BCryptPasswordEncoder().encode("#" + name.toLowerCase() + "!"))
+                    .password(new BCryptPasswordEncoder().encode(lastName.toLowerCase() + name.toLowerCase().charAt(0)))
                     .email(name.toLowerCase() + "." + lastName.toLowerCase() + "@bankersi2k24.biz")
                     .taxId(random.ints(9, 0,10)
                             .mapToObj(String::valueOf)

@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.filter.RequestContextFilter;
 
 
 @Configuration
@@ -28,9 +29,10 @@ public class SecurityConfig {
     CustomAuthenticationProvider customAuthenticationProvider;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http, RequestContextFilter requestContextFilter) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/web/**").authenticated()
                 .requestMatchers("/api**/**").hasRole("API"))
@@ -38,13 +40,13 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authenticationProvider(customAuthenticationProvider);
 
-        http.formLogin( form -> form
-                .loginPage("/login")
-                .permitAll()
-                .defaultSuccessUrl("/web/dashboard")
-                .usernameParameter("username")
-                .passwordParameter("password")
-        );
+//        http.formLogin( form -> form
+//                .loginPage("/login")
+//                .loginProcessingUrl("/auth")
+//                .defaultSuccessUrl("/web/dashboard")
+//                .usernameParameter("username")
+//                .passwordParameter("password")
+//        );
 
         return http.build();
     }
