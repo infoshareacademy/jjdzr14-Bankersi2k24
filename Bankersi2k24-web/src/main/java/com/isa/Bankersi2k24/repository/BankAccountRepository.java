@@ -17,4 +17,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, BigInt
 
     @Query("select ba from BankAccount ba where ba.user.id =?1")
     List<BankAccount> findBankAccountByUserId(BigInteger userId);
+
+    @Query("select ba from BankAccount ba where ba.id = ?1")
+    BankAccount findBankAccountById(BigInteger id);
 }

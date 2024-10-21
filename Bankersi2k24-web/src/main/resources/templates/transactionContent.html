@@ -15,7 +15,7 @@
         <tbody>
         <tr th:each="transaction : ${outgoingTransactionList}" >
             <td th:text="*{#temporals.format(transaction.transactionDate, 'dd-MM-yyyy HH:mm')} ?: 'not set yet'"></td>
-            <td th:text="*{transaction.destinationAccountNumber.toString()}"></td>
+            <td th:text="*{transaction.destinationBankAccountNumber}"></td>
             <td th:text="*{transaction.quota}"></td>
             <td th:text="*{transaction.transactionTitle}"></td>
             <td th:text="*{transaction.isComplete}"></td>
@@ -38,7 +38,7 @@
         <tbody>
         <tr th:each="transaction : ${incomingTransactionList}" >
             <td th:text="*{#temporals.format(transaction.transactionDate, 'dd-MM-yyyy HH:mm')} ?: 'not set yet'"></td>
-            <td th:text="*{transaction.senderAccountNumber.toString()}"></td>
+            <td th:text="*{transaction.senderBankAccountNumber}"></td>
             <td th:text="*{transaction.quota}"></td>
             <td th:text="*{transaction.transactionTitle}"></td>
             <td th:text="*{transaction.isComplete}"></td>

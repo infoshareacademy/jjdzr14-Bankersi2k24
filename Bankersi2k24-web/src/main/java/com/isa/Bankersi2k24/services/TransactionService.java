@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TransactionService {
@@ -26,25 +27,24 @@ public class TransactionService {
     }
 
     public List<Transaction> getAllOutgoingTransactionsForAccount(BigInteger accountId) throws Exception {
-//        BankAccountNumber bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
-//        List<BigInteger> outgoingTransactions = this.getAllTransactions()
-//                .stream()
-//                .filter(t -> t.getSenderBankAccount().getBankAccountNumber() == bankAccountNumber)
+        String bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
+        //                .map(Transaction::getId)
+
+        return this.getAllTransactions()
+                .stream()
+                .filter(t -> Objects.equals(t.getSenderBankAccountNumber(), bankAccountNumber))
 //                .map(Transaction::getId)
-//                .toList();
-        return null;
+                .toList();
         //        return this.transactionRepository.getTransactionListForIds(outgoingTransactions);
     }
 
     public List<Transaction> getAllIncomingTransactionsForAccount(BigInteger accountId) throws Exception {
-//        BankAccountNumber bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
-//        List<BigInteger> incomingTransactions = this.getAllTransactions()
-//                .stream()
-//                .filter(t -> t.getDestinationBankAccount().getBankAccountNumber() == bankAccountNumber)
+        String bankAccountNumber = bankAccountService.getBankAccount(accountId).getBankAccountNumber();
+        return this.getAllTransactions()
+                .stream()
+                .filter(t -> Objects.equals(t.getDestinationBankAccountNumber(), bankAccountNumber))
 //                .map(Transaction::getId)
-//                .toList();
-        return null;
-//        return this.transactionRepository.getTransactionListForIds(incomingTransactions);
+                .toList();
     }
 
     private boolean verifyTransaction(BankAccount sender, BankAccount recepient, Transaction transaction) throws RuntimeException{
