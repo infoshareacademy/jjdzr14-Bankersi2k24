@@ -1,6 +1,7 @@
 package com.isa.Bankersi2k24.controller;
 
 import com.isa.Bankersi2k24.models.User;
+import com.isa.Bankersi2k24.models.UserDetailModel;
 import com.isa.Bankersi2k24.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 
 @Controller
@@ -42,20 +44,20 @@ public class LoginController {
         return "login";
     }
 
-    public static String getAuthorizedUserName(){
+    public static UserDetailModel getAuthorizedUserName(){
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
 
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
-            return (String)principal;
+            return (UserDetailModel) principal;
         }
         return null;
     }
 
     @GetMapping("/web/auth")
     String authorize(HttpSession httpSession){
-        String uname = getAuthorizedUserName();
+        String uname = Objects.requireNonNull(getAuthorizedUserName()).getUsername();
         if(uname != null){
             BigInteger id = userService.findUserByLogin(uname).getId();
             httpSession.setAttribute("useName", uname);
@@ -66,43 +68,6 @@ public class LoginController {
 
     }
 
-
-//    @PostMapping("/login")
-//    public String loginUser(@Valid User user, BindingResult bindingResult, ModelMap model,
-//                            @ModelAttribute("username") String login,
-//                            @ModelAttribute("password") String password,
-//                            final RedirectAttributes redirectAttributes){
-//        try{
-//            if(bindingResult.hasErrors()){
-//                String errMessage="";
-//                for (ObjectError objectError:bindingResult.getAllErrors()) {
-//                    errMessage +=objectError.getDefaultMessage()+"  ";
-//
-//                }
-//
-//                model.addAttribute("content", "loginForm");
-//                model.addAttribute("errorMsg", errMessage);
-//                return "main";
-//            }
-//            boolean aa = model.containsAttribute("login");
-//
-//            if(userService.loginUser(login, password)){
-//                model.addAttribute("content", "dashboard")
-//                        .addAttribute("userId",userService.findUserByLogin(login).getId());
-//                redirectAttributes.addFlashAttribute("userId", userService.findUserByLogin(login).getId());
-//                return "redirect:/dashboard";
-//            }else
-//            {
-//                model.addAttribute("content", "loginForm")
-//                        .addAttribute("errorMsg", "Login failed - check your credentials");
-//                return "main";
-//            }
-//        } catch (Exception e) {
-//            model.addAttribute("content", "loginForm")
-//                    .addAttribute("errorMsg", e.getMessage());
-//            return "main";
-//        }
-//    }
     @GetMapping("/user/{id}")
     public String getUserDetailsByUserId(@PathVariable BigInteger id,
                                          Model model) {
